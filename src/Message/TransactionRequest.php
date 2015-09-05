@@ -2,6 +2,9 @@
 
 /**
  * The transaction value object to send a transaction to SagePay.
+ * TODO: look at all teh other transaction types - they are very different messages.
+ *   Maybe change this one to a Payment only, with an abstract class to hold
+ *   the constants and shared request message functionality?
  */
 
 use Exception;
