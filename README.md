@@ -1,6 +1,15 @@
 # SagePayJS
 
-Very much work in progress.
+This package provides the data models and business logic for the SagePay.JS payment gateway.
+It does not provide the transport mechanism, so you can use what you like for that,
+for example curl, PSR-7
+
+It is very much work in progress at this very early stage, while this SagePay API is in beta.
+However,we aim to move quickly and follow changes to the API as they are released.
+The aim is for the package to be a complete model for the SagePay API, providing all the data
+objects, messages (in both directions) and as much validation as is practical.
+
+There is no test suite in here yet. That will come once the structure is a little more stable.
 
 * Started by dumping everything into the "Models" folder.
 * Now putting the messages into `Messages`.
@@ -23,5 +32,5 @@ those errors, such as collecting them into errors for each submitted field, for 
 provides an example with multiple errors for field `cardDetails.cardholderName` (both wrong length and
 containing invalid characters).
 
-Current version of API spec is "11-08-2015":
+Current version of API spec is "11-08-2015 (beta)":
 https://test.sagepay.com/documentation/#shipping-details-object
