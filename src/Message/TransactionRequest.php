@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePayJs\Models;
+<?php namespace Academe\SagePayJs\Message;
 
 /**
  * The transaction value object to send a transaction to SagePay.
@@ -8,8 +8,11 @@ use Exception;
 use UnexpectedValueException;
 
 use Academe\SagePayJs\PaymentMethod\PaymentMethodInterface;
+use Academe\SagePayJs\Models\AmountInterface;
+use Academe\SagePayJs\Models\AddressInterface;
+use Academe\SagePayJs\Models\ShippingDetails;
 
-class Transaction
+class TransactionRequest
 {
     // Minimum mandatory data (constructor).
     protected $transactionType;

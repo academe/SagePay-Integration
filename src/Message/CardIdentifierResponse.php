@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePayJs\Models;
+<?php namespace Academe\SagePayJs\Message;
 
 /**
  * Value object to hold the card identifier, returned by SagePay.
@@ -11,7 +11,7 @@ use DateTimeZone;
 use Exception;
 use UnexpectedValueException;
 
-class CardIdentifier
+class CardIdentifierResponse
 {
     protected $cardIdentifier;
     protected $expiry;

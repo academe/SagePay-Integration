@@ -1,7 +1,8 @@
-<?php namespace Academe\SagePayJs\Models;
+<?php namespace Academe\SagePayJs\Message;
 
 /**
  * Value object holding the merchant session key returned by SagePay.
+ * TODO: make expiry optional?
  */
 
 use Exception;
@@ -10,7 +11,7 @@ use UnexpectedValueException;
 use DateTime;
 use DateTimeZone;
 
-class SessionKey
+class SessionKeyResponse
 {
     protected $merchantSessionKey;
     protected $expiry;

@@ -8,15 +8,15 @@
 use Exception;
 use UnexpectedValueException;
 
-use Academe\SagePayJs\Models\CardIdentifier;
-use Academe\SagePayJs\Models\SessionKey;
+use Academe\SagePayJs\Message\CardIdentifierResponse;
+use Academe\SagePayJs\Message\SessionKeyResponse;
 
 class Card implements PaymentMethodInterface
 {
     protected $sessionKey;
     protected $cardIdentifier;
 
-    public function __construct(SessionKey $sessionKey, CardIdentifier $cardIdentifier)
+    public function __construct(SessionKeyResponse $sessionKey, CardIdentifierResponse $cardIdentifier)
     {
         $this->cardIdentifier = $cardIdentifier;
         $this->sessionKey = $sessionKey;

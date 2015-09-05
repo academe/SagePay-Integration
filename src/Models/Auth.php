@@ -4,6 +4,7 @@
  * Value object given the account authentication details.
  * Includes the API version.
  * Provides the as needed, and the correct base URL.
+ * TODO: Should teh API version number be fixed for any branch/release of this package? Starting to think so.
  */
 
 use Exception;
@@ -71,6 +72,12 @@ class Auth
 
     public function getUrl($resource = '')
     {
+        // If the resource is an array, then combine it into the path.
+        if (is_array($resource)) {
+            // Encode all parts of the path.
+            $resource = implode('/', array_map('rawurlencode', $resource));
+        }
+
         return str_replace(
             ['{version}', '{resource}'],
             [$this->version, $resource],
