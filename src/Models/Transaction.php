@@ -1,0 +1,234 @@
+<?php namespace Academe\SagePayJs\Models;
+
+/**
+ * The transaction value object to send a transaction to SagePay.
+ */
+
+use Exception;
+use UnexpectedValueException;
+
+use Academe\SagePayJs\PaymentMethod\PaymentMethodInterface;
+
+class Transaction
+{
+    // Minimum mandatory data (constructor).
+    protected $transactionType;
+    protected $paymentMethod;
+    protected $vendorTxCode;
+    protected $amount;
+    protected $billingAddress;
+
+    // Optional or overridable data (setters).
+    protected $entryMethod = 'Ecommerce';
+    protected $recurringIndicator;
+    protected $giftAid = false;
+    protected $applyAvsCvcCheck;
+    protected $apply3DSecure;
+    protected $customerEmail;
+    protected $customerPhone;
+    protected $shippingDetails;
+    protected $description;
+
+    protected $customerFirstName;
+    protected $customerLastName;
+
+    protected $transaction_types = array(
+        'Payment',
+    );
+
+    protected $entry_methods = array(
+        'Ecommerce',
+        'MailOrder',
+        'TelephoneOrder',
+    );
+
+    protected $recurring_indicators = array(
+        'Recurring',
+        'Instalment',
+    );
+
+    protected $apply_avs_cvc_checks = array(
+        'Force',
+        'Disable',
+        'ForceIgnoringRules',
+    );
+
+    protected $apply_3d_secures = array(
+        'Force',
+        'Disable',
+        'ForceIgnoringRules',
+    );
+
+    public function __construct(
+        $transactionType,
+        PaymentMethodInterface $paymentMethod,
+        $vendorTxCode,
+        AmountInterface $amount,
+        AddressInterface $billingAddress
+    ) {
+        // Some simple normalisation.
+        $transactionType = ucfirst(strtolower($transactionType));
+
+        // Is the transaction type one we are expecting?
+        if ( ! in_array($transactionType, $this->transaction_types)) {
+            throw new UnexpectedValueException(sprintf('Unknown transaction type "%s".', (string)$transactionType));
+        }
+
+        $this->transactionType = $transactionType;
+        $this->paymentMethod = $paymentMethod;
+        $this->vendorTxCode = $vendorTxCode;
+        $this->amount = $amount;
+        $this->billingAddress = $billingAddress;
+    }
+
+    public function withEntryMethod($entryMethod)
+    {
+        if ( ! in_array($entryMethod, $this->getEntryMethods())) {
+            throw new UnexpectedValueException(sprintf(
+                'Unknown entryMethod "%s"; require one of %s',
+                (string)$entryMethod,
+                implode(', ', $this->getEntryMethods())
+            ));
+        }
+
+        $copy = clone $this;
+        $copy->entryMethod = $entryMethod;
+        return $copy;
+    }
+
+    public function getEntryMethods()
+    {
+        return $this->entry_methods;
+    }
+
+    public function withRecurringIndicator($recurringIndicator)
+    {
+        if ( ! in_array($recurringIndicator, $this->getRecurringIndicators())) {
+            throw new UnexpectedValueException(sprintf(
+                'Unknown recurringIndicator "%s"; require one of %s',
+                (string)$recurringIndicator,
+                implode(', ', $this->getRecurringIndicators())
+            ));
+        }
+
+        $copy = clone $this;
+        $copy->recurringIndicator = $recurringIndicator;
+        return $copy;
+    }
+
+    public function getRecurringIndicators()
+    {
+        return $this->recurring_indicators;
+    }
+
+    public function withGiftAid($giftAid)
+    {
+        $copy = clone $this;
+        $copy->giftAid = ! empty($giftAid);
+        return $copy;
+    }
+
+    public function withApplyAvsCvcCheck($applyAvsCvcCheck)
+    {
+        if ( ! in_array($applyAvsCvcCheck, $this->getApplyAvsCvcChecks())) {
+            throw new UnexpectedValueException(sprintf(
+                'Unknown applyAvsCvcCheck "%s"; require one of %s',
+                (string)$applyAvsCvcCheck,
+                implode(', ', $this->getApplyAvsCvcChecks())
+            ));
+        }
+
+        $copy = clone $this;
+        $copy->applyAvsCvcCheck = $applyAvsCvcCheck;
+        return $copy;
+    }
+
+    public function getApplyAvsCvcChecks()
+    {
+        return $this->apply_avs_cvc_checks;
+    }
+
+    public function withApply3DSecure($apply3DSecure)
+    {
+        if ( ! in_array($apply3DSecure, $this->getApply3DSecures())) {
+            throw new UnexpectedValueException(sprintf(
+                'Unknown apply3DSecure "%s"; require one of %s',
+                (string)$apply3DSecure,
+                implode(', ', $this->getApply3DSecures())
+            ));
+        }
+
+        $copy = clone $this;
+        $copy->apply3DSecure = $apply3DSecure;
+        return $copy;
+    }
+
+    public function getApply3DSecures()
+    {
+        return $this->apply_3d_secures;
+    }
+
+    // TODO: validate the email address.
+    public function withCustomerEmail($customerEmail)
+    {
+        $copy = clone $this;
+        $copy->customerEmail = $customerEmail;
+        return $copy;
+    }
+
+    public function withCustomerPhone($customerPhone)
+    {
+        $copy = clone $this;
+        $copy->customerPhone = $customerPhone;
+        return $copy;
+    }
+
+    public function withShippingDetails(ShippingDetails $shippingDetails)
+    {
+        $copy = clone $this;
+        $copy->shippingDetails = $shippingDetails;
+        return $copy;
+    }
+
+    public function withDescription($description)
+    {
+        $copy = clone $this;
+        $copy->description = $description;
+        return $copy;
+    }
+
+    public function withCustomerFirstName($customerFirstName)
+    {
+        $copy = clone $this;
+        $copy->customerFirstName = $customerFirstName;
+        return $copy;
+    }
+
+    public function withCustomerLastName($customerLastName)
+    {
+        $copy = clone $this;
+        $copy->customerLastName = $customerLastName;
+        return $copy;
+    }
+
+    public function toArray()
+    {
+        $result = array(
+            'transactionType' => $this->transactionType,
+            'paymentMethod' => $this->paymentMethod->toArray(),
+            'vendorTxCode' => $this->vendorTxCode,
+            // amount and currency
+            'description' => $this->description,
+            'customerFirstName' => $this->customerFirstName,
+            'customerLastName' => $this->customerLastName,
+            'billingAddress' => $this->billingAddress->toArray(),
+            'entryMethod' => $this->entryMethod,
+        );
+
+        if ( ! empty($this->shippingDetails)) {
+            $result['shippingDetails'] = $this->shippingDetails->toArray();
+        }
+
+        return $result;
+    }
+}
