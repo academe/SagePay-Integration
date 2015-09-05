@@ -27,7 +27,7 @@ class Currency
 
     public function __construct($code)
     {
-        if (isset($this->currencies[$code])) {
+        if (isset(static::$currencies[$code])) {
             $this->code = $code;
         } else {
             throw new UnexpectedValueException(sprintf('Unknown currency code "%s"', $code));
@@ -48,7 +48,7 @@ class Currency
 
     public function getName()
     {
-        return $this->currencies[$this->code]['name'];
+        return static::$currencies[$this->code]['name'];
     }
 
     /**
@@ -56,7 +56,7 @@ class Currency
      */
     public function getSymbol()
     {
-        return static::currencies[$this->code]['symbol'];
+        return static::$currencies[$this->code]['symbol'];
     }
 
     public static function supportedCurrencies()

@@ -24,7 +24,7 @@ class Amount implements AmountInterface
      * If $amount is a float, or a string with a decimal pointm then
      * take it as a major unit that needs converting.
      */
-    public function __construct($currency, $amount = 0)
+    public function __construct(Currency $currency, $amount = 0)
     {
         $this->currency = $currency;
         $this->amount = $amount;
