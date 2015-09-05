@@ -2,9 +2,7 @@
 
 /**
  * Value object given the account authentication details.
- * Includes the API version.
  * Provides the as needed, and the correct base URL.
- * TODO: Should teh API version number be fixed for any branch/release of this package? Starting to think so.
  */
 
 use Exception;
@@ -16,14 +14,15 @@ class Auth
     protected $integrationKey;
     protected $integrationPassword;
     protected $mode;
-    protected $apiVersion;
+
+    // This release is locked onto just one API version.
+    const API_VERSION = 'v1';
 
     public function __construct(
         $vendorName,
         $integrationKey,
         $integrationPassword,
-        $mode = static::MODE_LIVE,
-        $apiVersion = 'v1'
+        $mode = static::MODE_LIVE
     ) {
         const MODE_TESTING = 1;
         const MODE_LIVE = 2;
@@ -36,11 +35,6 @@ class Auth
         $this->vendorName = $vendorName;
         $this->integrationKey = $integrationKey;
         $this->integrationPassword = $integrationPassword;
-
-        // Validate the version based on what we know about it.
-        // At the moment only v1 is supported, with a bit of cleaning for flexibility.
-
-        $this->apiVersion = 'v' . preg_replace('/[^0-9.]/', '', $apiVersion);
 
         // The mode - testing or production. Possible others later.
         if ( ! isset($this->urls[$mode])) {
@@ -67,7 +61,7 @@ class Auth
 
     public function getApiVersion()
     {
-        return $this->apiVersion;
+        return static::API_VERSION;
     }
 
     public function getUrl($resource = '')
@@ -80,7 +74,7 @@ class Auth
 
         return str_replace(
             ['{version}', '{resource}'],
-            [$this->version, $resource],
+            [$this->getApiVersion(), $resource],
             $this->urls[$this->mode]
         );
     }

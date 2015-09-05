@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePayJs\Models;
+<?php namespace Academe\SagePayJs\Money;
 
 /**
  * Amount interface, for carrying an amount and its currency.
