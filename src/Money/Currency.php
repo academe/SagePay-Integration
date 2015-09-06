@@ -41,7 +41,7 @@ class Currency
 
     public function getDigits()
     {
-        return $this->currencies[$this->code]['digits'];
+        return static::$currencies[$this->code]['digits'];
     }
 
     // getName and getSymbol are handy for display and logging, but not essential.

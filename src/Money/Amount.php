@@ -19,22 +19,14 @@ class Amount implements AmountInterface
     protected $currency;
 
     /**
-     * If $amount is an integer, or a string with no decimal points,
-     * then take is as the minimum units.
-     * If $amount is a float, or a string with a decimal pointm then
-     * take it as a major unit that needs converting.
+     * $amount is an integer, or a string with no decimal points;
+     * it is treated as a minor unit (e.g. pence or cents).
      */
     public function __construct(Currency $currency, $amount = 0)
     {
         $this->currency = $currency;
-        $this->amount = $amount;
-    }
 
-    /**
-     *
-     */
-    public function withCurrency($currency)
-    {
+        $this->withMinorUnit($amount);
     }
 
     /**
@@ -43,6 +35,22 @@ class Amount implements AmountInterface
      */
     public function withMajorUnit($amount)
     {
+        if (is_int($amount) || is_float($amount) || (is_string($amount) && preg_match('/^[0-9]*\.[0-9]*$/', $amount))) {
+            $amount = (float)$amount * pow(10, $this->currency->getDigits());
+
+            if (floor($amount) != $amount) {
+                // Too many decimal digits for the currency.
+                throw new UnexpectedValueException(sprintf(
+                    'Amount has too many decimal places. Minor unit %f should be an integer.',
+                    $amount
+                ));
+            }
+
+            $copy = clone $this;
+            $copy->amount = (int)$amount;
+            return $copy;
+        } else {
+        }
     }
 
     /**
@@ -51,8 +59,32 @@ class Amount implements AmountInterface
      */
     public function withMinorUnit($amount)
     {
+        if (is_int($amount) || (is_string($amount) && preg_match('/^[0-9]+$/', $string))) {
+            $this->amount = (int)$amount;
+        } else {
+        }
     }
 
     // TODO: magic method to support e.g. $amount = Amount::EUR(995)
     // equivalent to: new Amount(new Currency('EUR'), 995)
+    public static function __callStatic($name, $arguments)
+    {
+        try {
+            $currency = new Currency($name);
+        } catch (Exception $e) {
+            $trace = debug_backtrace();
+            throw new Exception(sprintf(
+                'Call to undefined method $class::%s() in %s on line %d',
+                get_called_class(),
+                $trace[0]['file'],
+                $trace[0]['line']
+            ));
+        }
+
+        if (isset($arguments[0])) {
+            return new static($currency, $arguments[0]);
+        } else {
+            return new static($currency);
+        }
+    }
 }
