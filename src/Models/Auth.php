@@ -18,20 +18,20 @@ class Auth
     // This release is locked onto just one API version.
     const API_VERSION = 'v1';
 
+    const MODE_TEST = 1;
+    const MODE_LIVE = 2;
+
+    protected $urls = [
+        1 => 'https://www.sagepay.com/api/{version}/{resource}',
+        2 => 'https://test.sagepay.com/api/{version}/{resource}',
+    ];
+
     public function __construct(
         $vendorName,
         $integrationKey,
         $integrationPassword,
-        $mode = static::MODE_LIVE
+        $mode = self::MODE_LIVE
     ) {
-        const MODE_TESTING = 1;
-        const MODE_LIVE = 2;
-
-        protected $urls = [
-            1 => 'https://test.sagepay.com/api/{version}/{resource}',
-            2 => 'https://www.sagepay.com/api/{version}/{resource}',
-        ];
-
         $this->vendorName = $vendorName;
         $this->integrationKey = $integrationKey;
         $this->integrationPassword = $integrationPassword;
@@ -81,7 +81,7 @@ class Auth
 
     public function isTesting()
     {
-        return $this->mode == static::MODE_TESTING;
+        return $this->mode == static::MODE_TEST;
     }
 
     /**
