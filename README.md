@@ -34,3 +34,49 @@ containing invalid characters).
 
 Current version of API spec is "11-08-2015 (beta)":
 https://test.sagepay.com/documentation/#shipping-details-object
+
+## Example Code
+
+Using Guzzle 5.3 a Session key can be requested from the test environment like this:
+
+~~~php
+use GuzzleHttp\Client;
+
+$auth = new \Academe\SagePayJs\Models\Auth(
+    'your_vendor_name',
+    'YOUR_INTEGRATION_KEY',
+    'YOUR_INTEGRATION_PASSWORD',
+    \Academe\SagePayJs\Models\Auth::MODE_TEST
+);
+
+$key_request = new \Academe\SagePayJs\Message\SessionKeyRequest($auth);
+
+$client = new Client();
+$request = $client->createRequest('POST', $key_request->getUrl(), [
+    // The body of the request as JSON.
+    'json' => ['vendorName' => $auth->getVendorName()],
+    // HTTP Basic auth credentials.
+    'auth' => [$auth->getIntegrationKey(), $auth->getIntegrationPassword()],
+]);
+$response = $client->send($request);
+
+// The response, if all is well, is a JSON body.
+$body = $response->json();
+echo "BODY=" . $body;
+
+// Example:
+// BODY=BODY = Array
+//(
+//    [expiry] => 2015-09-06T23:50:39.123+01:00
+//    [merchantSessionKey] => 77A4E43E-AECB-4250-BCA1-3BCDBBC57CE5
+//)
+
+~~~
+
+That's all a little cumbersome, but it's a start and something to learn from.
+
+Firstly, we don't need to mess around with JSON. We don't want to locked into using
+Guzzle 5.3, but it is a safe assumption that whatever HTTP client we use, it will
+handle any JSON conversion in both directions. We'll base the rest of the library
+on that assumption.
+

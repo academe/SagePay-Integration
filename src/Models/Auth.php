@@ -18,8 +18,8 @@ class Auth
     // This release is locked onto just one API version.
     const API_VERSION = 'v1';
 
-    const MODE_TEST = 1;
-    const MODE_LIVE = 2;
+    const MODE_LIVE = 1;
+    const MODE_TEST = 2;
 
     protected $urls = [
         1 => 'https://www.sagepay.com/api/{version}/{resource}',
