@@ -54,9 +54,9 @@ $key_request = new \Academe\SagePayJs\Message\SessionKeyRequest($auth);
 $client = new Client();
 $request = $client->createRequest('POST', $key_request->getUrl(), [
     // The body of the request as JSON.
-    'json' => ['vendorName' => $auth->getVendorName()],
+    'json' => $key_request->getBody(),
     // HTTP Basic auth credentials.
-    'auth' => [$auth->getIntegrationKey(), $auth->getIntegrationPassword()],
+    'auth' => [$key_request->getIntegrationKey(), $key_request->getIntegrationPassword()],
 ]);
 $response = $client->send($request);
 
@@ -71,6 +71,9 @@ echo "BODY=" . $body;
 //    [merchantSessionKey] => 77A4E43E-AECB-4250-BCA1-3BCDBBC57CE5
 //)
 
+// Creaye a SessionKeyResponse object from the SagePay Response.
+$session_key = \Academe\SagePayJs\Message\SessionKeyResponse::fromData($body);
+
 ~~~
 
 That's all a little cumbersome, but it's a start and something to learn from.
@@ -78,5 +81,6 @@ That's all a little cumbersome, but it's a start and something to learn from.
 Firstly, we don't need to mess around with JSON. We don't want to locked into using
 Guzzle 5.3, but it is a safe assumption that whatever HTTP client we use, it will
 handle any JSON conversion in both directions. We'll base the rest of the library
-on that assumption.
+on that assumption. We will try to handle arrays and objects provided by the
+merchant application interchangeably.
 

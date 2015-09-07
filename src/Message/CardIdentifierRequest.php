@@ -14,8 +14,16 @@
 use Exception;
 use UnexpectedValueException;
 
-class CardIdentifierRequest
+use Academe\SagePayJs\Models\Auth;
+use Academe\SagePayJs\Message\SessionKeyResponse;
+
+class CardIdentifierRequest extends AbstractMessage
 {
+    protected static $resource_path = 'card-identifiers';
+
+    protected $auth;
+    protected $sessionKeyResponse;
+
     protected $cardholderName;
     protected $cardNumber;
     protected $expiryDate;
@@ -27,8 +35,11 @@ class CardIdentifierRequest
      * $cardNumber Lunn check.
      * $securityCode Digits only.
      */
-    public function __construct($cardholderName = null, $cardNumber = null, $expiryDate = null, $securityCode = null)
+    public function __construct(Auth $auth, SessionKeyResponse $sessionKeyResponse, $cardholderName = null, $cardNumber = null, $expiryDate = null, $securityCode = null)
     {
+        $this->auth = $auth;
+        $this->sessionKeyResponse = $sessionKeyResponse;
+
         $this->cardholderName = $cardholderName;
         $this->cardNumber = $cardNumber;
         $this->expiryDate = $expiryDate;
@@ -59,7 +70,7 @@ class CardIdentifierRequest
         return $this->cardNumber;
     }
 
-    public function getExpiryDate)
+    public function getExpiryDate()
     {
         return $this->expiryDate;
     }
@@ -67,5 +78,33 @@ class CardIdentifierRequest
     public function getSecurityCode()
     {
         return $this->securityCode;
+    }
+
+    /**
+     * The path of this resource.
+     */
+    public function getResourcePath()
+    {
+        return static::$resource_path;
+    }
+
+    /**
+     * The full URL of this resource.
+     */
+    public function getUrl()
+    {
+        return $this->auth->getUrl($this->getResourcePath());
+    }
+
+    public function getBody()
+    {
+        return [
+            'cardDetails' => [
+                'cardholderName' => $this->getCardholderName(),
+                'cardNumber' => $this->getCardNumber(),
+                'expiryDate' => $this->getExpiryDate(),
+                'securityCode' => $this->getSecurityCode(),
+            ],
+        ];
     }
 }

@@ -11,7 +11,7 @@ use UnexpectedValueException;
 use DateTime;
 use DateTimeZone;
 
-class SessionKeyResponse
+class SessionKeyResponse extends AbstractMessage
 {
     protected $merchantSessionKey;
     protected $expiry;
@@ -19,7 +19,7 @@ class SessionKeyResponse
     public function __construct($merchantSessionKey, $expiry)
     {
         $this->merchantSessionKey = $merchantSessionKey;
-        $this->setExpiry($expiry);
+        $this->expiry = $this->parseDateTime($expiry);
     }
 
     public function getMerchantSessionKey()
@@ -35,36 +35,6 @@ class SessionKeyResponse
         return $this->expiry;
     }
 
-    // TODO: this is identical to in the CardDetail model.
-    // The validation and type conversion should be separated out from the assignment
-    // into a helper class or a trait.
-    protected function setExpiry($expiry)
-    {
-        // The expiry can be supplied by SagePay as an ISO8601 string, though other
-        // formats are accepted here.
-        // It will be converted to a PHP DateTime if supplied as a string.
-
-        try {
-            if (is_string($expiry)) {
-                // Supplied timestamp string should be ISO 8601 format.
-                // Use a default UTC timezone for any relative dates that SagePay
-                // may give us. Hopefully that won't be the case.
-
-                $this->expiry = new DateTime($expiry, new DateTimeZone('UTC'));
-            } elseif ($expiry instanceof DateTime) {
-                $this->expiry = $expiry;
-            } elseif (is_int($expiry)) {
-                // Teat as a unix timestamp.
-                $this->expiry = new DateTime();
-                $this->expiry->setTimestamp($expiry);
-            } else {
-                throw new UnexpectedValueException('Unexpected expiry time type');
-            }
-        } catch(Exception $e) {
-            throw new UnexpectedValueException('Unexpected expiry time format', $e->getCode(), $e);
-        }
-    }
-
     public function isExpired()
     {
         // Use the default system timezone; the DateTime comparison
@@ -77,15 +47,45 @@ class SessionKeyResponse
 
     /**
      * Return an array to support the generation of the hidden field in
-     * the form that submits to SagePay. The array contains all the
+     * the form that submits to SagePay (via sagepay.js). The array contains all the
      * attributes needed to create the input element.
+     * TODO: make this an object that can handle its rendering too.
      */
-    public function toAttributes()
+    public function toHtmlElements()
     {
         return [
-            'type' => 'hidden',
-            'data-sagepay' => 'merchantSessionKey',
-            'value' => $this->merchantSessionKey,
+            'merchantSessionKey' => [
+                'name' => 'input',
+                'attributes' => [
+                    'type' => 'hidden',
+                    'data-sagepay' => 'merchantSessionKey',
+                    'value' => $this->merchantSessionKey,
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Create an instance of this object from an array or
+     * value object. This would normally be the return body from SagePay.
+     * Conversion from JSON needs to be done before this point.
+     */
+    public static function fromData($data)
+    {
+        $merchantSessionKey = static::structureGet($data, 'merchantSessionKey');
+        $expiry = static::structureGet($data, 'expiry');
+
+        return new static($merchantSessionKey, $expiry);
+    }
+
+    /**
+     * Reduce the object to an array so it can be serialised.
+     */
+    public function toArray()
+    {
+        return [
+            'merchantSessionKey' => $this->merchantSessionKey,
+            'expiry' => $this->expiry->format(static::SAGEPAY_DATE_FORMAT),
         ];
     }
 }
