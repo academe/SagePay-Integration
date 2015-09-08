@@ -10,10 +10,6 @@ use UnexpectedValueException;
 
 class ShippingDetails extends BillingDetails
 {
-    protected $firstName;
-    protected $lastName;
-    protected $address;
-
     // The prefix is added to the name fields when sending to SagePay.
     protected $nameFieldPrefix = 'recipient';
 
@@ -28,10 +24,7 @@ class ShippingDetails extends BillingDetails
     {
         return array_merge(
             $this->address->getBody(),
-            [
-                $this->addNamePrefix('firstName') => $this->firstName,
-                $this->addNamePrefix('lastName') => $this->lastName,
-            ]
+            $this->person->getBody()
         );
     }
 }

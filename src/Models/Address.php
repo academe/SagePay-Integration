@@ -84,7 +84,7 @@ class Address implements AddressInterface
         );
     }
 
-    protected function addAddressPrefix($field)
+    protected function addFieldPrefix($field)
     {
         if ( ! $this->fieldPrefix) {
             return $field;
@@ -101,23 +101,23 @@ class Address implements AddressInterface
     public function getBody()
     {
         $return = array(
-            $this->addAddressPrefix('address1') => $this->address1,
+            $this->addFieldPrefix('address1') => $this->address1,
         );
 
         if ( ! empty($this->address2)) {
-            $return[$this->addAddressPrefix('address2')] = $this->address2;
+            $return[$this->addFieldPrefix('address2')] = $this->address2;
         }
 
-        $return[$this->addAddressPrefix('city')] = $this->city;
+        $return[$this->addFieldPrefix('city')] = $this->city;
 
         if ( ! empty($this->postalCode)) {
-            $return[$this->addAddressPrefix('postalCode')] = $this->postalCode;
+            $return[$this->addFieldPrefix('postalCode')] = $this->postalCode;
         }
 
-        $return[$this->addAddressPrefix('country')] = $this->country;
+        $return[$this->addFieldPrefix('country')] = $this->country;
 
         if ( ! empty($this->state)) {
-            $return[$this->addAddressPrefix('state')] = $this->state;
+            $return[$this->addFieldPrefix('state')] = $this->state;
         }
 
         return $return;

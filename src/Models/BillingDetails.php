@@ -10,8 +10,7 @@ use UnexpectedValueException;
 
 class BillingDetails
 {
-    protected $firstName;
-    protected $lastName;
+    protected $person;
     protected $address;
 
     // The prefix is added to the name fields when sending to SagePay.
@@ -22,17 +21,9 @@ class BillingDetails
 
     // TODO: should the firstName and lastName be a Person class, with its own
     // validation built-in?
-    public function __construct($firstName, $lastName, Address $address)
+    public function __construct(Person $person, Address $address)
     {
-        // These fields are always mandatory.
-        foreach(array('firstName', 'lastName') as $field_name) {
-            if (empty($$field_name)) {
-                throw new UnexpectedValueException(sprintf('Field "%s" is mandatory but not set.', $field_name));
-            }
-        }
-
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
+        $this->person = $person->withFieldPrefix($this->nameFieldPrefix);
 
         // This prefix is added to the address fields when sending to SagePay.
         $this->address = $address->withFieldPrefix($this->addressFieldPrefix);
@@ -45,13 +36,8 @@ class BillingDetails
     public function getBody()
     {
         return array_merge(
-            [
-                'billingAddress' => $this->address->getBody(),
-            ],
-            [
-                $this->addNamePrefix('firstName') => $this->firstName,
-                $this->addNamePrefix('lastName') => $this->lastName,
-            ]
+            ['billingAddress' => $this->address->getBody()],
+            $this->person->getBody()
         );
     }
 
@@ -89,7 +75,7 @@ class BillingDetails
      */
     public function getFirstName()
     {
-        return $this->firstName;
+        return $this->person->getFirstName();
     }
 
     /**
@@ -97,6 +83,6 @@ class BillingDetails
      */
     public function getLastName()
     {
-        return $this->lastName;
+        return $this->getLastName();
     }
 }
