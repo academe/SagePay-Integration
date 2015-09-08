@@ -1,13 +1,18 @@
-# SagePayJS
+# SagePay Integration
 
-This package provides the data models and business logic for the SagePay Integration payment gateway.
+This package provides the data models and business logic for the *SagePay Integration* payment gateway.
 It does not provide the transport mechanism, so you can use what you like for that,
 for example Guzzle, curl or a PSR-7 library.
+
+The SagePay Integration payment gateway is a RESTful API run by by [SagePay]().
 
 It is very much work in progress at this very early stage, while this SagePay API is in beta.
 However,we aim to move quickly and follow changes to the API as they are released.
 The aim is for the package to be a complete model for the SagePay Integration API, providing all the data
 objects, messages (in both directions) and as much validation as is practical.
+During this early stages you will find many of my thoughts on how this package will work, and
+many U-turns too. Any feedback or suggestions is most welcome, but do bear in mind things will
+be changing a lot, but hopefully heading in the right direction.
 
 There is no test suite in here yet. That will come once the structure is a little more stable.
 
