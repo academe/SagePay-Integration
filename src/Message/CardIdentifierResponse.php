@@ -49,6 +49,9 @@ class CardIdentifierResponse extends AbstractMessage
         return ! isset($this->expiry) || $time_now > $this->expiry;
     }
 
+    /**
+     * Return an instantiation from the data returned by SagePay.
+     */
     public static function fromData($data)
     {
         $cardIdentifier = static::structureGet($data, 'cardIdentifier');
@@ -56,5 +59,14 @@ class CardIdentifierResponse extends AbstractMessage
         $cardType = static::structureGet($data, 'cardType');
 
         return new static($cardIdentifier, $expiry, $cardType);
+    }
+
+    public function toArray()
+    {
+        return [
+            'cardIdentifier' => $this->cardIdentifier,
+            'expiry' => $this->expiry->format(static::SAGEPAY_DATE_FORMAT),
+            'cardType' => $this->cardType,
+        ];
     }
 }

@@ -56,4 +56,15 @@ class SessionKeyRequest extends AbstractMessage
     {
         return ['vendorName' => $this->auth->getVendorName()];
     }
+
+    /**
+     * The HTTP Basic Auth header, as an array.
+     * Use this if your transport tool does not do "Basic Auth" out of the box.
+     */
+    public function getHeaders()
+    {
+        return [
+            'Authorization' => 'Basic ' . base64_encode($this->getIntegrationKey() . ':' . $this->getIntegrationPassword()),
+        ];
+    }
 }

@@ -1,12 +1,12 @@
 # SagePayJS
 
-This package provides the data models and business logic for the SagePay.JS payment gateway.
+This package provides the data models and business logic for the SagePay Integration payment gateway.
 It does not provide the transport mechanism, so you can use what you like for that,
-for example curl, PSR-7
+for example Guzzle, curl or a PSR-7 library.
 
 It is very much work in progress at this very early stage, while this SagePay API is in beta.
 However,we aim to move quickly and follow changes to the API as they are released.
-The aim is for the package to be a complete model for the SagePay API, providing all the data
+The aim is for the package to be a complete model for the SagePay Integration API, providing all the data
 objects, messages (in both directions) and as much validation as is practical.
 
 There is no test suite in here yet. That will come once the structure is a little more stable.
@@ -49,30 +49,55 @@ $auth = new \Academe\SagePayJs\Models\Auth(
     \Academe\SagePayJs\Models\Auth::MODE_TEST
 );
 
-$key_request = new \Academe\SagePayJs\Message\SessionKeyRequest($auth);
+$session_key_request = new \Academe\SagePayJs\Message\SessionKeyRequest($auth);
 
 $client = new Client();
-$request = $client->createRequest('POST', $key_request->getUrl(), [
+$request = $client->createRequest('POST', $session_key_request->getUrl(), [
     // The body of the request as JSON.
-    'json' => $key_request->getBody(),
-    // HTTP Basic auth credentials.
-    'auth' => [$key_request->getIntegrationKey(), $key_request->getIntegrationPassword()],
+    'json' => $session_key_request->getBody(),
+    
+    // HTTP Basic auth credentials:
+    'auth' => [$session_key_request->getIntegrationKey(), $session_key_request->getIntegrationPassword()],
+    
+    // OR via the raw headers:
+    'headers' => $session_key_request->getHeaders(),
 ]);
 $response = $client->send($request);
 
 // The response, if all is well, is a JSON body.
-$body = $response->json();
-echo "BODY=" . $body;
-
-// Example:
-// BODY=BODY = Array
-//(
-//    [expiry] => 2015-09-06T23:50:39.123+01:00
-//    [merchantSessionKey] => 77A4E43E-AECB-4250-BCA1-3BCDBBC57CE5
-//)
 
 // Creaye a SessionKeyResponse object from the SagePay Response.
-$session_key = \Academe\SagePayJs\Message\SessionKeyResponse::fromData($body);
+$session_key_response = \Academe\SagePayJs\Message\SessionKeyResponse::fromData($response->json());
+
+// Now we can use the session key to get a card token (like SagePay Direct):
+
+$card_identifier_request = new \Academe\SagePayJs\Message\CardIdentifierRequest(
+    $auth,
+    $session_key_response,
+    "MS. CARD HOLDER",
+    "4929000000006",
+    "0317",
+    "123"
+);
+
+$client = new Client();
+$request = $client->createRequest('POST', $card_identifier_request->getUrl(), [
+    'json' => $card_identifier_request->getBody(),
+    'headers' => $card_identifier_request->getHeaders(),
+]);
+
+$card_identifier_response = \Academe\SagePayJs\Message\CardIdentifierResponse::fromData($response2->json());
+var_dump($card_identifier_response->toArray());
+
+// array(3) {
+//  ["cardIdentifier"]=>
+//  string(36) "F8FCA69C-0C3D-449A-9CDA-48B09D1493ED"
+//  ["expiry"]=>
+//  string(32) "2015-09-08T11:34:14.651000+01:00"
+//  ["cardType"]=>
+//  string(4) "Visa"
+// }
+
 
 ~~~
 
@@ -83,4 +108,17 @@ Guzzle 5.3, but it is a safe assumption that whatever HTTP client we use, it wil
 handle any JSON conversion in both directions. We'll base the rest of the library
 on that assumption. We will try to handle arrays and objects provided by the
 merchant application interchangeably.
+
+It looks like the SessionKeyResponse and the Auth objects are always going to be
+needed together with a Request object. Makeing Auth a property of SessionKeyResponse
+may be a good move. So this:
+
+    CardIdentifierResponse::fromData($response2->json()
+
+would become:
+
+    CardIdentifierResponse::fromData($auth, $response2->json()
+
+Q: Should resource paths always start with a "/" and URLs never end with a "/"?
+What do other projects standardise on?
 

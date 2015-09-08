@@ -35,7 +35,7 @@ class CardIdentifierRequest extends AbstractMessage
      * $cardNumber Lunn check.
      * $securityCode Digits only.
      */
-    public function __construct(Auth $auth, SessionKeyResponse $sessionKeyResponse, $cardholderName = null, $cardNumber = null, $expiryDate = null, $securityCode = null)
+    public function __construct(Auth $auth, SessionKeyResponse $sessionKeyResponse, $cardholderName, $cardNumber, $expiryDate, $securityCode)
     {
         $this->auth = $auth;
         $this->sessionKeyResponse = $sessionKeyResponse;
@@ -49,6 +49,10 @@ class CardIdentifierRequest extends AbstractMessage
     /**
      * An array of arrays, each containing the attributes required for the HTML
      * input elements in the payment form.
+     *
+     * TODO: have a think about this. A HTML element object could be very useful here
+     * to formalise the data needed for constructing the HTML front end in a number of
+     * different places.
      */
     public function toAttributes()
     {
@@ -96,6 +100,9 @@ class CardIdentifierRequest extends AbstractMessage
         return $this->auth->getUrl($this->getResourcePath());
     }
 
+    /**
+     * Get the message body data as an array.
+     */
     public function getBody()
     {
         return [
@@ -105,6 +112,16 @@ class CardIdentifierRequest extends AbstractMessage
                 'expiryDate' => $this->getExpiryDate(),
                 'securityCode' => $this->getSecurityCode(),
             ],
+        ];
+    }
+
+    /**
+     * Get the message header data as an array.
+     */
+    public function getHeaders()
+    {
+        return [
+            'Authorization' => 'Bearer ' . $this->sessionKeyResponse->getMerchantSessionKey(),
         ];
     }
 }
