@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePayJs\PaymentMethod;
+<?php namespace Academe\SagePay\PaymentMethod;
 
 /**
  * Card object to be passed to SagePay to support a transaction.
@@ -8,8 +8,8 @@
 use Exception;
 use UnexpectedValueException;
 
-use Academe\SagePayJs\Message\CardIdentifierResponse;
-use Academe\SagePayJs\Message\SessionKeyResponse;
+use Academe\SagePay\Message\CardIdentifierResponse;
+use Academe\SagePay\Message\SessionKeyResponse;
 
 class Card implements PaymentMethodInterface
 {

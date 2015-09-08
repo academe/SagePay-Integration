@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePayJs\Models;
+<?php namespace Academe\SagePay\Models;
 
 /**
  * Value object used to define the shipping recipient and address.

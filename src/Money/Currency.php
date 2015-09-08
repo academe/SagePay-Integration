@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePayJs\Money;
+<?php namespace Academe\SagePay\Money;
 
 /**
  * Defines a currency.

@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePayJs\Models;
+<?php namespace Academe\SagePay\Models;
 
 /**
  * A collection of errors, normally validation errors.
@@ -12,7 +12,7 @@ use UnexpectedValueException;
 use ArrayIterator;
 
 // FIXME: we are only extending AbstractMessage to get at the helper methods.
-use Academe\SagePayJs\Message\AbstractMessage;
+use Academe\SagePay\Message\AbstractMessage;
 
 class ErrorCollection extends AbstractMessage implements \IteratorAggregate
 {

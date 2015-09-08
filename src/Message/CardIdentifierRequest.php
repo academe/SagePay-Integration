@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePayJs\Message;
+<?php namespace Academe\SagePay\Message;
 
 /**
  * Value object to hold the card details, for sending to SagePay.
@@ -14,8 +14,8 @@
 use Exception;
 use UnexpectedValueException;
 
-use Academe\SagePayJs\Models\Auth;
-use Academe\SagePayJs\Message\SessionKeyResponse;
+use Academe\SagePay\Models\Auth;
+use Academe\SagePay\Message\SessionKeyResponse;
 
 class CardIdentifierRequest extends AbstractRequest
 {
