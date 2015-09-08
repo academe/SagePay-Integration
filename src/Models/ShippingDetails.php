@@ -8,7 +8,7 @@
 use Exception;
 use UnexpectedValueException;
 
-class ShippingDetails
+class ShippingDetails extends BillingDetails
 {
     protected $firstName;
     protected $lastName;
@@ -17,41 +17,21 @@ class ShippingDetails
     // The prefix is added to the name fields when sending to SagePay.
     protected $nameFieldPrefix = 'recipient';
 
-    // TODO: should the firstName and lastName be a Person class, with its own
-    // validation built-in?
-    public function __construct($firstName, $lastName, Address $address)
-    {
-        // These fields are always mandatory.
-        foreach(array('firstName', 'lastName') as $field_name) {
-            if (empty($$field_name)) {
-                throw new UnexpectedValueException(sprintf('Field "%s" is mandatory but not set.', $field_name));
-            }
-        }
+    // The prefix added to address name fields.
+    protected $addressFieldPrefix = 'shipping';
 
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
-
-        // This prefix is added to the address fields when sending to SagePay.
-        $this->address = $address->withFieldPrefix('shipping');
-    }
-
-    public function toArray()
+    /**
+     * Body fragment for the shipping details.
+     * These are all on the same level, with field name prefixes.
+     */
+    public function getBody()
     {
         return array_merge(
-            array(
+            $this->address->getBody(),
+            [
                 $this->addNamePrefix('firstName') => $this->firstName,
                 $this->addNamePrefix('lastName') => $this->lastName,
-            ),
-            $this->address->toArray()
+            ]
         );
-    }
-
-    protected function addNamePrefix($field)
-    {
-        if ( ! $this->nameFieldPrefix) {
-            return $field;
-        }
-
-        return $this->nameFieldPrefix . ucfirst($field);
     }
 }

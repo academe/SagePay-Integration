@@ -22,7 +22,10 @@ class Card implements PaymentMethodInterface
         $this->sessionKey = $sessionKey;
     }
 
-    public function toArray()
+    /**
+     * Return the body partial for message construction.
+     */
+    public function getBody()
     {
         return array(
             'card' => array(

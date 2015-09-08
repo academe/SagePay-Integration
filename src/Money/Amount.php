@@ -87,4 +87,28 @@ class Amount implements AmountInterface
             return new static($currency);
         }
     }
+
+    /**
+     * Return the amount, always in minot units.
+     */
+    public function getAmount()
+    {
+        return $this->amount;
+    }
+
+    /**
+     * Return the currency object.
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * Return the currency ISO code.
+     */
+    public function getCurrencyCode()
+    {
+        return $this->currency->getCode();
+    }
 }

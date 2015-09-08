@@ -6,5 +6,5 @@
 
 interface PaymentMethodInterface
 {
-    public function toArray();
+    //public function toArray();
 }

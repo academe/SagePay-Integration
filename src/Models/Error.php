@@ -3,12 +3,17 @@
 /**
  * Value object to hold an error, returned by SagePay when posting a transaction.
  * HTTP return code will be 422 to see one of these.
+ * Other ~400 return codes will return just one error in the body, without a property.
  */
 
 use Exception;
 use UnexpectedValueException;
 
-class Error
+use Academe\SagePayJs\Message\AbstractMessage;
+
+// FIXME: we are only extending AbstractMessage to get at the helper methods.
+
+class Error extends AbstractMessage
 {
     protected $code;
     protected $description;
@@ -34,5 +39,14 @@ class Error
     public function getProperty()
     {
         return $this->property;
+    }
+
+    public static function fromData($data)
+    {
+        $code = static::structureGet($data, 'code');
+        $description = static::structureGet($data, 'description');
+        $property = static::structureGet($data, 'property', null);
+
+        return new static($code, $description, $property);
     }
 }

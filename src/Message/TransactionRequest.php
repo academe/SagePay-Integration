@@ -10,19 +10,26 @@
 use Exception;
 use UnexpectedValueException;
 
+use Academe\SagePayJs\Models\Auth;
 use Academe\SagePayJs\PaymentMethod\PaymentMethodInterface;
 use Academe\SagePayJs\Money\AmountInterface;
 use Academe\SagePayJs\Models\AddressInterface;
 use Academe\SagePayJs\Models\ShippingDetails;
+use Academe\SagePayJs\Models\BillingDetails;
 
-class TransactionRequest
+class TransactionRequest extends AbstractRequest
 {
+    protected $resource_path = ['transactions'];
+
+    protected $auth;
+
     // Minimum mandatory data (constructor).
     protected $transactionType;
     protected $paymentMethod;
     protected $vendorTxCode;
     protected $amount;
-    protected $billingAddress;
+    protected $description;
+    protected $billingDetails;
 
     // Optional or overridable data (setters).
     protected $entryMethod = 'Ecommerce';
@@ -33,10 +40,6 @@ class TransactionRequest
     protected $customerEmail;
     protected $customerPhone;
     protected $shippingDetails;
-    protected $description;
-
-    protected $customerFirstName;
-    protected $customerLastName;
 
     protected $transaction_types = array(
         'Payment',
@@ -66,12 +69,17 @@ class TransactionRequest
     );
 
     public function __construct(
+        Auth $auth,
         $transactionType,
         PaymentMethodInterface $paymentMethod,
         $vendorTxCode,
         AmountInterface $amount,
-        AddressInterface $billingAddress
+        $description,
+        BillingDetails $billingDetails
     ) {
+        $this->auth = $auth;
+        $this->description = $description;
+
         // Some simple normalisation.
         $transactionType = ucfirst(strtolower($transactionType));
 
@@ -84,7 +92,7 @@ class TransactionRequest
         $this->paymentMethod = $paymentMethod;
         $this->vendorTxCode = $vendorTxCode;
         $this->amount = $amount;
-        $this->billingAddress = $billingAddress;
+        $this->billingDetails = $billingDetails;
     }
 
     public function withEntryMethod($entryMethod)
@@ -203,36 +211,24 @@ class TransactionRequest
         return $copy;
     }
 
-    public function withCustomerFirstName($customerFirstName)
-    {
-        $copy = clone $this;
-        $copy->customerFirstName = $customerFirstName;
-        return $copy;
-    }
-
-    public function withCustomerLastName($customerLastName)
-    {
-        $copy = clone $this;
-        $copy->customerLastName = $customerLastName;
-        return $copy;
-    }
-
-    public function toArray()
+    public function getBody()
     {
         $result = array(
             'transactionType' => $this->transactionType,
-            'paymentMethod' => $this->paymentMethod->toArray(),
+            'paymentMethod' => $this->paymentMethod->getBody(),
             'vendorTxCode' => $this->vendorTxCode,
-            // amount and currency
+            'amount' => $this->amount->getAmount(),
+            'currency' => $this->amount->getCurrencyCode(),
             'description' => $this->description,
-            'customerFirstName' => $this->customerFirstName,
-            'customerLastName' => $this->customerLastName,
-            'billingAddress' => $this->billingAddress->toArray(),
             'entryMethod' => $this->entryMethod,
         );
 
+        // Add the billing details.
+        $result = array_merge($result, $this->billingDetails->getBody());
+
+        // If there are shipping details, then merge this in:
         if ( ! empty($this->shippingDetails)) {
-            $result['shippingDetails'] = $this->shippingDetails->toArray();
+            $result['shippingDetails'] = $this->shippingDetails->getBody();
         }
 
         return $result;

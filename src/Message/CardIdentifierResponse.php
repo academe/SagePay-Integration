@@ -61,6 +61,9 @@ class CardIdentifierResponse extends AbstractMessage
         return new static($cardIdentifier, $expiry, $cardType);
     }
 
+    /**
+     * Reduce the object to an array so it can be serialised.
+     */
     public function toArray()
     {
         return [

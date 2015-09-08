@@ -77,5 +77,4 @@ abstract class AbstractMessage
 
         return $datetime;
     }
-
 }

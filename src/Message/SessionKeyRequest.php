@@ -6,9 +6,9 @@
 
 use Academe\SagePayJs\Models\Auth;
 
-class SessionKeyRequest extends AbstractMessage
+class SessionKeyRequest extends AbstractRequest
 {
-    protected static $resource_path = 'merchant-session-keys';
+    protected $resource_path = ['merchant-session-keys'];
 
     protected $auth;
 
@@ -24,22 +24,6 @@ class SessionKeyRequest extends AbstractMessage
     public function getAuth()
     {
         return $this->auth;
-    }
-
-    /**
-     * The path of this resource.
-     */
-    public function getResourcePath()
-    {
-        return static::$resource_path;
-    }
-
-    /**
-     * The full URL of this resource.
-     */
-    public function getUrl()
-    {
-        return $this->auth->getUrl($this->getResourcePath());
     }
 
     public function getIntegrationKey()

@@ -70,6 +70,7 @@ class Address implements AddressInterface
 
     /**
      * Create a new instance from an array of values.
+     * TODO: use the from_data helper, currently in the abstract message.
      */
     public static function fromArray($params)
     {
@@ -93,10 +94,11 @@ class Address implements AddressInterface
     }
 
     /**
-     * Returns all mandatory fields, and optional fields only if they are
-     * not empty.
+     * Return the body partial for message construction.
+     * Includes all mandatory fields, and optional fields only if not empty.
+     * Takes into account the field name prefix, if set.
      */
-    public function toArray()
+    public function getBody()
     {
         $return = array(
             $this->addAddressPrefix('address1') => $this->address1,

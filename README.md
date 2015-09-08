@@ -70,7 +70,7 @@ $response = $client->send($request);
 $session_key_response = \Academe\SagePayJs\Message\SessionKeyResponse::fromData($response->json());
 ~~~
 
-Now we can use the session key to get a card token (like SagePay Direct):
+Now we can use the session key to get a card token (like SagePay Direct, so server-to-server):
 
 ~~~php
 $card_identifier_request = new \Academe\SagePayJs\Message\CardIdentifierRequest(

@@ -17,9 +17,9 @@ use UnexpectedValueException;
 use Academe\SagePayJs\Models\Auth;
 use Academe\SagePayJs\Message\SessionKeyResponse;
 
-class CardIdentifierRequest extends AbstractMessage
+class CardIdentifierRequest extends AbstractRequest
 {
-    protected static $resource_path = 'card-identifiers';
+    protected $resource_path = ['card-identifiers'];
 
     protected $auth;
     protected $sessionKeyResponse;
@@ -82,14 +82,6 @@ class CardIdentifierRequest extends AbstractMessage
     public function getSecurityCode()
     {
         return $this->securityCode;
-    }
-
-    /**
-     * The path of this resource.
-     */
-    public function getResourcePath()
-    {
-        return static::$resource_path;
     }
 
     /**
