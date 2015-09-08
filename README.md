@@ -1,4 +1,4 @@
-# SagePay Integration
+# SagePay Integration Messages
 
 This package provides the data models and business logic for the *SagePay Integration* payment gateway.
 It does not provide the transport mechanism, so you can use what you like for that,
@@ -29,13 +29,6 @@ There is no test suite in here yet. That will come once the structure is a littl
 * This package will just handle the messages and business logic (e..g validation and structures).
   The HTTP communinications are to be handled in a separate package to wrap this.
   I'm trying to keep these two concerns separate for a number of reasons, least of all testing.
-
-Collections or arrays? I feel collections would be better, to help maintain the right data structures.
-For example, the error codes returned are an array of `Error` objects. Making this a collection will
-ensure they really are `Error` objects, and can be extended with functionality that can help support
-those errors, such as collecting them into errors for each submitted field, for example (the API docs
-provides an example with multiple errors for field `cardDetails.cardholderName` (both wrong length and
-containing invalid characters).
 
 Current version of API spec is "11-08-2015 (beta)":
 https://test.sagepay.com/documentation/#shipping-details-object

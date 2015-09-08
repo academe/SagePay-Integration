@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePay\Message;
+<?php namespace Academe\SagePayMsg\Message;
 
 /**
  * The request for fetching a copy of a session key, to check its validity.

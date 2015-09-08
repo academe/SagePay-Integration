@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePay\Message;
+<?php namespace Academe\SagePayMsg\Message;
 
 /**
  * Value object to hold the card identifier, returned by SagePay.

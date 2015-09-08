@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePay\Models;
+<?php namespace Academe\SagePayMsg\Models;
 
 /**
  * Value object given the account authentication details.

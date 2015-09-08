@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePay\Message;
+<?php namespace Academe\SagePayMsg\Message;
 
 /**
  * Value object holding the merchant session key returned by SagePay.

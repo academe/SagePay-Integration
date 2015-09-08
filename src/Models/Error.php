@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePay\Models;
+<?php namespace Academe\SagePayMsg\Models;
 
 /**
  * Value object to hold an error, returned by SagePay when posting a transaction.
@@ -10,7 +10,7 @@ use Exception;
 use UnexpectedValueException;
 
 // FIXME: we are only extending AbstractMessage to get at the helper methods.
-use Academe\SagePay\Message\AbstractMessage;
+use Academe\SagePayMsg\Message\AbstractMessage;
 
 class Error extends AbstractMessage
 {

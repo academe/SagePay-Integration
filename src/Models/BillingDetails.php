@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePay\Models;
+<?php namespace Academe\SagePayMsg\Models;
 
 /**
  * Value object used to define the shipping recipient and address.
@@ -38,17 +38,6 @@ class BillingDetails
         $this->address = $address->withFieldPrefix($this->addressFieldPrefix);
     }
 
-    /*public function toArray()
-    {
-        return array_merge(
-            array(
-                $this->addNamePrefix('firstName') => $this->firstName,
-                $this->addNamePrefix('lastName') => $this->lastName,
-            ),
-            $this->address->toArray()
-        );
-    }*/
-
     /**
      * Body fragment for the billing details.
      * These are all on two levels, with field name prefixes.
@@ -66,6 +55,10 @@ class BillingDetails
         );
     }
 
+    /**
+     * Add the "name" profix to a field name, capitalising the original
+     * initial letter of the field if necessary to keep cammel-case.
+     */
     protected function addNamePrefix($field)
     {
         if ( ! $this->nameFieldPrefix) {
@@ -75,21 +68,33 @@ class BillingDetails
         return $this->nameFieldPrefix . ucfirst($field);
     }
 
+    /**
+     * Return the address object.
+     */
     public function getAddress()
     {
         return $this->address;
     }
 
+    /**
+     * Return the address as an array for constructing a message body fragment.
+     */
     public function getAddressBody()
     {
         return $this->address->getBody();
     }
 
+    /**
+     * Return the first name of the customer.
+     */
     public function getFirstName()
     {
         return $this->firstName;
     }
 
+    /**
+     * Return the last name of the customer.
+     */
     public function getLastName()
     {
         return $this->lastName;

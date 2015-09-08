@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePay\Money;
+<?php namespace Academe\SagePayMsg\Money;
 
 /**
  * Value object for the amount, in the appropriate currency.

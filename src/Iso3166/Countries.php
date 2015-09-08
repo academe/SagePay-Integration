@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePay\Iso3166;
+<?php namespace Academe\SagePayMsg\Iso3166;
 
 class Countries
 {

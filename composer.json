@@ -1,0 +1,32 @@
+{
+    "name": "academe/sagepaymsg",
+    "license": "MIT",
+    "type": "library",
+    "description": "A library to handle the message content and structure for the SagePay Integration service",
+    "keywords": [
+        "gateway",
+        "merchant",
+        "payment",
+        "sagepay"
+    ],
+    "homepage": "https://github.com/academe/SagePay-Integration",
+    "authors": [
+        {
+            "name": "Jason Judge",
+            "email": "jason.judge@academe.co.uk",
+            "homepage": "http://academe.co.uk/",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.0.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Academe\\SagePayMsg": "src/"
+        }
+    }
+}
