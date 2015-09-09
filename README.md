@@ -114,6 +114,63 @@ var_dump($card_identifier_response->toArray());
 // }
 ~~~
 
+Now we can make a payment with details from the customer.
+
+~~~php
+// We have a billing address:
+$billing_address = \Academe\SagePayMsg\Models\Address::fromArray(array(
+    'address1' => 'address one',
+    'postalCode' => 'NE26',
+    'city' => 'Whitley',
+    'state' => 'AL',
+    'country' => 'US',
+));
+
+// A customer to bill:
+$billing_person = new \Academe\SagePayMsg\Models\Person('Bill Firstname', 'Bill Lastname', 'billing@example.com', '+44 191 12345678');
+
+// And we put the two together.
+$billing_details = new \Academe\SagePayMsg\Models\BillingDetails($billing_person, $billing_address);
+
+// We can do the same for shipping, but that is optional.
+
+// There is an amount, in GBP in this case, to pay:
+$amount = \Academe\SagePayMsg\Money\Amount::GBP()->withMajorUnit(9.99);
+
+// And we are going to be paying that by card:
+$card = new \Academe\SagePayMsg\PaymentMethod\Card($session_key, $card_identifier_response);
+
+// Put it all together into a payment transaction:
+$transaction = new \Academe\SagePayMsg\Message\TransactionRequest(
+    $auth,
+    \Academe\SagePayMsg\Message\TransactionRequest::TRANSACTION_TYPE_PAYMENT,
+    $card,
+    'MyVendorTxCode-' . rand(10000000, 99999999),
+    $amount,
+    'My Purchase Description',
+    $billing_details
+);
+
+// Create a REST client to send the transaction:
+$client = new Client();
+$request = $client->createRequest('POST', $transaction->getUrl(), [
+    'json' => $transaction->getBody(),
+    'headers' => $transaction->getHeaders()],
+]);
+
+// And send it:
+$response = $client->send($request);
+
+// There are a number of results of sending that request, which need to be handled in
+// a consistent way - there could be one API error, a server error, multiple validation
+// errors, etc.
+// Assuming there are no problems and we get a HTTP200, the result object is captured:
+$transaction_response = \Academe\SagePayMsg\Message\TransactionResponse::fromData($response->json());
+
+// The results of the payment should be in that object.
+// More work is needed to make sense of the result, but that's the basic flow.
+~~~
+
 It's a start and something to learn from.
 
 Firstly, we don't need to mess around with JSON. We don't want to locked into using
