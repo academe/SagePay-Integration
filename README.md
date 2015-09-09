@@ -83,6 +83,8 @@ $card_identifier_request = new \Academe\SagePayMsg\Message\CardIdentifierRequest
 );
 
 // New REST client to get the card identifier.
+// The headers for this one call use the session key and not the integration key
+// as they do for all other server-to-server POSTs.
 $client = new Client();
 $request = $client->createRequest('POST', $card_identifier_request->getUrl(), [
     'json' => $card_identifier_request->getBody(),
@@ -92,6 +94,9 @@ $request = $client->createRequest('POST', $card_identifier_request->getUrl(), [
 // Send the request.
 // This will normally need to be wrapped in an exception handler.
 $response = $client->send($request);
+
+// The $session_key_response is not needed from this point. It was just needed to
+// fetch the card identifier token.
 
 // Collecting the response body.
 // This can be intialised using any array that contains element `cardIdentifier` at a minimum.

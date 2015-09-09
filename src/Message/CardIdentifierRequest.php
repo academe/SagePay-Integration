@@ -109,6 +109,9 @@ class CardIdentifierRequest extends AbstractRequest
 
     /**
      * Get the message header data as an array.
+     * This request does not use the HTTP Basic Auth, but the temporary session
+     * key token instead. This is because it will accessible to end users, and
+     * the secure integration key and password cannot be exposed here.
      */
     public function getHeaders()
     {
