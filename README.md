@@ -71,6 +71,8 @@ $session_key_response = \Academe\SagePayMsg\Message\SessionKeyResponse::fromData
 Now we can use the session key to get a card token (like SagePay Direct, so server-to-server):
 
 ~~~php
+// Construct the card request.
+// This would normally be done on the browser using the sagepay.js script.
 $card_identifier_request = new \Academe\SagePayMsg\Message\CardIdentifierRequest(
     $auth,
     $session_key_response,
@@ -80,13 +82,21 @@ $card_identifier_request = new \Academe\SagePayMsg\Message\CardIdentifierRequest
     "123"
 );
 
+// New REST client to get the card identifier.
 $client = new Client();
 $request = $client->createRequest('POST', $card_identifier_request->getUrl(), [
     'json' => $card_identifier_request->getBody(),
     'headers' => $card_identifier_request->getHeaders(),
 ]);
 
-$card_identifier_response = \Academe\SagePayMsg\Message\CardIdentifierResponse::fromData($response2->json());
+// Send the request.
+// This will normally need to be wrapped in an exception handler.
+$response = $client->send($request);
+
+// Collecting the response body.
+// This can be intialised using any array that contains element `cardIdentifier` at a minimum.
+$card_identifier_response = \Academe\SagePayMsg\Message\CardIdentifierResponse::fromData($response->json());
+
 var_dump($card_identifier_response->toArray());
 
 // array(3) {
@@ -97,11 +107,9 @@ var_dump($card_identifier_response->toArray());
 //  ["cardType"]=>
 //  string(4) "Visa"
 // }
-
-
 ~~~
 
-That's all a little cumbersome, but it's a start and something to learn from.
+It's a start and something to learn from.
 
 Firstly, we don't need to mess around with JSON. We don't want to locked into using
 Guzzle 5.3, but it is a safe assumption that whatever HTTP client we use, it will

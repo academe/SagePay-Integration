@@ -54,9 +54,9 @@ class CardIdentifierResponse extends AbstractMessage
      */
     public static function fromData($data)
     {
-        $cardIdentifier = static::structureGet($data, 'cardIdentifier');
-        $expiry = static::structureGet($data, 'expiry');
-        $cardType = static::structureGet($data, 'cardType');
+        $cardIdentifier = static::structureGet($data, 'cardIdentifier', null);
+        $expiry = static::structureGet($data, 'expiry', null);
+        $cardType = static::structureGet($data, 'cardType', null);
 
         return new static($cardIdentifier, $expiry, $cardType);
     }
