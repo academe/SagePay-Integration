@@ -22,9 +22,11 @@ class ShippingDetails extends BillingDetails
      */
     public function getBody()
     {
+        // Only the person names are permitted for the shipping detail,
+        // not the email and phone.
         return array_merge(
             $this->address->getBody(),
-            $this->person->getBody()
+            $this->person->getNamesBody()
         );
     }
 }

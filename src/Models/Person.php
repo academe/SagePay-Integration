@@ -12,20 +12,25 @@ class Person
 {
     protected $firstName;
     protected $lastName;
+    protected $email;
+    protected $phone;
 
     protected $fieldPrefix = '';
 
-    public function __construct($firstName, $lastName)
+    public function __construct($firstName, $lastName, $email = null, $phone = null)
     {
         // These fields are always mandatory.
         foreach(array('firstName', 'lastName') as $field_name) {
             if (empty($$field_name)) {
-                throw new UnexpectedValueException(sprintf('Field "%s" is mandatory but not set.', $field_name));
+                throw new UnexpectedValueException(sprintf('Empty field "%s" is mandatory.', $field_name));
             }
         }
 
         $this->firstName = $firstName;
         $this->lastName = $lastName;
+
+        $this->email = $email;
+        $this->phone = $phone;
     }
 
     public function getFirstName()
@@ -38,8 +43,36 @@ class Person
         return $this->lastName;
     }
 
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    public function getPhone()
+    {
+        return $this->lastPhone;
+    }
+
     public function getBody()
     {
+        // First/last name is always required.
+        $return = $this->getNamesBody();
+
+        // Email and phone is optional.
+        if (isset($this->email)) {
+            $return[$this->addFieldPrefix('email')] = $this->email;
+        }
+
+        if (isset($this->phone)) {
+            $return[$this->addFieldPrefix('phone')] = $this->phone;
+        }
+
+        return $return;
+    }
+
+    public function getNamesBody()
+    {
+        // Name is mandatory.
         return [
             $this->addFieldPrefix('firstName') => $this->firstName,
             $this->addFieldPrefix('lastName') => $this->lastName,

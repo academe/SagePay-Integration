@@ -37,35 +37,40 @@ class TransactionRequest extends AbstractRequest
     protected $giftAid = false;
     protected $applyAvsCvcCheck;
     protected $apply3DSecure;
-    protected $customerEmail;
-    protected $customerPhone;
+    // Customer email and phone moved to the billingDetails.
+    //protected $customerEmail;
+    //protected $customerPhone;
     protected $shippingDetails;
 
+    /**
+     * Valid values for enumerated input types.
+     */
+
     protected $transaction_types = array(
-        'Payment',
+        'payment' => 'Payment',
     );
 
     protected $entry_methods = array(
-        'Ecommerce',
-        'MailOrder',
-        'TelephoneOrder',
+        'ecommerce' => 'Ecommerce',
+        'mailorder' => 'MailOrder',
+        'telephoneorder' => 'TelephoneOrder',
     );
 
     protected $recurring_indicators = array(
-        'Recurring',
-        'Instalment',
+        'recurring' => 'Recurring',
+        'instalment' => 'Instalment',
     );
 
     protected $apply_avs_cvc_checks = array(
-        'Force',
-        'Disable',
-        'ForceIgnoringRules',
+        'force' => 'Force',
+        'disable' => 'Disable',
+        'forceignoringrules' => 'ForceIgnoringRules',
     );
 
     protected $apply_3d_secures = array(
-        'Force',
-        'Disable',
-        'ForceIgnoringRules',
+        'force' => 'Force',
+        'disable' => 'Disable',
+        'forceignoringrules' => 'ForceIgnoringRules',
     );
 
     public function __construct(
@@ -75,7 +80,8 @@ class TransactionRequest extends AbstractRequest
         $vendorTxCode,
         AmountInterface $amount,
         $description,
-        BillingDetails $billingDetails
+        BillingDetails $billingDetails,
+        ShippingDetails $shippingDetails = null
     ) {
         $this->auth = $auth;
         $this->description = $description;
@@ -93,17 +99,19 @@ class TransactionRequest extends AbstractRequest
         $this->vendorTxCode = $vendorTxCode;
         $this->amount = $amount;
         $this->billingDetails = $billingDetails;
+        $this->shippingDetails = $shippingDetails;
     }
 
     public function withEntryMethod($entryMethod)
     {
-        if ( ! in_array($entryMethod, $this->getEntryMethods())) {
+        if ( ! isset($this->entry_methods[strtolower($entryMethod)])) {
             throw new UnexpectedValueException(sprintf(
                 'Unknown entryMethod "%s"; require one of %s',
                 (string)$entryMethod,
                 implode(', ', $this->getEntryMethods())
             ));
         }
+        $entryMethod = $this->entry_methods[strtolower($entryMethod)];
 
         $copy = clone $this;
         $copy->entryMethod = $entryMethod;
@@ -180,21 +188,6 @@ class TransactionRequest extends AbstractRequest
     public function getApply3DSecures()
     {
         return $this->apply_3d_secures;
-    }
-
-    // TODO: validate the email address.
-    public function withCustomerEmail($customerEmail)
-    {
-        $copy = clone $this;
-        $copy->customerEmail = $customerEmail;
-        return $copy;
-    }
-
-    public function withCustomerPhone($customerPhone)
-    {
-        $copy = clone $this;
-        $copy->customerPhone = $customerPhone;
-        return $copy;
     }
 
     public function withShippingDetails(ShippingDetails $shippingDetails)
