@@ -40,14 +40,14 @@ Using Guzzle 5.3 a Session key can be requested from the test environment like t
 ~~~php
 use GuzzleHttp\Client;
 
-$auth = new \Academe\SagePayJs\Models\Auth(
+$auth = new \Academe\SagePayMsg\Models\Auth(
     'your_vendor_name',
     'YOUR_INTEGRATION_KEY',
     'YOUR_INTEGRATION_PASSWORD',
-    \Academe\SagePayJs\Models\Auth::MODE_TEST
+    \Academe\SagePayMsg\Models\Auth::MODE_TEST
 );
 
-$session_key_request = new \Academe\SagePayJs\Message\SessionKeyRequest($auth);
+$session_key_request = new \Academe\SagePayMsg\Message\SessionKeyRequest($auth);
 
 $client = new Client();
 $request = $client->createRequest('POST', $session_key_request->getUrl(), [
@@ -65,13 +65,13 @@ $response = $client->send($request);
 // The response, if all is well, is a JSON body.
 
 // Creaye a SessionKeyResponse object from the SagePay Response.
-$session_key_response = \Academe\SagePayJs\Message\SessionKeyResponse::fromData($response->json());
+$session_key_response = \Academe\SagePayMsg\Message\SessionKeyResponse::fromData($response->json());
 ~~~
 
 Now we can use the session key to get a card token (like SagePay Direct, so server-to-server):
 
 ~~~php
-$card_identifier_request = new \Academe\SagePayJs\Message\CardIdentifierRequest(
+$card_identifier_request = new \Academe\SagePayMsg\Message\CardIdentifierRequest(
     $auth,
     $session_key_response,
     "MS. CARD HOLDER",
@@ -86,7 +86,7 @@ $request = $client->createRequest('POST', $card_identifier_request->getUrl(), [
     'headers' => $card_identifier_request->getHeaders(),
 ]);
 
-$card_identifier_response = \Academe\SagePayJs\Message\CardIdentifierResponse::fromData($response2->json());
+$card_identifier_response = \Academe\SagePayMsg\Message\CardIdentifierResponse::fromData($response2->json());
 var_dump($card_identifier_response->toArray());
 
 // array(3) {
