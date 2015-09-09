@@ -206,15 +206,14 @@ class TransactionRequest extends AbstractRequest
 
     public function getBody()
     {
-        $result = array(
+        $result = [
             'transactionType' => $this->transactionType,
             'paymentMethod' => $this->paymentMethod->getBody(),
             'vendorTxCode' => $this->vendorTxCode,
             'amount' => $this->amount->getAmount(),
             'currency' => $this->amount->getCurrencyCode(),
             'description' => $this->description,
-            'entryMethod' => $this->entryMethod,
-        );
+        ];
 
         // Add the billing details.
         $result = array_merge($result, $this->billingDetails->getBody());
@@ -222,6 +221,28 @@ class TransactionRequest extends AbstractRequest
         // If there are shipping details, then merge this in:
         if ( ! empty($this->shippingDetails)) {
             $result['shippingDetails'] = $this->shippingDetails->getBody();
+        }
+
+        // Add remaining optional options.
+
+        if ( ! empty($this->entryMethod)) {
+            $result['entryMethod'] = $this->entryMethod;
+        }
+
+        if ( ! empty($this->recurringIndicator)) {
+            $result['recurringIndicator'] = $this->recurringIndicator;
+        }
+
+        if ( ! empty($this->giftAid)) {
+            $result['giftAid'] = $this->giftAid;
+        }
+
+        if ( ! empty($this->applyAvsCvcCheck)) {
+            $result['applyAvsCvcCheck'] = $this->applyAvsCvcCheck;
+        }
+
+        if ( ! empty($this->apply3DSecure)) {
+            $result['apply3DSecure'] = $this->apply3DSecure;
         }
 
         return $result;
