@@ -2,7 +2,7 @@
     "name": "academe/sagepaymsg",
     "license": "MIT",
     "type": "library",
-    "description": "A library to handle the message content and structure for the SagePay Integration service",
+    "description": "A library to handle the message content and structure for the Sage Pay Integration service",
     "keywords": [
         "gateway",
         "merchant",

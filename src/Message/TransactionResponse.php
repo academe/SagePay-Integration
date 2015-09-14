@@ -6,8 +6,8 @@
  * class (maybe to be made an abstract) contains what is
  * common for the responses.
  *
- * TODO: if the status is "3DAuth" then a URL will be passed back from SagePay. This is
- * not documented for the API yet and not supported here. 
+ * TODO: if the status is "3DAuth" then a URL will be passed back from SagePay.
+ * This is not documented for the API yet and not supported anyway for API v1.
  */
 
 use Exception;

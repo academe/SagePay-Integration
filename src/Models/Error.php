@@ -2,8 +2,19 @@
 
 /**
  * Value object to hold an error, returned by SagePay when posting a transaction.
- * HTTP return code will be 422 to see one of these.
- * Other ~400 return codes will return just one error in the body, without a property.
+ * Multiple validation errors will be returned when the HTTP return code is 422.
+ * These will be held by the ErrorCollection class. Examples of 422 code errors are:
+ *  1003    Missing mandatory field
+ *  1004    Invalid length
+ *  1005    Contains invalid characters
+ *  1007    The card number has failed our validity checks and is invalid
+ *  1008    The card is not supported
+ *  1009    Contains invalid value
+ * The 1XXX numbers are the SagePay erro codes. These will each include a property
+ * name as they are targetted at specific fields that fail validation.
+ *
+ * Other ~400 return codes will return just one error in the body, without a property
+ * as they are not targetted as specific fields.
  */
 
 use Exception;
