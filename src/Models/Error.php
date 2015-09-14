@@ -50,10 +50,18 @@ class Error
         return $this->property;
     }
 
+    /**
+     * The statusCode and statusDetail is a legacy error format that seems to have crept
+     * into some validation errors. If this is a long-term "feature" of the API, then
+     * it may be worth translating some of the errors. For example statusCode 3123
+     * is "The DeliveryAddress1 value is too long". This translates to code 1004 (Invalid length)
+     * for the property "shippingDetails.shippingAddress1". Ideally we shoul dnot have
+     * to do that.
+     */
     public static function fromData($data)
     {
-        $code = Helper::structureGet($data, 'code');
-        $description = Helper::structureGet($data, 'description');
+        $code = Helper::structureGet($data, 'code', Helper::structureGet($data, 'statusCode', null));
+        $description = Helper::structureGet($data, 'description', Helper::structureGet($data, 'statusDetail', null));
         $property = Helper::structureGet($data, 'property', null);
 
         return new static($code, $description, $property);
