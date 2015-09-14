@@ -34,7 +34,7 @@ class ErrorCollection implements \IteratorAggregate
 
     public static function fromData($data)
     {
-        $errors = Helper::structureGet($data, 'errors', []);
+        $errors = Helper::structureGet($data, 'errors', null);
 
         $collection = new static();
 
@@ -42,6 +42,8 @@ class ErrorCollection implements \IteratorAggregate
             foreach($errors as $error) {
                 $collection->add(Error::fromData($error));
             }
+        } else {
+            $collection->add(Error::fromData($data));
         }
 
         return($collection);
