@@ -11,10 +11,9 @@ use UnexpectedValueException;
 
 use ArrayIterator;
 
-// FIXME: we are only extending AbstractMessage to get at the helper methods.
-use Academe\SagePayMsg\Message\AbstractMessage;
+use Academe\SagePayMsg\Helper;
 
-class ErrorCollection extends AbstractMessage implements \IteratorAggregate
+class ErrorCollection implements \IteratorAggregate
 {
     protected $items = [];
 
@@ -35,7 +34,7 @@ class ErrorCollection extends AbstractMessage implements \IteratorAggregate
 
     public static function fromData($data)
     {
-        $errors = static::structureGet($data, 'errors', []);
+        $errors = Helper::structureGet($data, 'errors', []);
 
         $collection = new static();
 

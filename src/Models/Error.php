@@ -20,10 +20,9 @@
 use Exception;
 use UnexpectedValueException;
 
-// FIXME: we are only extending AbstractMessage to get at the helper methods.
-use Academe\SagePayMsg\Message\AbstractMessage;
+use Academe\SagePayMsg\Helper;
 
-class Error extends AbstractMessage
+class Error
 {
     protected $code;
     protected $description;
@@ -53,9 +52,9 @@ class Error extends AbstractMessage
 
     public static function fromData($data)
     {
-        $code = static::structureGet($data, 'code');
-        $description = static::structureGet($data, 'description');
-        $property = static::structureGet($data, 'property', null);
+        $code = Helper::structureGet($data, 'code');
+        $description = Helper::structureGet($data, 'description');
+        $property = Helper::structureGet($data, 'property', null);
 
         return new static($code, $description, $property);
     }

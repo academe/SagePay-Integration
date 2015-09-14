@@ -11,6 +11,8 @@ use UnexpectedValueException;
 use DateTime;
 use DateTimeZone;
 
+use Academe\SagePayMsg\Helper;
+
 class SessionKeyResponse extends AbstractMessage
 {
     protected $merchantSessionKey;
@@ -19,7 +21,7 @@ class SessionKeyResponse extends AbstractMessage
     public function __construct($merchantSessionKey, $expiry)
     {
         $this->merchantSessionKey = $merchantSessionKey;
-        $this->expiry = $this->parseDateTime($expiry);
+        $this->expiry = Helper::parseDateTime($expiry);
     }
 
     public function getMerchantSessionKey()
@@ -72,8 +74,8 @@ class SessionKeyResponse extends AbstractMessage
      */
     public static function fromData($data)
     {
-        $merchantSessionKey = static::structureGet($data, 'merchantSessionKey');
-        $expiry = static::structureGet($data, 'expiry');
+        $merchantSessionKey = Helper::structureGet($data, 'merchantSessionKey');
+        $expiry = Helper::structureGet($data, 'expiry');
 
         return new static($merchantSessionKey, $expiry);
     }
@@ -85,7 +87,7 @@ class SessionKeyResponse extends AbstractMessage
     {
         return [
             'merchantSessionKey' => $this->merchantSessionKey,
-            'expiry' => $this->expiry->format(static::SAGEPAY_DATE_FORMAT),
+            'expiry' => $this->expiry->format(Helper::SAGEPAY_DATE_FORMAT),
         ];
     }
 }

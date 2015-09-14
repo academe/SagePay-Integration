@@ -13,6 +13,8 @@
 use Exception;
 use UnexpectedValueException;
 
+use Academe\SagePayMsg\Helper;
+
 class TransactionResponse extends AbstractMessage
 {
     protected $transactionID;
@@ -63,14 +65,14 @@ class TransactionResponse extends AbstractMessage
     public static function fromData($data)
     {
         return new static(
-            static::structureGet($data, 'transactionID', null),
-            static::structureGet($data, 'trasactionType', null),
-            static::structureGet($data, 'status', null),
-            static::structureGet($data, 'statusCode', null),
-            static::structureGet($data, 'statusDetail', null),
-            static::structureGet($data, 'retrievalReference', null),
-            static::structureGet($data, 'bankResponseCode', null),
-            static::structureGet($data, 'bankAuthorisationCode', null)
+            Helper::structureGet($data, 'transactionID', null),
+            Helper::structureGet($data, 'trasactionType', null),
+            Helper::structureGet($data, 'status', null),
+            Helper::structureGet($data, 'statusCode', null),
+            Helper::structureGet($data, 'statusDetail', null),
+            Helper::structureGet($data, 'retrievalReference', null),
+            Helper::structureGet($data, 'bankResponseCode', null),
+            Helper::structureGet($data, 'bankAuthorisationCode', null)
         );
     }
 }

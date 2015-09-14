@@ -11,6 +11,8 @@ use DateTimeZone;
 use Exception;
 use UnexpectedValueException;
 
+use Academe\SagePayMsg\Helper;
+
 class CardIdentifierResponse extends AbstractMessage
 {
     protected $cardIdentifier;
@@ -20,7 +22,7 @@ class CardIdentifierResponse extends AbstractMessage
     public function __construct($cardIdentifier, $expiry, $cardType)
     {
         $this->cardIdentifier = $cardIdentifier;
-        $this->expiry = $this->parseDateTime($expiry);
+        $this->expiry = Helper::parseDateTime($expiry);
         $this->cardType = $cardType;
     }
 
@@ -54,9 +56,9 @@ class CardIdentifierResponse extends AbstractMessage
      */
     public static function fromData($data)
     {
-        $cardIdentifier = static::structureGet($data, 'cardIdentifier', null);
-        $expiry = static::structureGet($data, 'expiry', null);
-        $cardType = static::structureGet($data, 'cardType', null);
+        $cardIdentifier = Helper::structureGet($data, 'cardIdentifier', null);
+        $expiry = Helper::structureGet($data, 'expiry', null);
+        $cardType = Helper::structureGet($data, 'cardType', null);
 
         return new static($cardIdentifier, $expiry, $cardType);
     }
@@ -68,7 +70,7 @@ class CardIdentifierResponse extends AbstractMessage
     {
         return [
             'cardIdentifier' => $this->cardIdentifier,
-            'expiry' => $this->expiry->format(static::SAGEPAY_DATE_FORMAT),
+            'expiry' => $this->expiry->format(Helper::SAGEPAY_DATE_FORMAT),
             'cardType' => $this->cardType,
         ];
     }
