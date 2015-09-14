@@ -10,6 +10,7 @@ use UnexpectedValueException;
 
 use Academe\SagePayMsg\Iso3166\Countries;
 use Academe\SagePayMsg\Iso3166\States;
+use Academe\SagePayMsg\Helper;
 
 class Address implements AddressInterface
 {
@@ -69,18 +70,17 @@ class Address implements AddressInterface
     }
 
     /**
-     * Create a new instance from an array of values.
-     * TODO: use the from_data helper, currently in the abstract message.
+     * Create a new instance from an array or object of values.
      */
-    public static function fromArray($params)
+    public static function fromData($data)
     {
         return new static(
-            isset($params['address1']) ? $params['address1'] : null,
-            isset($params['address2']) ? $params['address2'] : null,
-            isset($params['city']) ? $params['city'] : null,
-            isset($params['postalCode']) ? $params['postalCode'] : null,
-            isset($params['country']) ? $params['country'] : null,
-            isset($params['state']) ? $params['state'] : null
+            Helper::structureGet($data, 'address1', null),
+            Helper::structureGet($data, 'address2', null),
+            Helper::structureGet($data, 'city', null),
+            Helper::structureGet($data, 'postalCode', null),
+            Helper::structureGet($data, 'country', null),
+            Helper::structureGet($data, 'state', null)
         );
     }
 
