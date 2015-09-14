@@ -55,7 +55,7 @@ class Error
      * into some validation errors. If this is a long-term "feature" of the API, then
      * it may be worth translating some of the errors. For example statusCode 3123
      * is "The DeliveryAddress1 value is too long". This translates to code 1004 (Invalid length)
-     * for the property "shippingDetails.shippingAddress1". Ideally we shoul dnot have
+     * for the property "shippingDetails.shippingAddress1". Ideally we should not have
      * to do that.
      */
     public static function fromData($data)

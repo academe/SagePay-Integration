@@ -23,6 +23,11 @@ class Currency
         'GBP' => ['digits' => 2, 'symbol' => '£', 'name' => 'Pound sterling'],
         'EUR' => ['digits' => 2, 'symbol' => '€', 'name' => 'Euro'],
         'USD' => ['digits' => 2, 'symbol' => '€', 'name' => 'US dollar'],
+
+        'CAD' => ['digits' => 2, 'symbol' => '$', 'name' => 'Canadian dollar'],
+        'AUD' => ['digits' => 2, 'symbol' => '$', 'name' => 'Australian dollar'],
+        'NZD' => ['digits' => 2, 'symbol' => '$', 'name' => 'New Zealand dollar'],
+        'ZAR' => ['digits' => 2, 'symbol' => 'R', 'name' => 'South African rand'],
     ];
 
     public function __construct($code)
@@ -39,6 +44,9 @@ class Currency
         return $this->code;
     }
 
+    /**
+     * The number of digits in the decimal subunit.
+     */
     public function getDigits()
     {
         return static::$currencies[$this->code]['digits'];
