@@ -16,41 +16,46 @@ be changing a lot, but hopefully heading in the right direction.
 
 There is no test suite in here yet. That will come once the structure is a little more stable.
 
-* Started by dumping everything into the "Models" folder.
-* Now putting the messages into `Messages`.
-* Messages are suffixed weith `Request` or `Response` depending on whether that go to Sage Pay or come from Sage Pay.
+* The `Academe\SagePayMsg\Models` namespace comntains internal models for various data structures and for constructing messages.
+* The `Academe\SagePayMsg\Messages` namespace is for message structures that go to and from Sage Pay.
+* Messages are suffixed with `Request` or `Response` depending on whether that go to Sage Pay or come from Sage Pay.
 * The Response messages should be instantiable with a JSON or array object.
-  That should also create any child objects that define the whole message.
-  a locator service may be useful here if many objects are being created, so they can be overridden
+  They should also create any child objects that define the whole message.
+  A locator service may be useful here if many objects are being created, so they can be overridden
   by the merchant application as needed.
-* Trying to use value objects throughout, which is a new thing for me.
+* Unmutable value objects are used throughout, where possible.
 * Sticking to PHP 5.4 for now, and including an autoloader so is can be used outside of composer.
-  May branch the package later to take on modern composer and older non-composer routes.
-* This package will just handle the messages and business logic (e..g validation and structures).
-  The HTTP communinications are to be handled in a separate package to wrap this.
+  There will be non-composer applications, such as WordPress plugins, that will benefit from this.
+* This package will just handle the messages and business logic (e.g. validation and data structures).
+  The HTTP communinications are to be handled outside this package.
   I'm trying to keep these two concerns separate for a number of reasons, least of all testing.
 * 3DSecure is not supported by v1 of the API. Although v1 *can* take live payments, I would not recommend
   doing so until 3DSecure can be used. Without it, your liability as a merchant site for passing
-  through fraudulent payments is much higher.
+  through fraudulent payments is much higher. v2 of the API is reported to include an implementation of 3DSecure.
 
-Current version of API spec is "11-08-2015 (beta)":
+Current version of API spec is "11-08-2015 (beta)" - 2015-08-11 would be a better date:
 https://test.sagepay.com/documentation/#shipping-details-object
 
 ## Example Code
 
-Using Guzzle 5.3 a Session key can be requested from the test environment like this:
+Using Guzzle 5.3 a Session key can be requested from the test environment as follows.
+This happens on tyhe server before presenting the user with the payment form:
 
 ~~~php
 use GuzzleHttp\Client;
 
-$auth = new \Academe\SagePayMsg\Models\Auth(
+use Academe\SagePayMsg\Models\Auth;
+use Academe\SagePayMsg\Message\SessionKeyRequest;
+use Academe\SagePayMsg\Message\SessionKeyResponse;
+
+$auth = new Auth(
     'your_vendor_name',
     'YOUR_INTEGRATION_KEY',
     'YOUR_INTEGRATION_PASSWORD',
-    \Academe\SagePayMsg\Models\Auth::MODE_TEST
+    Auth::MODE_TEST
 );
 
-$session_key_request = new \Academe\SagePayMsg\Message\SessionKeyRequest($auth);
+$session_key_request = new SessionKeyRequest($auth);
 
 $client = new Client();
 $request = $client->createRequest('POST', $session_key_request->getUrl(), [
@@ -68,15 +73,22 @@ $response = $client->send($request);
 // The response, if all is well, is a JSON body.
 
 // Creaye a SessionKeyResponse object from the Sage Pay Response.
-$session_key_response = \Academe\SagePayMsg\Message\SessionKeyResponse::fromData($response->json());
+$session_key_response = SessionKeyResponse::fromData($response->json());
 ~~~
 
-Now we can use the session key to get a card token (like Sage Pay Direct, so server-to-server):
+Now we can use the session key to get a card token (like Sage Pay Direct, so server-to-server).
+This will normally be done on the browser using `sagepay.js` to do the AJAX call.
+However, you do not have to use `sagepay.js` - it is a straight-forward POST and you can
+certainly improve on the script provided by default, or adapt it to specific use-cases:
+
 
 ~~~php
+use Academe\SagePayMsg\Message\CardIdentifierRequest;
+use Academe\SagePayMsg\Message\CardIdentifierResponse;
+
 // Construct the card request.
 // This would normally be done on the browser using the sagepay.js script.
-$card_identifier_request = new \Academe\SagePayMsg\Message\CardIdentifierRequest(
+$card_identifier_request = new CardIdentifierRequest(
     $auth,
     $session_key_response,
     "MS. CARD HOLDER",
@@ -103,7 +115,7 @@ $response = $client->send($request);
 
 // Collecting the response body.
 // This can be intialised using any array that contains element `cardIdentifier` at a minimum.
-$card_identifier_response = \Academe\SagePayMsg\Message\CardIdentifierResponse::fromData($response->json());
+$card_identifier_response = CardIdentifierResponse::fromData($response->json());
 
 var_dump($card_identifier_response->toArray());
 
@@ -117,11 +129,20 @@ var_dump($card_identifier_response->toArray());
 // }
 ~~~
 
-Now we can make a payment with details from the customer.
+Now we can make a payment with details from the customer. That payment will include
+customer and product or service details, and the card token we just obtained.
 
 ~~~php
+use Academe\SagePayMsg\Models\Address;
+use Academe\SagePayMsg\Models\Person;
+use Academe\SagePayMsg\Models\BillingDetails;
+use Academe\SagePayMsg\Money\Amount;
+use Academe\SagePayMsg\PaymentMethod\Card;
+use Academe\SagePayMsg\Message\TransactionRequest;
+use Academe\SagePayMsg\Message\TransactionResponse;
+
 // We have a billing address:
-$billing_address = \Academe\SagePayMsg\Models\Address::fromArray(array(
+$billing_address = Address::fromArray(array(
     'address1' => 'address one',
     'postalCode' => 'NE26',
     'city' => 'Whitley',
@@ -130,23 +151,23 @@ $billing_address = \Academe\SagePayMsg\Models\Address::fromArray(array(
 ));
 
 // A customer to bill:
-$billing_person = new \Academe\SagePayMsg\Models\Person('Bill Firstname', 'Bill Lastname', 'billing@example.com', '+44 191 12345678');
+$billing_person = new Person('Bill Firstname', 'Bill Lastname', 'billing@example.com', '+44 191 12345678');
 
 // And we put the two together.
-$billing_details = new \Academe\SagePayMsg\Models\BillingDetails($billing_person, $billing_address);
+$billing_details = new BillingDetails($billing_person, $billing_address);
 
 // We can do the same for shipping, but that is optional.
 
 // There is an amount, in GBP in this case, to pay:
-$amount = \Academe\SagePayMsg\Money\Amount::GBP()->withMajorUnit(9.99);
+$amount = Amount::GBP()->withMajorUnit(9.99);
 
 // And we are going to be paying that by card:
-$card = new \Academe\SagePayMsg\PaymentMethod\Card($session_key, $card_identifier_response);
+$card = new Card($session_key, $card_identifier_response);
 
 // Put it all together into a payment transaction:
-$transaction = new \Academe\SagePayMsg\Message\TransactionRequest(
+$transaction = new TransactionRequest(
     $auth,
-    \Academe\SagePayMsg\Message\TransactionRequest::TRANSACTION_TYPE_PAYMENT,
+    TransactionRequest::TRANSACTION_TYPE_PAYMENT,
     $card,
     'MyVendorTxCode-' . rand(10000000, 99999999),
     $amount,
@@ -168,13 +189,13 @@ $response = $client->send($request);
 // a consistent way - there could be one API error, a server error, multiple validation
 // errors, etc.
 // Assuming there are no problems and we get a HTTP200, the result object is captured:
-$transaction_response = \Academe\SagePayMsg\Message\TransactionResponse::fromData($response->json());
+$transaction_response = TransactionResponse::fromData($response->json());
 
 // The results of the payment should be in that object.
 // More work is needed to make sense of the result, but that's the basic flow.
 ~~~
 
-It's a start and something to learn from.
+Some lessons:
 
 Firstly, we don't need to mess around with JSON. We don't want to locked into using
 Guzzle 5.3, but it is a safe assumption that whatever HTTP client we use, it will
@@ -192,6 +213,26 @@ would become:
 
     CardIdentifierResponse::fromData($auth, $response->json())
 
-Q: Should resource paths always start with a "/" and URLs never end with a "/"?
-What do other projects standardise on?
+### A Typical Workflow
 
+1. The server will get a session key. This will last for 200 seconds or three uses.
+2. The payment form is presented, with credit card fields and personal details fields.
+3. The user will complete the form and press submit.
+4. sagepay.js will catch the submit and attempt to fetch a card token givem the card details
+   entered by the user.
+5. If the session key has expired, then fetch a new one - probably AJAX.
+6. Once a card token is obtained, the form will be submitted. The card token will also last
+   for 200 seconds or three uses.
+7. On the server, attempt to submit the form details and card token as a transaction.
+8. If the transaction is returned as invalid, then re-present the form with supplied error messages.
+9. If the card token has not expired, then reuse it and do *not* present the credit card fields to the user.
+10. If the card token has expired, then the credit card fields need to be presented to the
+   user again, and that will require another session key to include in the form.
+11. If the transaction was accepted, then the successful result can be recorded and the user informed.
+
+The key things to remember are:
+
+* The session key can be found to be expired at any time.
+* The card token will expire after a successful submission of a transaction, or three invalid transactions.
+* Do not present the credit card fields to the user if we habe a valid card token.
+* Do not call sagepay.js on form submit if either we have a card token, or there are no credit card fields in the form.
