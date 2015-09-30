@@ -65,8 +65,10 @@ class Amount implements AmountInterface
         }
     }
 
-    // TODO: magic method to support e.g. $amount = Amount::EUR(995)
-    // equivalent to: new Amount(new Currency('EUR'), 995)
+    /**
+     * Magic method to support e.g. $amount = Amount::EUR(995)
+     * equivalent to: new Amount(new Currency('EUR'), 995)
+     */
     public static function __callStatic($name, $arguments)
     {
         try {

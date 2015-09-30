@@ -20,10 +20,11 @@ class Currency
      * none of these yet.
      */
     protected static $currencies = [
+        // Original three currencies.
         'GBP' => ['digits' => 2, 'symbol' => '£', 'name' => 'Pound sterling'],
         'EUR' => ['digits' => 2, 'symbol' => '€', 'name' => 'Euro'],
         'USD' => ['digits' => 2, 'symbol' => '€', 'name' => 'US dollar'],
-
+        // Support is expanding for further currencies.
         'CAD' => ['digits' => 2, 'symbol' => '$', 'name' => 'Canadian dollar'],
         'AUD' => ['digits' => 2, 'symbol' => '$', 'name' => 'Australian dollar'],
         'NZD' => ['digits' => 2, 'symbol' => '$', 'name' => 'New Zealand dollar'],
@@ -35,7 +36,7 @@ class Currency
         if (isset(static::$currencies[$code])) {
             $this->code = $code;
         } else {
-            throw new UnexpectedValueException(sprintf('Unknown currency code "%s"', $code));
+            throw new UnexpectedValueException(sprintf('Unsupported currency code "%s"', $code));
         }
     }
 
@@ -52,8 +53,11 @@ class Currency
         return static::$currencies[$this->code]['digits'];
     }
 
-    // getName and getSymbol are handy for display and logging, but not essential.
-
+    /**
+     * The symbols will be one or more UTF-8 characters.
+     * getName and getSymbol are handy for display and logging, but not essential,
+     * so they are not a part of the interface.
+     */
     public function getName()
     {
         return static::$currencies[$this->code]['name'];
@@ -67,6 +71,9 @@ class Currency
         return static::$currencies[$this->code]['symbol'];
     }
 
+    /**
+     * Return details of all the supported currencies.
+     */
     public static function supportedCurrencies()
     {
         return static::$currencies;

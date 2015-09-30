@@ -10,7 +10,7 @@
  *             new sagepayResponseHandler(status, response, {
  *                 // Initialise the response handler, after getting a response from Sage Pay.
  *                 init: function() {
- *                     // e.g. re-enable submit button, clear form error messages.
+ *                     // e.g. re-enable submit button, clear current form error messages.
  *                 },
  *                 // A card token has been successfuly obtained.
  *                 success: function() {
@@ -19,7 +19,7 @@
  *                 // Display errors in the event of invalid fields.
  *                 invalid: function() {
  *                     // this.errors will contain arrays of messages, keyed to the field
- *                     // name, so messages can be placed on the form agains the fields.
+ *                     // name, so messages can be placed on the form against the fields.
  *                 },
  *                 // Renew the session key.
  *                 renewsession: function() {
@@ -31,7 +31,7 @@
  *     });
  * });
  *
- * Some more details examples will be provided in the documenatation. We also need a handler
+ * Some more detailed examples will be provided in the documenatation. We also need a handler
  * for catching more generic/global errors that are not bound to specific form fields.
  *
  */
