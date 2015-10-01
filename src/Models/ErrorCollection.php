@@ -22,7 +22,7 @@ class ErrorCollection implements \IteratorAggregate
         $this->items = array_values($items);
     }
 
-    public function add($item)
+    public function add(Error $item)
     {
         $this->items[] = $item;
     }
@@ -47,5 +47,54 @@ class ErrorCollection implements \IteratorAggregate
         }
 
         return($collection);
+    }
+
+    /**
+     * Return errors for a specific property.
+     * Returns ErrorCollection
+     */
+    public function byProperty($property_name = null)
+    {
+        $result = new static();
+
+        foreach($this as $error) {
+            if ($property_name === $error->getProperty()) {
+                $result->add($error);
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Return an array of properties.
+     */
+    public function getProperties()
+    {
+        $result = array();
+
+        foreach($this as $error) {
+            if ( ! in_array($error->getProperty(), $result)) {
+                $result[] = $error->getProperty();
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Count of errors in the collection.
+     */
+    public function count()
+    {
+        return count($this->items);
+    }
+
+    /**
+     * Tells us if there are any errors in the collection.
+     */
+    public function hasErrors()
+    {
+        return $this->count() > 0;
     }
 }
