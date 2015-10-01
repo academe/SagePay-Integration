@@ -142,16 +142,21 @@ use Academe\SagePayMsg\Message\TransactionRequest;
 use Academe\SagePayMsg\Message\TransactionResponse;
 
 // We have a billing address:
-$billing_address = Address::fromArray(array(
+$billing_address = Address::fromData([
     'address1' => 'address one',
     'postalCode' => 'NE26',
     'city' => 'Whitley',
     'state' => 'AL',
     'country' => 'US',
-));
+]);
 
 // A customer to bill:
-$billing_person = new Person('Bill Firstname', 'Bill Lastname', 'billing@example.com', '+44 191 12345678');
+$billing_person = new Person(
+    'Bill Firstname',
+    'Bill Lastname',
+    'billing@example.com',
+    '+44 191 12345678'
+);
 
 // And we put the two together.
 $billing_details = new BillingDetails($billing_person, $billing_address);
@@ -187,12 +192,53 @@ $response = $client->send($request);
 
 // There are a number of results of sending that request, which need to be handled in
 // a consistent way - there could be one API error, a server error, multiple validation
-// errors, etc.
-// Assuming there are no problems and we get a HTTP200, the result object is captured:
+// errors, etc. The API is still a little in flux in this area, so I'll leave detailed
+// examples until later.
+// Assuming there are no problems and we get a HTTP 200, the result object is captured:
 $transaction_response = TransactionResponse::fromData($response->json());
 
 // The results of the payment should be in that object.
-// More work is needed to make sense of the result, but that's the basic flow.
+// More work is needed to make sense of the result, but that's the basic flow. Here it
+// is expanded into a more workable example,.but do bear in mind this is likely to change:
+
+use Academe\SagePayMsg\Models\ErrorCollection;
+use Academe\SagePayMsg\Models\Error;
+
+try {
+    $response = $client->send($request);
+
+    // Now create the transaction response from the return data.
+    $transaction_response = TransactionResponse::fromData($response->json());
+    var_dump($transaction_response);
+} catch(\GuzzleHttp\Exception\ClientException $e) {
+    // Get the response that Guzzle has saved and added to its exception.
+    $response = $e->getResponse();
+
+    // Here we have one or more errors.
+    // We get multiple errors when the error code is 422, otherwise we get just the one error.
+    if ($response->getStatusCode() == 422) {
+        // Put the errors or errors into a collection.
+        $errors = ErrorCollection::fromData($response->json());
+
+        // The error collection will be able to return errors organised by the field name.
+        foreach($errors as $error) {
+            // These errors would be fed to the re-presented form for display in context.
+            echo "<p>Error code " . $error->getCode()
+                . " (" . $error->getDescription() . ")"
+                . " on field " . $error->getProperty() . "</p>";
+        }
+    } else {
+        // A more serious error occurred; not just field validation issues.
+        // One error may be an expiry of the session key or card identifier.
+        // These will not be fatal errors, but will require asking the user for
+        // their card details again. More details to come.
+        $error = Error::fromData($response3->json());
+        echo "Error " . $error->getCode() . " " . $error->getDescription();
+    }
+} catch(\GuzzleHttp\Exception\ServerException $e) {
+    // Could not even talk to Sage Pay.
+    echo "Problem at Sage Pay";
+}
 ~~~
 
 Some lessons:
