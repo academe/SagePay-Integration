@@ -30,9 +30,9 @@ class TransactionResponse extends AbstractMessage
         'Payment',
     ];
 
-    // FIXME: the docs say "OK" but the API returns "Ok".
+    // The docs say "OK" but the API returns "Ok".
     protected $statuses = [
-        'ok' => 'OK',
+        'ok' => 'Ok',
         'notauthed' => 'NotAuthed',
         'rejected' => 'Rejected',
         '3dauth' => '3DAuth',
@@ -43,7 +43,6 @@ class TransactionResponse extends AbstractMessage
 
     public function __construct(
         $transactionID,
-        // Payment, Refund etc.
         $trasactionType,
         $status,
         $statusCode,
@@ -74,5 +73,73 @@ class TransactionResponse extends AbstractMessage
             Helper::structureGet($data, 'bankResponseCode', null),
             Helper::structureGet($data, 'bankAuthorisationCode', null)
         );
+    }
+
+    /**
+     * The overall status of the transaction.
+     */
+    public function getStatus()
+    {
+        return ! empty($this->statuses[strtolower($this->status)])
+            ? $this->statuses[strtolower($this->status)]
+            : $this->status;
+    }
+
+    /**
+     * The code that represents the status detail.
+     */
+    public function getStatusCode()
+    {
+        return $this->statusCode;
+    }
+
+    /**
+     * The detailed status message.
+     */
+    public function getStatusDetail()
+    {
+        return $this->statusDetail;
+    }
+
+    /**
+     * The ID given to the transaction by Sage Pay.
+     */
+    public function getTransactionID()
+    {
+        return $this->transactionID;
+    }
+
+    /**
+     * The type of the transaction.
+     */
+    public function getTransactionType()
+    {
+        return $this->transactionType;
+    }
+
+    /**
+     * Sage Pay unique Authorisation Code for a successfully authorised
+     * transaction. Only present if Status is OK (or Ok).
+     */
+    public function getRetrievalReference()
+    {
+        return $this->retrievalReference;
+    }
+
+    /**
+     * Also known as the decline code, these are codes that are
+     * specific to the merchant bank. 
+     */
+    public function getBankResponseCode()
+    {
+        return $this->bankResponseCode;
+    }
+
+    /**
+     * The authorisation code returned from your merchant bank.
+     */
+    public function getBankAuthorisationCode()
+    {
+        return $this->bankAuthorisationCode;
     }
 }
