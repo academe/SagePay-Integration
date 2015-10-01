@@ -15,7 +15,7 @@ use Academe\SagePayMsg\Helper;
 
 class ErrorCollection implements \IteratorAggregate
 {
-    protected $items = [];
+    protected $items = array();
 
     public function __construct(array $items = [])
     {
@@ -50,7 +50,8 @@ class ErrorCollection implements \IteratorAggregate
     }
 
     /**
-     * Return errors for a specific property.
+     * Return errors for a specific property, including null for
+     * errors without a property reference..
      * Returns ErrorCollection
      */
     public function byProperty($property_name = null)
