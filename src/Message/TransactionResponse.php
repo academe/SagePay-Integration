@@ -26,6 +26,9 @@ class TransactionResponse extends AbstractMessage
     protected $bankResponseCode;
     protected $bankAuthorisationCode;
 
+    protected $acsUrl;
+    protected $paReq;
+
     protected $trasactionTypes = [
         'Payment',
     ];
@@ -49,7 +52,9 @@ class TransactionResponse extends AbstractMessage
         $statusDetail,
         $retrievalReference,
         $bankResponseCode,
-        $bankAuthorisationCode
+        $bankAuthorisationCode,
+        $acsUrl,
+        $paReq
     ) {
         $this->transactionID = $transactionID;
         $this->trasactionType = $trasactionType;
@@ -59,6 +64,8 @@ class TransactionResponse extends AbstractMessage
         $this->retrievalReference = $retrievalReference;
         $this->bankResponseCode = $bankResponseCode;
         $this->bankAuthorisationCode = $bankAuthorisationCode;
+        $this->acsUrl = $acsUrl;
+        $this->paReq = $paReq;
     }
 
     public static function fromData($data)
@@ -71,7 +78,10 @@ class TransactionResponse extends AbstractMessage
             Helper::structureGet($data, 'statusDetail', null),
             Helper::structureGet($data, 'retrievalReference', null),
             Helper::structureGet($data, 'bankResponseCode', null),
-            Helper::structureGet($data, 'bankAuthorisationCode', null)
+            Helper::structureGet($data, 'bankAuthorisationCode', null),
+            // With 3D Secure
+            Helper::structureGet($data, 'acsUrl', null),
+            Helper::structureGet($data, 'paReq', null)
         );
     }
 
@@ -141,5 +151,22 @@ class TransactionResponse extends AbstractMessage
     public function getBankAuthorisationCode()
     {
         return $this->bankAuthorisationCode;
+    }
+
+    /**
+     * The 3D Secure URL (the issuing bank's Access Control System).
+     */
+    public function getAcsUrl()
+    {
+        return $this->acsUrl;
+    }
+
+    /**
+     * The 3D Secure Payment Authentication Request.
+     * Passed to the ACS URL as an authorising token.
+     */
+    public function getPaReq()
+    {
+        return $this->paReq;
     }
 }

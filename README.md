@@ -4,7 +4,8 @@ This package provides the data models and business logic for the *Sage Pay Integ
 It does not provide the transport mechanism, so you can use what you like for that,
 for example Guzzle, curl or a PSR-7 library.
 
-The Sage Pay Integration payment gateway is a RESTful API run by by [Sage Pay](https://applications.sagepay.com/apply/3F7A4119-8671-464F-A091-9E59EB47B80C).
+The Sage Pay Integration payment gateway is a RESTful API run by by [Sage Pay](https://sagepay.com/).
+You can [apply for an account here](https://applications.sagepay.com/apply/3F7A4119-8671-464F-A091-9E59EB47B80C) (partner link).
 
 It is very much work in progress at this very early stage, while this Sage Pay API is in beta.
 However,we aim to move quickly and follow changes to the API as they are released.
