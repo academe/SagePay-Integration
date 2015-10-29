@@ -28,8 +28,6 @@ class TransactionResponse extends AbstractMessage
     protected $bankAuthorisationCode;
 
     protected $Secure3D;
-    protected $acsUrl;
-    protected $paReq;
 
     protected $transactionTypes = [
         'Payment',
@@ -81,14 +79,12 @@ class TransactionResponse extends AbstractMessage
         // Note the object is called "3DSecure" and not "Secure3D" that use
         // for valid class, method and variable names.
         $Secure3D = Helper::structureGet($data, '3DSecure', null);
-        //$acsUrl = Helper::structureGet($data, 'acsUrl', null);
-        //$paReq = Helper::structureGet($data, 'paReq', null);
 
         if ($Secure3D instanceof Secure3D) {
             // A 3DSecure object has already been put together.
         } elseif (is_array($Secure3D) || is_null($Secure3D)) {
             // Create a 3DSecure object from the array data, but include 
-            $Secure3D = Secure3D::fromData($data); //($Secure3D + ['acsUrl' => $acsUrl, 'paReq' => $paReq]);
+            $Secure3D = Secure3D::fromData($data);
         } else {
             // Don't know how to handle this data.
         }
@@ -189,24 +185,5 @@ class TransactionResponse extends AbstractMessage
     public function get3DSecureStatus()
     {
         return $this->Secure3D->getStatus();
-    }
-
-    /**
-     * DEPRECATED
-     * The 3D Secure URL (the issuing bank's Access Control System).
-     */
-    public function getAcsUrl()
-    {
-        return $this->Secure3D->getAcsUrl();
-    }
-
-    /**
-     * DEPRECATED
-     * The 3D Secure Payment Authentication Request.
-     * Passed to the ACS URL as an authorising token.
-     */
-    public function getPaReq()
-    {
-        return $this->Secure3D->getPaReq();
     }
 }
