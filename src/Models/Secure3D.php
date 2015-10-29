@@ -21,13 +21,13 @@ class Secure3D
     protected $paReq;
 
     protected $statuses = [
-        'Authenticated',
-        'Force',
-        'NotChecked',
-        'NotAuthenticated',
-        'Error',
-        'CardNotEnrolled',
-        'IssuerNotEnrolled',
+        'authenticated' => 'Authenticated',
+        'force' => 'Force',
+        'notchecked' => 'NotChecked',
+        'notauthenticated' => 'NotAuthenticated',
+        'error' => 'Error',
+        'cardnotenrolled' => 'CardNotEnrolled',
+        'issuernotenrolled' => 'IssuerNotEnrolled',
     ];
 
     public function __construct($status, $acsUrl = null, $paReq = null)

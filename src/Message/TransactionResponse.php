@@ -33,7 +33,6 @@ class TransactionResponse extends AbstractMessage
         'Payment',
     ];
 
-    // The docs say "OK" but the API returns "Ok".
     protected $statuses = [
         'ok' => 'Ok',
         'notauthed' => 'NotAuthed',
