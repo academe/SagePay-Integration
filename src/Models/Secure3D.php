@@ -15,7 +15,10 @@ use Academe\SagePayMsg\Helper;
 
 class Secure3D
 {
+    // FIXME: also need the MD.
     protected $status;
+    protected $acsUrl;
+    protected $paReq;
 
     protected $statuses = [
         'Authenticated',
