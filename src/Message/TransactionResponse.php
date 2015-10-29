@@ -14,6 +14,7 @@ use Exception;
 use UnexpectedValueException;
 
 use Academe\SagePayMsg\Helper;
+use Academe\SagePayMsg\Models\Secure3D;
 
 class TransactionResponse extends AbstractMessage
 {
@@ -26,10 +27,11 @@ class TransactionResponse extends AbstractMessage
     protected $bankResponseCode;
     protected $bankAuthorisationCode;
 
+    protected $Secure3D;
     protected $acsUrl;
     protected $paReq;
 
-    protected $trasactionTypes = [
+    protected $transactionTypes = [
         'Payment',
     ];
 
@@ -44,6 +46,14 @@ class TransactionResponse extends AbstractMessage
         'error' => 'Error',
     ];
 
+    /**
+     * Big long list of parameters is beginning to smell a bit.
+     * We would normally instantiate using fromData() but allowing this
+     * constructor to accept a single array or object (simply passing it to
+     * fromData() would make it a little less cumbersome. Now we have the
+     * 3DSecure object being passed in, rather than just strings and numbers,
+     * it changes things a little.
+     */
     public function __construct(
         $transactionID,
         $trasactionType,
@@ -53,8 +63,7 @@ class TransactionResponse extends AbstractMessage
         $retrievalReference,
         $bankResponseCode,
         $bankAuthorisationCode,
-        $acsUrl,
-        $paReq
+        Secure3D $Secure3D = null
     ) {
         $this->transactionID = $transactionID;
         $this->trasactionType = $trasactionType;
@@ -64,12 +73,26 @@ class TransactionResponse extends AbstractMessage
         $this->retrievalReference = $retrievalReference;
         $this->bankResponseCode = $bankResponseCode;
         $this->bankAuthorisationCode = $bankAuthorisationCode;
-        $this->acsUrl = $acsUrl;
-        $this->paReq = $paReq;
+        $this->Secure3D = $Secure3D;
     }
 
     public static function fromData($data)
     {
+        // Note the object is called "3DSecure" and not "Secure3D" that use
+        // for valid class, method and variable names.
+        $Secure3D = Helper::structureGet($data, '3DSecure', null);
+        //$acsUrl = Helper::structureGet($data, 'acsUrl', null);
+        //$paReq = Helper::structureGet($data, 'paReq', null);
+
+        if ($Secure3D instanceof Secure3D) {
+            // A 3DSecure object has already been put together.
+        } elseif (is_array($Secure3D) || is_null($Secure3D)) {
+            // Create a 3DSecure object from the array data, but include 
+            $Secure3D = Secure3D::fromData($data); //($Secure3D + ['acsUrl' => $acsUrl, 'paReq' => $paReq]);
+        } else {
+            // Don't know how to handle this data.
+        }
+
         return new static(
             Helper::structureGet($data, 'transactionID', null),
             Helper::structureGet($data, 'trasactionType', null),
@@ -79,9 +102,8 @@ class TransactionResponse extends AbstractMessage
             Helper::structureGet($data, 'retrievalReference', null),
             Helper::structureGet($data, 'bankResponseCode', null),
             Helper::structureGet($data, 'bankAuthorisationCode', null),
-            // With 3D Secure
-            Helper::structureGet($data, 'acsUrl', null),
-            Helper::structureGet($data, 'paReq', null)
+            // 3D Secure details.
+            $Secure3D
         );
     }
 
@@ -154,11 +176,19 @@ class TransactionResponse extends AbstractMessage
     }
 
     /**
+     * The 3D Secure object.
+     */
+    public function get3DSecure()
+    {
+        return $this->Secure3D;
+    }
+
+    /**
      * The 3D Secure URL (the issuing bank's Access Control System).
      */
     public function getAcsUrl()
     {
-        return $this->acsUrl;
+        return $this->Secure3D->getAcsUrl();
     }
 
     /**
@@ -167,6 +197,6 @@ class TransactionResponse extends AbstractMessage
      */
     public function getPaReq()
     {
-        return $this->paReq;
+        return $this->Secure3D->getPaReq();
     }
 }
