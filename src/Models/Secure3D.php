@@ -77,4 +77,23 @@ class Secure3D
     {
         return $this->paReq;
     }
+
+    /**
+     * Get the fields (names and values) to go into the paReq POST.
+     * TODO: 'MD' needs to be supported once the API supports it.
+     * $termUrl is the return URL after the PA Request is complete.
+     */
+    public function getPaRequestFields($termUrl = null)
+    {
+        $fields = [
+            'paReq' => $this->getPaReq(),
+            'md' => '',
+        ];
+
+        if (isset($termUrl)) {
+            $fields['TermUrl'] = $termUrl;
+        }
+
+        return $fields;
+    }
 }

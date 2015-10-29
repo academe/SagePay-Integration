@@ -184,6 +184,15 @@ class TransactionResponse extends AbstractMessage
     }
 
     /**
+     * The 3D Secure status.
+     */
+    public function get3DSecureStatus()
+    {
+        return $this->Secure3D->getStatus();
+    }
+
+    /**
+     * DEPRECATED
      * The 3D Secure URL (the issuing bank's Access Control System).
      */
     public function getAcsUrl()
@@ -192,6 +201,7 @@ class TransactionResponse extends AbstractMessage
     }
 
     /**
+     * DEPRECATED
      * The 3D Secure Payment Authentication Request.
      * Passed to the ACS URL as an authorising token.
      */
