@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePayMsg\Models;
+<?php namespace Academe\SagePayMsg\Model;
 
 /**
  * Value object to hold an error, returned by SagePay when posting a transaction.

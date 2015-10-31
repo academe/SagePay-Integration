@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePayMsg\Models;
+<?php namespace Academe\SagePayMsg\Model;
 
 /**
  * Value object used to hold details about a person.

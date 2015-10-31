@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePayMsg\Models;
+<?php namespace Academe\SagePayMsg\Model;
 
 /**
  * A collection of errors, normally validation errors.

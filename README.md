@@ -17,7 +17,7 @@ be changing a lot, but hopefully heading in the right direction.
 
 There is no test suite in here yet. That will come once the structure is a little more stable.
 
-* The `Academe\SagePayMsg\Models` namespace comntains internal models for various data structures and for constructing messages.
+* The `Academe\SagePayMsg\Model` namespace comntains internal models for various data structures and for constructing messages.
 * The `Academe\SagePayMsg\Messages` namespace is for message structures that go to and from Sage Pay.
 * Messages are suffixed with `Request` or `Response` depending on whether that go to Sage Pay or come from Sage Pay.
 * The Response messages should be instantiable with a JSON or array object.
@@ -45,7 +45,7 @@ This happens on tyhe server before presenting the user with the payment form:
 ~~~php
 use GuzzleHttp\Client;
 
-use Academe\SagePayMsg\Models\Auth;
+use Academe\SagePayMsg\Model\Auth;
 use Academe\SagePayMsg\Message\SessionKeyRequest;
 use Academe\SagePayMsg\Message\SessionKeyResponse;
 
@@ -134,9 +134,9 @@ Now we can make a payment with details from the customer. That payment will incl
 customer and product or service details, and the card token we just obtained.
 
 ~~~php
-use Academe\SagePayMsg\Models\Address;
-use Academe\SagePayMsg\Models\Person;
-use Academe\SagePayMsg\Models\BillingDetails;
+use Academe\SagePayMsg\Model\Address;
+use Academe\SagePayMsg\Model\Person;
+use Academe\SagePayMsg\Model\BillingDetails;
 use Academe\SagePayMsg\Money\Amount;
 use Academe\SagePayMsg\PaymentMethod\Card;
 use Academe\SagePayMsg\Message\TransactionRequest;
@@ -202,8 +202,8 @@ $transaction_response = TransactionResponse::fromData($response->json());
 // More work is needed to make sense of the result, but that's the basic flow. Here it
 // is expanded into a more workable example,.but do bear in mind this is likely to change:
 
-use Academe\SagePayMsg\Models\ErrorCollection;
-use Academe\SagePayMsg\Models\Error;
+use Academe\SagePayMsg\Model\ErrorCollection;
+use Academe\SagePayMsg\Model\Error;
 
 try {
     $response = $client->send($request);

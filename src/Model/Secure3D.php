@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePayMsg\Models;
+<?php namespace Academe\SagePayMsg\Model;
 
 /**
  * The 3DSecure response from a Sage Pay transaction.

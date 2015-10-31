@@ -4,7 +4,7 @@
  * The request for a session key.
  */
 
-use Academe\SagePayMsg\Models\Auth;
+use Academe\SagePayMsg\Model\Auth;
 
 class SessionKeyRequest extends AbstractRequest
 {

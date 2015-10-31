@@ -14,7 +14,7 @@ use Exception;
 use UnexpectedValueException;
 
 use Academe\SagePayMsg\Helper;
-use Academe\SagePayMsg\Models\Secure3D;
+use Academe\SagePayMsg\Model\Secure3D;
 
 class TransactionResponse extends AbstractMessage
 {

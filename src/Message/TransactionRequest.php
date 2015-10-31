@@ -12,12 +12,12 @@ use UnexpectedValueException;
 
 use ReflectionClass;
 
-use Academe\SagePayMsg\Models\Auth;
+use Academe\SagePayMsg\Model\Auth;
 use Academe\SagePayMsg\PaymentMethod\PaymentMethodInterface;
 use Academe\SagePayMsg\Money\AmountInterface;
-use Academe\SagePayMsg\Models\AddressInterface;
-use Academe\SagePayMsg\Models\ShippingDetails;
-use Academe\SagePayMsg\Models\BillingDetails;
+use Academe\SagePayMsg\Model\AddressInterface;
+use Academe\SagePayMsg\Model\ShippingDetails;
+use Academe\SagePayMsg\Model\BillingDetails;
 
 class TransactionRequest extends AbstractRequest
 {

@@ -14,7 +14,7 @@
 use Exception;
 use UnexpectedValueException;
 
-use Academe\SagePayMsg\Models\Auth;
+use Academe\SagePayMsg\Model\Auth;
 use Academe\SagePayMsg\Message\SessionKeyResponse;
 
 class CardIdentifierRequest extends AbstractRequest
