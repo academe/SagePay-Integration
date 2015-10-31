@@ -14,6 +14,9 @@ use Academe\SagePayMsg\Helper;
 
 class Address implements AddressInterface
 {
+    /**
+     * @var
+     */
     protected $address1;
     protected $address2;
     protected $city;
@@ -23,6 +26,14 @@ class Address implements AddressInterface
 
     protected $fieldPrefix = '';
 
+    /**
+     * @param $address1
+     * @param $address2
+     * @param $city
+     * @param $postalCode
+     * @param $country
+     * @param $state
+     */
     public function __construct($address1, $address2, $city, $postalCode, $country, $state)
     {
         // These fields are always mandatory.
@@ -84,6 +95,10 @@ class Address implements AddressInterface
         );
     }
 
+    /**
+     * @param $field
+     * @return string
+     */
     protected function addFieldPrefix($field)
     {
         if ( ! $this->fieldPrefix) {
