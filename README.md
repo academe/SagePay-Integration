@@ -211,6 +211,28 @@ try {
     // Now create the transaction response from the return data.
     $transaction_response = TransactionResponse::fromData($response->json());
     var_dump($transaction_response);
+
+    // If a 3DSecure action is needed, then do that here.
+    // The HTTP response code will be 202.
+    // All this can be put into an iframe so the user does not feel like they are
+    // leaving the site.
+    if ($transaction_response->getStatus() == '3DAuth') {
+        $acsUrl = $transaction_response->get3DSecure()->getAcsUrl();
+        $TermUrl = 'http://example.com/TermUrlHandler.php';
+	$transactionId = rand(1000000, 9999999); // DEMO ONLY!
+
+        $paRequestFields = $transaction_response->get3DSecure()->getPaRequestFields($transactionId, $TermUrl);
+
+        echo "<p>Do 3DSecure</p>";
+        echo "<form method='post' action='$url'>";
+        foreach($paRequestFields as $field_name => $field_value) {
+            // These will be hidden fields; they are shown for demo purposes.
+            echo "<p>$field_name <input type='text' name='$field_name' value='$field_value' /></p>";
+        }
+        // Normally an auto-submit will happen here.
+        echo "<button type='submit' />";
+        echo "</form>";
+    }
 } catch(\GuzzleHttp\Exception\ClientException $e) {
     // Get the response that Guzzle has saved and added to its exception.
     $response = $e->getResponse();
@@ -218,7 +240,7 @@ try {
     // Here we have one or more errors.
     // We get multiple errors when the error code is 422, otherwise we get just the one error.
     if ($response->getStatusCode() == 422) {
-        // Put the errors or errors into a collection.
+        // Put the error or errors into a collection.
         $errors = ErrorCollection::fromData($response->json());
 
         // The error collection will be able to return errors organised by the field name.
