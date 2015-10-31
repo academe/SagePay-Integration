@@ -219,7 +219,7 @@ try {
     if ($transaction_response->getStatus() == '3DAuth') {
         $acsUrl = $transaction_response->get3DSecure()->getAcsUrl();
         $TermUrl = 'http://example.com/TermUrlHandler.php';
-	$transactionId = rand(1000000, 9999999); // DEMO ONLY!
+        $transactionId = rand(1000000, 9999999); // DEMO ONLY!
 
         $paRequestFields = $transaction_response->get3DSecure()->getPaRequestFields($transactionId, $TermUrl);
 
