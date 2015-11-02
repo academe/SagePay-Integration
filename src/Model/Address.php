@@ -27,12 +27,12 @@ class Address implements AddressInterface
     protected $fieldPrefix = '';
 
     /**
-     * @param $address1
-     * @param $address2
-     * @param $city
-     * @param $postalCode
-     * @param $country
-     * @param $state
+     * @param string $address1 Address line 1
+     * @param string $address2 Address line 2
+     * @param string $city The name of the city or town
+     * @param string $postalCode The postal code
+     * @param string $country The country ISO 3166-2 two-letter code
+     * @param string $state The last two letters of the ISO 3166-2:US state code
      */
     public function __construct($address1, $address2, $city, $postalCode, $country, $state)
     {
@@ -82,6 +82,10 @@ class Address implements AddressInterface
 
     /**
      * Create a new instance from an array or object of values.
+     *
+     * @param $data
+     *
+     * @return static
      */
     public static function fromData($data)
     {
