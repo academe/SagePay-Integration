@@ -14,13 +14,15 @@ use UnexpectedValueException;
 
 class Amount implements AmountInterface
 {
-    // Integer value in the smallest units.
+    /**
+     * @var Integer value in the smallest units
+     */
     protected $amount;
     protected $currency;
 
     /**
-     * $amount is an integer, or a string with no decimal points;
-     * it is treated as a minor unit (e.g. pence or cents).
+     * @param Currency $currency
+     * @param int $amount Minor unit total amount, with no decimal part
      */
     public function __construct(Currency $currency, $amount = 0)
     {
@@ -32,6 +34,10 @@ class Amount implements AmountInterface
     /**
      * Allow the decimal notation of the currency to be supplied,
      * as a float or a string.
+     *
+     * @param float|string|int $amount Total amount as major units and fractions of major units
+     *
+     * @return Amount Clone of $this with a newamount set
      */
     public function withMajorUnit($amount)
     {
@@ -56,6 +62,9 @@ class Amount implements AmountInterface
     /**
      * Allow the smallest units of the currency to be supplied,
      * as an integer or a string.
+     * FIXME: complete this
+     *
+     * @param int|string $amount An amount in minor units, with no decimal part
      */
     public function withMinorUnit($amount)
     {
@@ -69,7 +78,15 @@ class Amount implements AmountInterface
      * Magic method to support e.g. $amount = Amount::EUR(995)
      * equivalent to: new Amount(new Currency('EUR'), 995)
      */
-    public static function __callStatic($name, $arguments)
+    /**
+     * @param string $name The three-letter ISO currency code
+     * @param array $arguments [0] = required amount
+     *
+     * @return static New instance of an Amount
+     *
+     * @throws Exception
+     */
+    public static function __callStatic($name, array $arguments)
     {
         try {
             $currency = new Currency($name);
@@ -91,7 +108,7 @@ class Amount implements AmountInterface
     }
 
     /**
-     * Return the amount, always in minot units.
+     * @return int The amount, in minot units
      */
     public function getAmount()
     {
@@ -99,7 +116,7 @@ class Amount implements AmountInterface
     }
 
     /**
-     * Return the currency object.
+     * @return Currency The currency object
      */
     public function getCurrency()
     {
@@ -107,7 +124,7 @@ class Amount implements AmountInterface
     }
 
     /**
-     * Return the currency ISO code.
+     * @return string The currency three-character ISO code
      */
     public function getCurrencyCode()
     {

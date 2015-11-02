@@ -10,7 +10,9 @@ use UnexpectedValueException;
 
 class Currency
 {
-    // ISO 4217 currency code.
+    /**
+     * @var ISO 4217 currency code
+     */
     protected $code;
 
     /**
@@ -18,6 +20,8 @@ class Currency
      * 'digits' are the number of digits after the decimal point.
      * Some currencies only allow minor units of a certain size, but
      * none of these yet.
+     *
+     * @var array
      */
     protected static $currencies = [
         // Original three currencies.
@@ -31,6 +35,9 @@ class Currency
         'ZAR' => ['digits' => 2, 'symbol' => 'R', 'name' => 'South African rand'],
     ];
 
+    /**
+     * @param string $code The ISO 4217 three-character currency code
+     */
     public function __construct($code)
     {
         if (isset(static::$currencies[$code])) {
@@ -40,13 +47,16 @@ class Currency
         }
     }
 
+    /**
+     * @return string The ISO 4217 three-character currency code
+     */
     public function getCode()
     {
         return $this->code;
     }
 
     /**
-     * The number of digits in the decimal subunit.
+     * @return mixed The number of digits in the decimal subunit
      */
     public function getDigits()
     {
@@ -57,6 +67,8 @@ class Currency
      * The symbols will be one or more UTF-8 characters.
      * getName and getSymbol are handy for display and logging, but not essential,
      * so they are not a part of the interface.
+     *
+     * @return string The name of the currency
      */
     public function getName()
     {
@@ -64,7 +76,7 @@ class Currency
     }
 
     /**
-     * The symbols will be one or more UTF-8 characters.
+     * @return string The currency symbol, made of one or more UTF-8 characters
      */
     public function getSymbol()
     {
@@ -72,7 +84,7 @@ class Currency
     }
 
     /**
-     * Return details of all the supported currencies.
+     * @return array Details of all the supported currencies
      */
     public static function supportedCurrencies()
     {
