@@ -10,13 +10,25 @@ use UnexpectedValueException;
 
 class Person
 {
+    /**
+     * @var
+     */
     protected $firstName;
     protected $lastName;
     protected $email;
     protected $phone;
 
+    /**
+     * @var string The current field prefix
+     */
     protected $fieldPrefix = '';
 
+    /**
+     * @param string $firstName The first name of the person
+     * @param string $lastName The last name of the person
+     * @param string|null $email The email address for the person
+     * @param string|null $phone The phone number for the person
+     */
     public function __construct($firstName, $lastName, $email = null, $phone = null)
     {
         // These fields are always mandatory.
@@ -33,26 +45,41 @@ class Person
         $this->phone = $phone;
     }
 
+    /**
+     * @return string The first name for the person
+     */
     public function getFirstName()
     {
         return $this->firstName;
     }
 
+    /**
+     * @return string The last name for the person
+     */
     public function getLastName()
     {
         return $this->lastName;
     }
 
+    /**
+     * @return string The email address for the person
+     */
     public function getEmail()
     {
         return $this->email;
     }
 
+    /**
+     * @return string The phone number for the person
+     */
     public function getPhone()
     {
         return $this->lastPhone;
     }
 
+    /**
+     * @return array The Person returned as an array for the API, requiring conversion to JSON
+     */
     public function getBody()
     {
         // First/last name is always required.
@@ -70,6 +97,9 @@ class Person
         return $return;
     }
 
+    /**
+     * @return array
+     */
     public function getNamesBody()
     {
         // Name is mandatory.
@@ -79,6 +109,11 @@ class Person
         ];
     }
 
+    /**
+     * @param string $field The field name without a prefix
+     *
+     * @return string The field name with the current prefix added and camel capitalisation
+     */
     protected function addFieldPrefix($field)
     {
         if ( ! $this->fieldPrefix) {
@@ -89,7 +124,9 @@ class Person
     }
 
     /**
-     * Set the field prefix used when returning the object as an array.
+     * @param string $fieldPrefix The field prefix used when returning the object as an array
+     *
+     * @return Person Clone of $this with the prefix set.
      */
     public function withFieldPrefix($fieldPrefix)
     {

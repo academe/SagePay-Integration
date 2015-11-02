@@ -15,23 +15,42 @@ use Academe\SagePayMsg\Helper;
 
 class ErrorCollection implements \IteratorAggregate
 {
+    /**
+     * @var array
+     */
     protected $items = array();
 
+    /**
+     * @param array $items Initial array of Error instances
+     */
     public function __construct(array $items = [])
     {
         $this->items = array_values($items);
     }
 
+    /**
+     * Add a new error to the collection.
+     *
+     * @param Error $item An Error instance to add
+     */
     public function add(Error $item)
     {
         $this->items[] = $item;
     }
 
+    /**
+     * @return ArrayIterator
+     */
     public function getIterator()
     {
         return new ArrayIterator($this->items);
     }
 
+    /**
+     * @param array|object $data List of Error instances or array of error details
+     *
+     * @return static Collection of Error instances
+     */
     public static function fromData($data)
     {
         $errors = Helper::structureGet($data, 'errors', null);
@@ -54,6 +73,11 @@ class ErrorCollection implements \IteratorAggregate
      * errors without a property reference..
      * Returns ErrorCollection
      */
+    /**
+     * @param null|string $property_name The property name or null to get errors without a property name
+     *
+     * @return static A collection of zero or more Error objects
+     */
     public function byProperty($property_name = null)
     {
         $result = new static();
@@ -68,7 +92,7 @@ class ErrorCollection implements \IteratorAggregate
     }
 
     /**
-     * Return an array of properties.
+     * @return array Array of all properties the errors in this collection report on
      */
     public function getProperties()
     {
@@ -84,7 +108,7 @@ class ErrorCollection implements \IteratorAggregate
     }
 
     /**
-     * Count of errors in the collection.
+     * @return int Count of errors in the collection
      */
     public function count()
     {
@@ -92,7 +116,7 @@ class ErrorCollection implements \IteratorAggregate
     }
 
     /**
-     * Tells us if there are any errors in the collection.
+     * @return bool True if there are any errors in the collection, otherwise False
      */
     public function hasErrors()
     {

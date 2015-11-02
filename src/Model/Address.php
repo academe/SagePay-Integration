@@ -83,9 +83,9 @@ class Address implements AddressInterface
     /**
      * Create a new instance from an array or object of values.
      *
-     * @param $data
+     * @param array|object $data Address data using fields or elements for intialisation
      *
-     * @return static
+     * @return static New address object set up from the data
      */
     public static function fromData($data)
     {
@@ -100,8 +100,13 @@ class Address implements AddressInterface
     }
 
     /**
-     * @param $field
-     * @return string
+     * Add the current prefix to a field name. Some addresses in the Sage Pay API have
+     * prefixes depending on context. For example, one object may use field "city" and
+     * another object may prefix it to "recipientCity", with camel capitalisation.
+     *
+     * @param string $field The name of a data field without the current prefix
+     *
+     * @return string The name of the data field with the current prefix added, if a prefix is set
      */
     protected function addFieldPrefix($field)
     {
@@ -116,6 +121,8 @@ class Address implements AddressInterface
      * Return the body partial for message construction.
      * Includes all mandatory fields, and optional fields only if not empty.
      * Takes into account the field name prefix, if set.
+     *
+     * @return array Data for passing to the API, requiring JSON conversion first.
      */
     public function getBody()
     {
@@ -144,6 +151,10 @@ class Address implements AddressInterface
 
     /**
      * Set the field prefix used when returning the object as an array.
+     *
+     * @param string $fieldPrefix The prefix to be added to all fields, normally lower-case
+     *
+     * @return Address Clone of $this with the prefix set.
      */
     public function withFieldPrefix($fieldPrefix)
     {

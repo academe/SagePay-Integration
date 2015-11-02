@@ -10,17 +10,26 @@ use UnexpectedValueException;
 
 class BillingDetails
 {
+    /**
+     * @var Person
+     */
     protected $person;
     protected $address;
 
-    // The prefix is added to the name fields when sending to SagePay.
+    /**
+     * @var string The prefix added to the name fields when sending to SagePay
+     */
     protected $nameFieldPrefix = 'customer';
 
-    // The prefix added to address name fields.
+    /**
+     * @var string The prefix added to address name fields
+     */
     protected $addressFieldPrefix = '';
 
-    // TODO: should the firstName and lastName be a Person class, with its own
-    // validation built-in?
+    /**
+     * @param Person $person Details of the person that will be billed
+     * @param Address $address The billing address of the person that will be billed
+     */
     public function __construct(Person $person, Address $address)
     {
         $this->person = $person->withFieldPrefix($this->nameFieldPrefix);
@@ -30,8 +39,9 @@ class BillingDetails
     }
 
     /**
-     * Body fragment for the billing details.
      * These are all on two levels, with field name prefixes.
+     *
+     * @return array Body fragment for the billing details, requiring conversion to JSON for the API
      */
     public function getBody()
     {
@@ -42,8 +52,13 @@ class BillingDetails
     }
 
     /**
-     * Add the "name" profix to a field name, capitalising the original
-     * initial letter of the field if necessary to keep cammel-case.
+     * Add the "name" prefix to a field name, capitalising the original
+     * initial letter of the field if necessary to keep camel-case.
+     */
+    /**
+     * @param $field The field name without a prefix
+     *
+     * @return string The field name with the current prefix added, with camel capitalisation
      */
     protected function addNamePrefix($field)
     {
@@ -55,7 +70,7 @@ class BillingDetails
     }
 
     /**
-     * Return the address object.
+     * @return Address The billing address object
      */
     public function getAddress()
     {
@@ -63,7 +78,7 @@ class BillingDetails
     }
 
     /**
-     * Return the address as an array for constructing a message body fragment.
+     * @return array The billing address as an array for constructing a message body fragment
      */
     public function getAddressBody()
     {
@@ -71,7 +86,7 @@ class BillingDetails
     }
 
     /**
-     * Return the first name of the customer.
+     * @return string the first name of the customer
      */
     public function getFirstName()
     {
@@ -79,7 +94,7 @@ class BillingDetails
     }
 
     /**
-     * Return the last name of the customer.
+     * @return string The last name of the customer
      */
     public function getLastName()
     {

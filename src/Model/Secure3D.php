@@ -15,11 +15,16 @@ use Academe\SagePayMsg\Helper;
 
 class Secure3D
 {
-    // FIXME: also need the MD.
+    /**
+     * @var
+     */
     protected $status;
     protected $acsUrl;
     protected $paReq;
 
+    /**
+     * @var array List of statuses that the 3DSecure object can return
+     */
     protected $statuses = [
         'authenticated' => 'Authenticated',
         'force' => 'Force',
@@ -30,6 +35,11 @@ class Secure3D
         'issuernotenrolled' => 'IssuerNotEnrolled',
     ];
 
+    /**
+     * @param string $status The status of the 3DSecure result
+     * @param string|null $acsUrl The ACS URL of the 3DSecure result
+     * @param string|null $paReq The PA Res of the 3DSecure result
+     */
     public function __construct($status, $acsUrl = null, $paReq = null)
     {
         $this->status = $status;
@@ -45,6 +55,11 @@ class Secure3D
      * at all in the response, then the overall transaction status will be picked
      * up here.
      */
+    /**
+     * @param $data Array of single-level data or raw transaction response to initialise the object
+     *
+     * @return static New instance of Secure3D object
+     */
     public static function fromData($data)
     {
         return new static(
@@ -55,7 +70,7 @@ class Secure3D
     }
 
     /**
-     * The status of the 3DSecure result.
+     * @return string The status of the 3DSecure result
      */
     public function getStatus()
     {
@@ -63,7 +78,7 @@ class Secure3D
     }
 
     /**
-     * The 3DSecure ACS URL, to send users to.
+     * @return string The 3DSecure ACS URL, to send users to
      */
     public function getAcsUrl()
     {
@@ -71,7 +86,7 @@ class Secure3D
     }
 
     /**
-     * The 3DSecure PA REQ, the token to send along to the ACS URL.
+     * @return string The 3DSecure PA REQ, the token to send along to the ACS URL
      */
     public function getPaReq()
     {
@@ -84,6 +99,11 @@ class Secure3D
      * the merchant transaction ID.
      * $termUrl is the return URL after the PA Request is complete. Add it here,
      * or set it explicitly in your form.
+     *
+     * @param string $merchantData The MD key to identify the transaction in the callback
+     * @param string|null $termUrl The callback URL, if known at this point
+     *
+     * @return array List of parameter fields and values to go into the PA Req POST
      */
     public function getPaRequestFields($merchantData, $termUrl = null)
     {

@@ -10,22 +10,40 @@ use UnexpectedValueException;
 
 class Auth
 {
+    /**
+     * @var
+     */
     protected $vendorName;
     protected $integrationKey;
     protected $integrationPassword;
     protected $mode;
 
-    // This release is locked onto just one API version.
+    /**
+     * This release is locked onto just one API version.
+     * It is likely beta will remain v1 for its entire lifetime.
+     */
     const API_VERSION = 'v1';
 
+    /**
+     * Modes of operation.
+     */
     const MODE_LIVE = 1;
     const MODE_TEST = 2;
 
+    /**
+     * @var array The endpoint URLs, one for each mode.
+     */
     protected $urls = [
         1 => 'https://www.sagepay.com/api/{version}{resource}',
         2 => 'https://test.sagepay.com/api/{version}{resource}',
     ];
 
+    /**
+     * @param string $vendorName The vendor name supplied by Sage Pay owning the API account
+     * @param string $integrationKey The integration key generated for the merchant site
+     * @param string $integrationPassword The integration password generated for the merchant site
+     * @param int $mode The mode of operation
+     */
     public function __construct(
         $vendorName,
         $integrationKey,
@@ -44,21 +62,33 @@ class Auth
         $this->mode = $mode;
     }
 
+    /**
+     * @return string The vendor name
+     */
     public function getVendorName()
     {
         return $this->vendorName;
     }
 
+    /**
+     * @return string The integration key
+     */
     public function getIntegrationKey()
     {
         return $this->integrationKey;
     }
 
+    /**
+     * @return string The integration password
+     */
     public function getIntegrationPassword()
     {
         return $this->integrationPassword;
     }
 
+    /**
+     * @return string The API version
+     */
     public function getApiVersion()
     {
         return static::API_VERSION;
@@ -70,6 +100,10 @@ class Auth
      * String resources must include a "/" prefix and be ready-encoded for the URL.
      * A resource as an array should not have directory separators included, and will
      * be url encoded here, so should not be done in advance.
+     *
+     * @param string $resource The name of the resource
+     *
+     * @return string The absolute endpoint URL
      */
     public function getUrl($resource = '')
     {
@@ -88,6 +122,8 @@ class Auth
 
     /**
      * Get the URL of sagepay.js - the card token generator for the front end.
+     *
+     * @return string The URL to the JavaScript front end resource on the Sage Pay gateway
      */
     public function getJavascriptUrl()
     {
@@ -95,7 +131,9 @@ class Auth
     }
 
     /**
-     * Return a testing instance (since it was an optioal setting on first instantiation).
+     * Return a testing instance (since it was an optional setting on first instantiation).
+     *
+     * @return Auth A clone of $this with test mode set
      */
     public function withTestingMode()
     {
@@ -106,6 +144,8 @@ class Auth
 
     /**
      * Indicates whether we are using a test account.
+     *
+     * @return bool True if we are in testing mode, otherwise False
      */
     public function isTesting()
     {
@@ -115,6 +155,11 @@ class Auth
     /**
      * Override any of the URLs.
      * Supports replacement fields {version} and {resource}
+     *
+     * @param $mode The mode to set the endpoint URL for
+     * @param $url The absolute URL or URL template with placeholders
+     *
+     * @return Auth A clone of $this with the new URL or URL template set
      */
     public function withUrl($mode, $url)
     {

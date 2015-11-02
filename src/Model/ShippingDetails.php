@@ -10,15 +10,20 @@ use UnexpectedValueException;
 
 class ShippingDetails extends BillingDetails
 {
-    // The prefix is added to the name fields when sending to SagePay.
+    /**
+     * @var string The prefix is added to the name fields when sending to Sage Pay
+     */
     protected $nameFieldPrefix = 'recipient';
 
-    // The prefix added to address name fields.
+    /**
+     * @var string The prefix added to address name fields
+     */
     protected $addressFieldPrefix = 'shipping';
 
     /**
-     * Body fragment for the shipping details.
      * These are all on the same level, with field name prefixes.
+     *
+     * @return array Body fragment for the shipping details, requiring conversion to JSON
      */
     public function getBody()
     {

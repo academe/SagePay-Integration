@@ -24,10 +24,18 @@ use Academe\SagePayMsg\Helper;
 
 class Error
 {
+    /**
+     * @var
+     */
     protected $code;
     protected $description;
     protected $property;
 
+    /**
+     * @param string|int $code The error code supplied by the remote API
+     * @param string $description The textual detail of the error
+     * @param null|string $property The property name (field name) of the property the error applies to
+     */
     public function __construct($code, $description, $property = null)
     {
         $this->code = $code;
@@ -35,16 +43,25 @@ class Error
         $this->property = $property;
     }
 
+    /**
+     * @return int|string The error code supplied by the remote API
+     */
     public function getCode()
     {
         return $this->code;
     }
 
+    /**
+     * @return string The textual detail of the error
+     */
     public function getDescription()
     {
         return $this->description;
     }
 
+    /**
+     * @return null|string The property name (field name) of the property the error applies to
+     */
     public function getProperty()
     {
         return $this->property;
@@ -57,6 +74,11 @@ class Error
      * is "The DeliveryAddress1 value is too long". This translates to code 1004 (Invalid length)
      * for the property "shippingDetails.shippingAddress1". Ideally we should not have
      * to do that.
+     */
+    /**
+     * @param array|object $data Error data from the API to initialise the Error object
+     *
+     * @return static New instance of Error object
      */
     public static function fromData($data)
     {
