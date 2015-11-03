@@ -1,7 +1,8 @@
 <?php namespace Academe\SagePayMsg;
 
 /**
- * Register autoloader for projects not using composer.
+ * Register PSR-4 autoloader for projects not using composer or an
+ * alternative autoloader.
  */
 
 spl_autoload_register(function($class) {
