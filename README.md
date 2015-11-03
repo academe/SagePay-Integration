@@ -227,11 +227,10 @@ try {
     // All this can be put into an iframe so the user does not feel like they are
     // leaving the site.
     if ($transaction_response->getStatus() == '3DAuth') {
-        $acsUrl = $transaction_response->get3DSecure()->getAcsUrl();
+        $acsUrl = $transaction_response->getAcsUrl();
         $TermUrl = 'http://example.com/TermUrlHandler.php';
-        $transactionId = rand(1000000, 9999999); // DEMO ONLY!
 
-        $paRequestFields = $transaction_response->get3DSecure()->getPaRequestFields($transactionId, $TermUrl);
+        $paRequestFields = $transaction_response->getPaRequestFields($TermUrl);
 
         echo "<p>Do 3DSecure</p>";
         echo "<form method='post' action='$url'>";
