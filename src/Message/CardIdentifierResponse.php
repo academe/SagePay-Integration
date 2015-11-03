@@ -45,6 +45,9 @@ class CardIdentifierResponse extends AbstractMessage
     {
         // Use the default system timezone; the DateTime comparison
         // operation will handle any timezone conversions.
+        // Note that this does not do a remote check with the Sage Pay
+        // API. We can only find out if it is really still valid by
+        // attempting to use it.
 
         $time_now = new DateTime();
 

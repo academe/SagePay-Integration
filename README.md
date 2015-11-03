@@ -1,36 +1,45 @@
 # Sage Pay Integration Messages
 
-This package provides the data models and business logic for the *Sage Pay Integration* payment gateway.
+This package provides the data models and business logic for the *Sage Pay Integration* payment gateway
+(sometimes called the `Pi` API).
 It does not provide the transport mechanism, so you can use what you like for that,
 for example Guzzle, curl or a PSR-7 library.
+
+## Want to Help?
+
+Issues, comments, suggestions and PRs are all welcome. So far as I know, this is the first API for the
+Sage Pay Integration REST API, so do get involved, as there is a lot of work to do.
+
+## Package Development
 
 The Sage Pay Integration payment gateway is a RESTful API run by by [Sage Pay](https://sagepay.com/).
 You can [apply for an account here](https://applications.sagepay.com/apply/3F7A4119-8671-464F-A091-9E59EB47B80C) (partner link).
 
 It is very much work in progress at this very early stage, while this Sage Pay API is in beta.
-However,we aim to move quickly and follow changes to the API as they are released.
+However, we aim to move quickly and follow changes to the API as they are released or implemented.
 The aim is for the package to be a complete model for the Sage Pay Integration API, providing all the data
 objects, messages (in both directions) and as much validation as is practical.
-During this early stages you will find many of my thoughts on how this package will work, and
+During these early stages you will find many of my thoughts on how this package will work, and
 many U-turns too. Any feedback or suggestions is most welcome, but do bear in mind things will
 be changing a lot, but hopefully heading in the right direction.
 
 There is no test suite in here yet. That will come once the structure is a little more stable.
 
-* The `Academe\SagePayMsg\Model` namespace comntains internal models for various data structures and for constructing messages.
-* The `Academe\SagePayMsg\Messages` namespace is for message structures that go to and from Sage Pay.
-* Messages are suffixed with `Request` or `Response` depending on whether that go to Sage Pay or come from Sage Pay.
-* The Response messages should be instantiable with a JSON or array object.
+* The `Academe\SagePayMsg\Model` namespace comntains internal models for various data structures and for message fragments.
+* The `Academe\SagePayMsg\Message` namespace is for message structures that go to and from Sage Pay.
+* Message classes are suffixed with `Request` or `Response` depending on whether that go to Sage Pay or come from Sage Pay.
+* The Response messages will be instantiable with an array or object.
   They should also create any child objects that define the whole message.
   A locator service may be useful here if many objects are being created, so they can be overridden
-  by the merchant application as needed.
-* Unmutable value objects are used throughout, where possible.
-* Sticking to PHP 5.4 for now, and including an autoloader so is can be used outside of composer.
+  by the merchant application as needed, but this will be a later addition.
+* Unmutable value objects are used for models and messages, where possible.
+* Sticking to PHP 5.4 syntax for now, and including an autoloader so it can be used outside of composer.
   There will be non-composer applications, such as WordPress plugins, that will benefit from this.
 * This package will just handle the messages and business logic (e.g. validation and data structures).
   The HTTP communinications are to be handled outside this package.
+  That includes conversion of arrays to and from JSON.
   I'm trying to keep these two concerns separate for a number of reasons, least of all testing.
-* 3DSecure is not supported by v1 of the API. Although v1 *can* take live payments, I would not recommend
+* 3DSecure is not supported by the first draft of v1 of the API. Although v1 *can* take live payments, I would not recommend
   doing so until 3DSecure can be used. Without it, your liability as a merchant site for passing
   through fraudulent payments is much higher. v2 of the API is reported to include an implementation of 3DSecure.
 
@@ -264,25 +273,7 @@ try {
 }
 ~~~
 
-Some lessons:
-
-Firstly, we don't need to mess around with JSON. We don't want to locked into using
-Guzzle 5.3, but it is a safe assumption that whatever HTTP client we use, it will
-handle any JSON conversion in both directions. We'll base the rest of the library
-on that assumption. We will try to handle arrays and objects provided by the
-merchant application interchangeably.
-
-It looks like the SessionKeyResponse and the Auth objects are always going to be
-needed together with a Request object. Makeing Auth a property of SessionKeyResponse
-may be a good move. So this:
-
-    CardIdentifierResponse::fromData($response->json()
-
-would become:
-
-    CardIdentifierResponse::fromData($auth, $response->json())
-
-### A Typical Workflow
+### A Typical Workflow (without 3D Secure)
 
 1. The server will get a session key. This will last for 200 seconds or three uses.
 2. The payment form is presented, with credit card fields and personal details fields.
@@ -299,9 +290,9 @@ would become:
    user again, and that will require another session key to include in the form.
 11. If the transaction was accepted, then the successful result can be recorded and the user informed.
 
-The key things to remember are:
+Key things to remember are:
 
-* The session key can be found to be expired at any time.
+* The session key can be found to be expired at any time. It has both a time limit and a maximum number of uses.
 * The card token will expire after a successful submission of a transaction, or three invalid transactions.
-* Do not present the credit card fields to the user if we habe a valid card token.
+* Do not present the credit card fields to the user if we have a valid card token.
 * Do not call sagepay.js on form submit if either we have a card token, or there are no credit card fields in the form.
