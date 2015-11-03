@@ -35,6 +35,7 @@ There is no test suite in here yet. That will come once the structure is a littl
 * Unmutable value objects are used for models and messages, where possible.
 * Sticking to PHP 5.4 syntax for now, and including an autoloader so it can be used outside of composer.
   There will be non-composer applications, such as WordPress plugins, that will benefit from this.
+  I may slip up on some later formats such as [] instead of array() but I'll try not to.
 * This package will just handle the messages and business logic (e.g. validation and data structures).
   The HTTP communinications are to be handled outside this package.
   That includes conversion of arrays to and from JSON.
@@ -43,7 +44,7 @@ There is no test suite in here yet. That will come once the structure is a littl
   doing so until 3DSecure can be used. Without it, your liability as a merchant site for passing
   through fraudulent payments is much higher. v2 of the API is reported to include an implementation of 3DSecure.
 
-Current version of API spec is "11-08-2015 (beta)" - 2015-08-11 would be a better date:
+Current version of API spec is "28-10-2015 (beta)":
 https://test.sagepay.com/documentation/#shipping-details-object
 
 ## Example Code
