@@ -251,7 +251,7 @@ try {
 
     // Here we have one or more errors.
     // We get multiple errors when the error code is 422, otherwise we get just the one error.
-    if ($response->getStatusCode() == $response::UNPROCESSABLE_ENTITY) {
+    if ($response->getStatusCode() == TransactionResponse::UNPROCESSABLE_ENTITY) {
         // Put the error or errors into a collection.
         $errors = ErrorCollection::fromData($response->json());
 
