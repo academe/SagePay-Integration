@@ -7,6 +7,9 @@
 use Exception;
 use UnexpectedValueException;
 
+use Academe\SagePayMsg\Helper;
+
+// Teapot here provides HTTP response code constants.
 use Teapot\StatusCode\RFC\RFC2616;
 use Teapot\StatusCode\RFC\RFC2324;
 use Teapot\StatusCode\RFC\RFC2774;
@@ -48,5 +51,20 @@ abstract class AbstractResponse extends AbstractMessage implements RFC2616, RFC2
         $clone = clone $this;
         $clone->setHttpCode($code);
         return $clone;
+    }
+
+    /**
+     * Store the HTTP response code passed in through fromData().
+     * Take the explicit code or take it from the data array.
+     */
+    protected function storeHttpCode(AbstractResponse $response, $data, $httpCode)
+    {
+        if (isset($httpCode)) {
+            // The httpCode has been explicitly passed in.
+            $response->setHttpCode($httpCode);
+        } else {
+            // The httpCode can be pushed onto the data object/array for convenience.
+            $response->setHttpCode(Helper::structureGet($data, 'httpCode', null));
+        }
     }
 }

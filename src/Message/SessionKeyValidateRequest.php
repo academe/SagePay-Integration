@@ -8,16 +8,35 @@
 use Exception;
 use UnexpectedValueException;
 
-class SessionKeyValidateRequest
+use Academe\SagePayMsg\Model\Auth;
+
+class SessionKeyValidateRequest extends AbstractRequest
 {
+    protected $resource_path = ['merchant-session-keys'];
+
+    protected $auth;
     protected $sessionKey;
 
     /**
      * Supply the previously provided SessionKeyResponse for validation.
+     * TODO: some stuff to fix here. The URL construction is in Auth, but this endpoint
+     * does not actually require any authorisation. The URL construction should be done
+     * somewhere that can cater for both scenarios.
      */
-    public function __construct(SessionKeyResponse $sessionKey)
+    public function __construct(Auth $auth, SessionKeyResponse $sessionKey)
     {
-        $this->sessionKey = $sessionKey
+        $this->auth = $auth;
+        $this->sessionKey = $sessionKey;
+    }
+
+    /**
+     * The path of this resource.
+     *
+     * @return array The components of the path.
+     */
+    public function getResourcePath()
+    {
+        return array_merge($this->resource_path, [$this->getMerchantSessionKey()]);
     }
 
     /**

@@ -50,7 +50,7 @@ https://test.sagepay.com/documentation/#shipping-details-object
 ## Example Code
 
 Using Guzzle 5.3 a Session key can be requested from the test environment as follows.
-This happens on tyhe server before presenting the user with the payment form:
+This happens on the server before presenting the user with the payment form:
 
 ~~~php
 use GuzzleHttp\Client;
@@ -79,6 +79,8 @@ $request = $client->createRequest('POST', $session_key_request->getUrl(), [
     // OR via the raw headers:
     'headers' => $session_key_request->getHeaders(),
 ]);
+
+// This will need to be wrapped in a try...catch in case of any non-2XX return codes.
 $response = $client->send($request);
 
 // The response, if all is well, is a JSON body.
@@ -86,6 +88,8 @@ $response = $client->send($request);
 // Creaye a SessionKeyResponse object from the Sage Pay Response.
 $session_key_response = SessionKeyResponse::fromData($response->json());
 ~~~
+
+TODO: show how we put in a request to check the session key is still valid.
 
 Now we can use the session key to get a card token (like Sage Pay Direct, so server-to-server).
 This will normally be done on the browser using `sagepay.js` to do the AJAX call.

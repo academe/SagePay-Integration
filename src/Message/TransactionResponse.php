@@ -115,12 +115,9 @@ class TransactionResponse extends AbstractResponse
             Helper::structureGet($data, 'paReq', null)
         );
 
-        if (isset($httpCode)) {
-            $response->setHttpCode($httpCode);
-        } else {
-            // The httpCode can be pushed onto the data for convenience.
-            $response->setHttpCode(Helper::structureGet($data, 'httpCode', null));
-        }
+        // We can access the protected method here, because $response is an
+        // instantiation of stetic.
+        $response->storeHttpCode($response, $data, $httpCode);
 
         return $response;
     }

@@ -13,7 +13,7 @@ use UnexpectedValueException;
 
 use Academe\SagePayMsg\Helper;
 
-class CardIdentifierResponse extends AbstractMessage
+class CardIdentifierResponse extends AbstractResponse
 {
     protected $cardIdentifier;
     protected $expiry;
@@ -57,13 +57,17 @@ class CardIdentifierResponse extends AbstractMessage
     /**
      * Return an instantiation from the data returned by SagePay.
      */
-    public static function fromData($data)
+    public static function fromData($data, $httpCode = null)
     {
         $cardIdentifier = Helper::structureGet($data, 'cardIdentifier', null);
         $expiry = Helper::structureGet($data, 'expiry', null);
         $cardType = Helper::structureGet($data, 'cardType', null);
 
-        return new static($cardIdentifier, $expiry, $cardType);
+        $response = new static($cardIdentifier, $expiry, $cardType);
+
+        $response->storeHttpCode($response, $data, $httpCode);
+
+        return $response;
     }
 
     /**
