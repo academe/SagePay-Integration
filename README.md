@@ -86,7 +86,7 @@ $response = $client->send($request);
 // The response, if all is well, is a JSON body.
 
 // Creaye a SessionKeyResponse object from the Sage Pay Response.
-$session_key_response = SessionKeyResponse::fromData($response->json());
+$session_key_response = SessionKeyResponse::fromData($response->json(), $response->getStatusCode());
 ~~~
 
 TODO: show how we put in a request to check the session key is still valid.
@@ -130,7 +130,7 @@ $response = $client->send($request);
 
 // Collecting the response body.
 // This can be intialised using any array that contains element `cardIdentifier` at a minimum.
-$card_identifier_response = CardIdentifierResponse::fromData($response->json());
+$card_identifier_response = CardIdentifierResponse::fromData($response->json(), $response->getStatusCode());
 
 var_dump($card_identifier_response->toArray());
 
@@ -210,7 +210,7 @@ $response = $client->send($request);
 // errors, etc. The API is still a little in flux in this area, so I'll leave detailed
 // examples until later.
 // Assuming there are no problems and we get a HTTP 200, the result object is captured:
-$transaction_response = TransactionResponse::fromData($response->json());
+$transaction_response = TransactionResponse::fromData($response->json(), $response->getStatusCode());
 
 // The results of the payment should be in that object.
 // More work is needed to make sense of the result, but that's the basic flow. Here it
@@ -223,7 +223,7 @@ try {
     $response = $client->send($request);
 
     // Now create the transaction response from the return data.
-    $transaction_response = TransactionResponse::fromData($response->json());
+    $transaction_response = TransactionResponse::fromData($response->json(), $response->getStatusCode());
     var_dump($transaction_response);
 
     // If a 3DSecure action is needed, then do that here.
