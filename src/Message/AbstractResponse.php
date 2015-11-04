@@ -7,7 +7,11 @@
 use Exception;
 use UnexpectedValueException;
 
-abstract class AbstractResponse extends AbstractMessage
+use Teapot\StatusCode\RFC\RFC2616;
+use Teapot\StatusCode\RFC\RFC2324;
+use Teapot\StatusCode\RFC\RFC2774;
+
+abstract class AbstractResponse extends AbstractMessage implements RFC2616, RFC2324, RFC2774
 {
     /**
      * @var integer The HTTP response code.

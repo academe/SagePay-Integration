@@ -226,7 +226,10 @@ try {
     // The HTTP response code will be 202.
     // All this can be put into an iframe so the user does not feel like they are
     // leaving the site.
-    if ($transaction_response->getStatus() == '3DAuth') {
+    if (
+        $transaction_response->getHttpCode() == $transaction_response::ACCEPTED
+        && $transaction_response->getStatus() == '3DAuth'
+    ) {
         $acsUrl = $transaction_response->getAcsUrl();
         $TermUrl = 'http://example.com/TermUrlHandler.php';
 
@@ -248,7 +251,7 @@ try {
 
     // Here we have one or more errors.
     // We get multiple errors when the error code is 422, otherwise we get just the one error.
-    if ($response->getStatusCode() == 422) {
+    if ($response->getStatusCode() == $response::UNPROCESSABLE_ENTITY) {
         // Put the error or errors into a collection.
         $errors = ErrorCollection::fromData($response->json());
 
