@@ -69,7 +69,7 @@ $auth = new Auth(
 $session_key_request = new SessionKeyRequest($auth);
 
 $client = new Client();
-$request = $client->createRequest('POST', $session_key_request->getUrl(), [
+$request = $client->createRequest($session_key_request->getMethod(), $session_key_request->getUrl(), [
     // The body of the request as JSON.
     'json' => $session_key_request->getBody(),
     
@@ -116,7 +116,7 @@ $card_identifier_request = new CardIdentifierRequest(
 // The headers for this one call use the session key and not the integration key
 // as they do for all other server-to-server POSTs.
 $client = new Client();
-$request = $client->createRequest('POST', $card_identifier_request->getUrl(), [
+$request = $client->createRequest($card_identifier_request->getMethod(), $card_identifier_request->getUrl(), [
     'json' => $card_identifier_request->getBody(),
     'headers' => $card_identifier_request->getHeaders(),
 ]);
@@ -197,7 +197,7 @@ $transaction = new TransactionRequest(
 
 // Create a REST client to send the transaction:
 $client = new Client();
-$request = $client->createRequest('POST', $transaction->getUrl(), [
+$request = $client->createRequest($transaction->getMethod(), $transaction->getUrl(), [
     'json' => $transaction->getBody(),
     'headers' => $transaction->getHeaders()],
 ]);

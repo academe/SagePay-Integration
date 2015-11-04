@@ -18,6 +18,11 @@ class SessionKeyValidateRequest extends AbstractRequest
     protected $sessionKey;
 
     /**
+     * @var string This message is a GET request
+     */
+    protected $method = 'GET';
+
+    /**
      * Supply the previously provided SessionKeyResponse for validation.
      * TODO: some stuff to fix here. The URL construction is in Auth, but this endpoint
      * does not actually require any authorisation. The URL construction should be done
