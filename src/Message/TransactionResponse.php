@@ -16,7 +16,7 @@ use UnexpectedValueException;
 use Academe\SagePayMsg\Helper;
 use Academe\SagePayMsg\Model\Secure3D;
 
-class TransactionResponse extends AbstractMessage
+class TransactionResponse extends AbstractResponse
 {
     protected $transactionID;
     protected $trasactionType;
@@ -82,7 +82,7 @@ class TransactionResponse extends AbstractMessage
         $this->paReq = $paReq;
     }
 
-    public static function fromData($data)
+    public static function fromData($data, $httpCode = null)
     {
         // Note the object is called "3DSecure" and not "Secure3D" that use
         // for valid class, method and variable names.
@@ -99,7 +99,7 @@ class TransactionResponse extends AbstractMessage
             // Don't know how to handle this data.
         }
 
-        return new static(
+        $response = new static(
             Helper::structureGet($data, 'transactionID', null),
             Helper::structureGet($data, 'trasactionType', null),
             Helper::structureGet($data, 'status', null),
@@ -114,20 +114,34 @@ class TransactionResponse extends AbstractMessage
             Helper::structureGet($data, 'acsUrl', null),
             Helper::structureGet($data, 'paReq', null)
         );
+
+        if (isset($httpCode)) {
+            $response->setHttpCode($httpCode);
+        } else {
+            // The httpCode can be pushed onto the data for convenience.
+            $response->setHttpCode(Helper::structureGet($data, 'httpCode', null));
+        }
+
+        return $response;
     }
 
     /**
-     * The overall status of the transaction.
+     * There is a status (e.g. Ok), a statusCode (e.g. 2007), and a statusDetail (e.g. Transaction authorised).
+     * Also there is a HTTP return code (e.g. 202). All are needed in different contexts.
+     * However, there is a hint that the "status" may be removed, relying on the HTTP return code instead.
+     * @return string The overall status string of the transaction.
      */
     public function getStatus()
     {
+        // Enforce the correct capitalisation.
+
         return ! empty($this->statuses[strtolower($this->status)])
             ? $this->statuses[strtolower($this->status)]
             : $this->status;
     }
 
     /**
-     * The code that represents the status detail.
+     * @return string The numeric code that represents the status detail.
      */
     public function getStatusCode()
     {
@@ -135,7 +149,9 @@ class TransactionResponse extends AbstractMessage
     }
 
     /**
-     * The detailed status message.
+     * This message in some range of codes can be presented to the end user.
+     * In other ranges of codes it should only ever be logged fot the site administrator.
+     * @return string The detailed status message.
      */
     public function getStatusDetail()
     {
@@ -242,7 +258,7 @@ class TransactionResponse extends AbstractMessage
     {
         $fields = [
             'PaReq' => $this->getPaReq(),
-            'MD' => $this->md,
+            'MD' => $this->getMd(),
         ];
 
         if (isset($termUrl)) {
