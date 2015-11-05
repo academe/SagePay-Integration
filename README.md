@@ -89,7 +89,28 @@ $response = $client->send($request);
 $session_key_response = SessionKeyResponse::fromData($response->json(), $response->getStatusCode());
 ~~~
 
-TODO: show how we put in a request to check the session key is still valid.
+If we want to check with the API that the session key is still valid, we can do it like this:
+
+~~~php
+use Academe\SagePayMsg\Message\SessionKeyValidateRequest;
+use Academe\SagePayMsg\Message\SessionKeyResponse;
+
+$validate_request = new SessionKeyValidateRequest($auth, $session_key);
+$http_request = $client->createRequest($validate_request->getMethod(), $validate_request->getUrl());
+try {
+    $http_response = $client->send($http_request);
+} catch(Exception $e) {
+    $http_response = $e->getResponse();
+}
+$validate_response = SessionKeyResponse::fromData($http_response->json(), $http_response->getStatusCode());
+
+if ($validate_response->isValid()) {
+    echo "This session key seems to be valid";
+} else {
+    // Expired locally, expired removely, not found or other http error.
+    echo "This session key is invalid";
+}
+~~~
 
 Now we can use the session key to get a card token (like Sage Pay Direct, so server-to-server).
 This will normally be done on the browser using `sagepay.js` to do the AJAX call.
