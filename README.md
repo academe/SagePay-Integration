@@ -100,6 +100,9 @@ $http_request = $client->createRequest($validate_request->getMethod(), $validate
 try {
     $http_response = $client->send($http_request);
 } catch(Exception $e) {
+    // Guzzle throws an exception for any non-2XX status code. We just want to ignore that
+    // and pass whe HTTP code to the `SessionKeyResponse`. You might want to catch some codes,
+    // such as 5XX and handle them differently.
     $http_response = $e->getResponse();
 }
 $validate_response = SessionKeyResponse::fromData($http_response->json(), $http_response->getStatusCode());

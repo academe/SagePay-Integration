@@ -18,7 +18,7 @@ use Academe\SagePayMsg\Model\Secure3D;
 
 class TransactionResponse extends AbstractResponse
 {
-    protected $transactionID;
+    protected $transactionId;
     protected $trasactionType;
     protected $status;
     protected $statusCode;
@@ -55,7 +55,7 @@ class TransactionResponse extends AbstractResponse
      * it changes things a little.
      */
     public function __construct(
-        $transactionID,
+        $transactionId,
         $trasactionType,
         $status,
         $statusCode,
@@ -68,7 +68,7 @@ class TransactionResponse extends AbstractResponse
         $acsUrl = null,
         $paReq = null
     ) {
-        $this->transactionID = $transactionID;
+        $this->transactionId = $transactionId;
         $this->trasactionType = $trasactionType;
         $this->status = $status;
         $this->statusCode = $statusCode;
@@ -100,7 +100,7 @@ class TransactionResponse extends AbstractResponse
         }
 
         $response = new static(
-            Helper::structureGet($data, 'transactionID', null),
+            Helper::structureGet($data, 'transactionId', null),
             Helper::structureGet($data, 'trasactionType', null),
             Helper::structureGet($data, 'status', null),
             Helper::structureGet($data, 'statusCode', null),
@@ -158,9 +158,9 @@ class TransactionResponse extends AbstractResponse
     /**
      * The ID given to the transaction by Sage Pay.
      */
-    public function getTransactionID()
+    public function getTransactionId()
     {
-        return $this->transactionID;
+        return $this->transactionId;
     }
 
     /**
