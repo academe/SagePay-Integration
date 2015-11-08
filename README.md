@@ -44,7 +44,7 @@ There is no test suite in here yet. That will come once the structure is a littl
   doing so until 3DSecure can be used. Without it, your liability as a merchant site for passing
   through fraudulent payments is much higher. v2 of the API is reported to include an implementation of 3DSecure.
 
-Current version of API spec is "28-10-2015 (beta)":
+Current version of API spec is "29-10-2015 (beta)":
 https://test.sagepay.com/documentation/#shipping-details-object
 
 ## Example Code
