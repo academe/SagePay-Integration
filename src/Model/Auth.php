@@ -111,6 +111,10 @@ class Auth
         if (is_array($resource)) {
             // Encode all parts of the path.
             $resource = '/' . implode('/', array_map('rawurlencode', $resource));
+        } else {
+            if ($resource !== '' && strpos('/', $resource) !== 0) {
+                $resource = '/' . $resource;
+            }
         }
 
         return str_replace(

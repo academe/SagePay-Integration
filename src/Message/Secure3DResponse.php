@@ -1,10 +1,10 @@
 <?php namespace Academe\SagePayMsg\Message;
 
 /**
- * The POST response that the issuing bank’s Access Control System (ACS)
- * sends the user back with.
- * This will include the MD for finding the transaction again, and the hashed
- * PaRes result that is then sent to Sage Pay to complete the transaction.
+ * The 3DSecure response embedded within a Sage Pay transaction
+ * or in response to a Secure3DRequest message.
+ * It only includes the status, which gives tje final 3D Secure
+ * result for the transaction.
  */
 
 use Exception;
@@ -12,43 +12,60 @@ use UnexpectedValueException;
 
 use Academe\SagePayMsg\Helper;
 
-class Secure3DResponse extends AbstractMessage
+class Secure3DResponse extends AbstractResponse
 {
-    protected $MD;
-    protected $PaRes;
+    /**
+     * The acsUrl and paReq should NEVER be stored in the database.
+     * @var
+     */
+    protected $status;
 
-    public function __construct(
-        $MD,
-        $PaRes
-    ) {
-        $this->MD = $MD;
-        $this->PaRes = $PaRes;
+    /**
+     * @var array List of statuses that the 3DSecure object can return
+     */
+    protected $statuses = [
+        'authenticated' => 'Authenticated',
+        'force' => 'Force',
+        'notchecked' => 'NotChecked',
+        'notauthenticated' => 'NotAuthenticated',
+        'error' => 'Error',
+        'cardnotenrolled' => 'CardNotEnrolled',
+        'issuernotenrolled' => 'IssuerNotEnrolled',
+    ];
+
+    /**
+     * @param string $status The status of the 3DSecure result
+     */
+    public function __construct($status)
+    {
+        $this->status = $status;
     }
 
     /**
-     * Data here will be the raw POST array.
+     * Create a new instance from an array or object of values.
+     * The data will normally be the whole transaction response with various items
+     * of data at different levels, or a flat array.
+     * This is possibly misleading, because if there is no 3DSecure data returned
+     * at all in the response, then the overall transaction status will be picked
+     * up here.
+     */
+    /**
+     * @param $data Array of single-level data or raw transaction response to initialise the object
+     *
+     * @return static New instance of Secure3D object
      */
     public static function fromData($data)
     {
         return new static(
-            Helper::structureGet($data, 'MD', null),
-            Helper::structureGet($data, 'PaRes', null)
+            Helper::structureGet($data, '3DSecure.status', Helper::structureGet($data, 'status', null))
         );
     }
 
     /**
-     * The Merchant Data (MD) to identify the transaction.
+     * @return string The status of the 3DSecure result
      */
-    public function getMD()
+    public function getStatus()
     {
-        return $this->MD;
-    }
-
-    /**
-     * The hashed 3DSecure result (PaRes) to pass on to Sage Pay for validation.
-     */
-    public function getPaRes()
-    {
-        return $this->PaRes;
+        return $this->status;
     }
 }

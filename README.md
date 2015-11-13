@@ -44,8 +44,8 @@ There is no test suite in here yet. That will come once the structure is a littl
   doing so until 3DSecure can be used. Without it, your liability as a merchant site for passing
   through fraudulent payments is much higher. v2 of the API is reported to include an implementation of 3DSecure.
 
-Current version of API spec is "29-10-2015 (beta)":
-https://test.sagepay.com/documentation/#shipping-details-object
+Current version of API spec is "12-11-2015 (beta)":
+https://test.sagepay.com/documentation/#api-changelog
 
 ## Example Code
 
@@ -260,8 +260,9 @@ try {
     ) {
         $acsUrl = $transaction_response->getAcsUrl();
         $TermUrl = 'http://example.com/TermUrlHandler.php';
+	$md = 'searchable-token-for-your-local-transaction-id';
 
-        $paRequestFields = $transaction_response->getPaRequestFields($TermUrl);
+        $paRequestFields = $transaction_response->getPaRequestFields($TermUrl, $md);
 
         echo "<p>Do 3DSecure</p>";
         echo "<form method='post' action='$url'>";
@@ -302,6 +303,31 @@ try {
     // Could not even talk to Sage Pay.
     echo "Problem at Sage Pay";
 }
+~~~
+
+Example `TermUrlHandler.php` to handle the 3D Secure return from the ACS.
+
+~~~php
+use Academe\SagePayMsg\Message\Secure3DRequest;
+use Academe\SagePayMsg\Message\Secure3DResponse;
+
+$AcsResponse = \Academe\SagePayMsg\Message\Secure3DAcsResponse::fromData($_POST);
+var_dump($AcsResponse->asArray());
+
+// array(2) {
+//  ["PaRes"]=>
+//  string(1928) "eJylV1lIqaIo41SwqRhAQc...RiDIjzqkgUfvdXpLyPVM"
+//  ["MD"]=>
+//  string(13) "searchable-token-for-your-local-transaction-id"
+//}
+
+// Now send this to Sage Pay to get the final 3D Secure result
+// The MD will be your key to look up the transaction in your storage.
+// The $transactionId is the transaction ID that Sage Pay provided.
+
+$secure3DRequest = new Secure3DRequest($auth, $AcsResponse, $transactionId);
+
+// TODO ...now send this to get the result
 ~~~
 
 ### A Typical Workflow (without 3D Secure)
