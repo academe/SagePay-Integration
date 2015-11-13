@@ -55,7 +55,7 @@ abstract class AbstractResponse extends AbstractMessage implements Http
      * Store the HTTP response code passed in through fromData().
      * Take the explicit code or take it from the data array.
      */
-    protected function storeHttpCode(AbstractResponse $response, $data, $httpCode)
+    protected function storeHttpCode(AbstractResponse $response, $data, $httpCode = null)
     {
         if (isset($httpCode)) {
             // The httpCode has been explicitly passed in.

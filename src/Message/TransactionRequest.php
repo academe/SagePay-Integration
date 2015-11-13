@@ -284,4 +284,9 @@ class TransactionRequest extends AbstractRequest
             return constant("static::$name");
         }
     }
+
+    public function getHeaders()
+    {
+        return $this->getBasicAuthHeaders();
+    } 
 }

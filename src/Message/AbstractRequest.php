@@ -13,6 +13,7 @@ use DateTimeZone;
 
 abstract class AbstractRequest extends AbstractMessage
 {
+    protected $auth;
     protected $resource_path = [];
 
     /**
@@ -43,4 +44,20 @@ abstract class AbstractRequest extends AbstractMessage
     {
         return $this->method;
     }
+
+    /**
+     * The HTTP Basic Auth header, as an array.
+     * Use this if your transport tool does not do "Basic Auth" out of the box.
+     */
+    protected function getBasicAuthHeaders()
+    {
+        return [
+            'Authorization' => 'Basic '
+                . base64_encode(
+                    $this->auth->getIntegrationKey()
+                    . ':' . $this->auth->getIntegrationPassword()
+                ),
+        ];
+    }
+
 }

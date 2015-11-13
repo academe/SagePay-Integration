@@ -22,7 +22,7 @@ class CardIdentifierRequest extends AbstractRequest
     protected $resource_path = ['card-identifiers'];
 
     protected $auth;
-    protected $sessionKeyResponse;
+    protected $sessionKey;
 
     protected $cardholderName;
     protected $cardNumber;
@@ -35,10 +35,10 @@ class CardIdentifierRequest extends AbstractRequest
      * $cardNumber Lunn check.
      * $securityCode Digits only.
      */
-    public function __construct(Auth $auth, SessionKeyResponse $sessionKeyResponse, $cardholderName, $cardNumber, $expiryDate, $securityCode)
+    public function __construct(Auth $auth, SessionKeyResponse $sessionKey, $cardholderName, $cardNumber, $expiryDate, $securityCode)
     {
         $this->auth = $auth;
-        $this->sessionKeyResponse = $sessionKeyResponse;
+        $this->sessionKey = $sessionKey;
 
         $this->cardholderName = $cardholderName;
         $this->cardNumber = $cardNumber;
@@ -115,8 +115,6 @@ class CardIdentifierRequest extends AbstractRequest
      */
     public function getHeaders()
     {
-        return [
-            'Authorization' => 'Bearer ' . $this->sessionKeyResponse->getMerchantSessionKey(),
-        ];
-    }
+        return $this->sessionKey->getAuthHeaders();
+    } 
 }

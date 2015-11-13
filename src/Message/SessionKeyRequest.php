@@ -10,8 +10,6 @@ class SessionKeyRequest extends AbstractRequest
 {
     protected $resource_path = ['merchant-session-keys'];
 
-    protected $auth;
-
     public function __construct(Auth $auth)
     {
         $this->auth = $auth;
@@ -47,8 +45,6 @@ class SessionKeyRequest extends AbstractRequest
      */
     public function getHeaders()
     {
-        return [
-            'Authorization' => 'Basic ' . base64_encode($this->getIntegrationKey() . ':' . $this->getIntegrationPassword()),
-        ];
+        return $this->getBasicAuthHeaders();
     }
 }

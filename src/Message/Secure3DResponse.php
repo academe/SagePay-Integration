@@ -36,9 +36,10 @@ class Secure3DResponse extends AbstractResponse
     /**
      * @param string $status The status of the 3DSecure result
      */
-    public function __construct($status)
+    public function __construct($status, $httpCode = null)
     {
         $this->status = $status;
+        $this->setHttpCode($httpCode);
     }
 
     /**

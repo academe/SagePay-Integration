@@ -54,6 +54,15 @@ class Secure3DRequest extends AbstractRequest
         ];
     }
 
+    /**
+     * The HTTP Basic Auth header, as an array.
+     * Use this if your transport tool does not do "Basic Auth" out of the box.
+     */
+    public function getHeaders()
+    {
+        return $this->getBasicAuthHeaders();
+    }
+
     public function getPaRes()
     {
         return $this->paRes;

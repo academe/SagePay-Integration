@@ -129,4 +129,14 @@ class SessionKeyResponse extends AbstractResponse
             'expiry' => $this->expiry->format(Helper::SAGEPAY_DATE_FORMAT),
         ];
     }
+
+    /**
+     * Return the authorisation HTTP headers for the session key.
+     */
+    public function getAuthHeaders()
+    {
+        return [
+            'Authorization' => 'Bearer ' . $this->getMerchantSessionKey(),
+        ];
+    }
 }
