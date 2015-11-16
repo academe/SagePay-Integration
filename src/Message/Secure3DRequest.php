@@ -16,7 +16,7 @@ class Secure3DRequest extends AbstractRequest
     protected $paRes;
     protected $transactionId;
 
-    protected $resource_path = ['{transactionId}', '3d-secure'];
+    protected $resource_path = ['transactions', '{transactionId}', '3d-secure'];
 
     /**
      * @param string|Secure3DAcsResponse $paRes The PA Result returned by the user's bank (or their agent)
