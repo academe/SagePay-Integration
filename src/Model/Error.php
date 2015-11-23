@@ -75,6 +75,7 @@ class Error
      * for the property "shippingDetails.shippingAddress1". Ideally we should not have
      * to do that.
      */
+
     /**
      * @param array|object $data Error data from the API to initialise the Error object
      *
@@ -82,6 +83,10 @@ class Error
      */
     public static function fromData($data)
     {
+        if ($data instanceof Error) {
+            return $data;
+        }
+
         $code = Helper::structureGet($data, 'code', Helper::structureGet($data, 'statusCode', null));
         $description = Helper::structureGet($data, 'description', Helper::structureGet($data, 'statusDetail', null));
         $property = Helper::structureGet($data, 'property', null);

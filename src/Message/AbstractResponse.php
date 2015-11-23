@@ -52,17 +52,21 @@ abstract class AbstractResponse extends AbstractMessage implements Http
     }
 
     /**
-     * Store the HTTP response code passed in through fromData().
-     * Take the explicit code or take it from the data array.
+     * Extract the http response code from the supplied data or the code provied.
+     * @return integer|null The HTTP code as an integer.
      */
-    protected function storeHttpCode(AbstractResponse $response, $data, $httpCode = null)
+    protected function deriveHttpCode($httpCode, $data = null)
     {
         if (isset($httpCode)) {
-            // The httpCode has been explicitly passed in.
-            $response->setHttpCode($httpCode);
-        } else {
-            // The httpCode can be pushed onto the data object/array for convenience.
-            $response->setHttpCode(Helper::structureGet($data, 'httpCode', null));
+            return (int)$httpCode;
+        }
+
+        if (isset($data)) {
+            $code = Helper::structureGet($data, 'httpCode');
+
+            if (isset($code)) {
+                return (int)$code;
+            }
         }
     }
 }

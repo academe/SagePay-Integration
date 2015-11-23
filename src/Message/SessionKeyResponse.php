@@ -18,13 +18,29 @@ class SessionKeyResponse extends AbstractResponse
     protected $merchantSessionKey;
     protected $expiry;
 
-    public function __construct($merchantSessionKey, $expiry = null)
+    public function __construct($data, $httpCode = null)
     {
-        $this->merchantSessionKey = $merchantSessionKey;
+        $this->merchantSessionKey = Helper::structureGet($data, 'merchantSessionKey');
+
+        $expiry = Helper::structureGet($data, 'expiry');
 
         if (isset($expiry)) {
             $this->expiry = Helper::parseDateTime($expiry);
         }
+
+        $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
+    }
+
+    /**
+     * Create an instance of this object from an array or
+     * value object. This would normally be the return body from SagePay.
+     * Conversion from JSON needs to be done before this point.
+     *
+     * @deprecated
+     */
+    public static function fromData($data, $httpCode = null)
+    {
+        return new static($data, $httpCode);
     }
 
     /**
@@ -100,23 +116,6 @@ class SessionKeyResponse extends AbstractResponse
                 ],
             ],
         ];
-    }
-
-    /**
-     * Create an instance of this object from an array or
-     * value object. This would normally be the return body from SagePay.
-     * Conversion from JSON needs to be done before this point.
-     */
-    public static function fromData($data, $httpCode = null)
-    {
-        $merchantSessionKey = Helper::structureGet($data, 'merchantSessionKey');
-        $expiry = Helper::structureGet($data, 'expiry');
-
-        $response = new static($merchantSessionKey, $expiry);
-
-        $response->storeHttpCode($response, $data, $httpCode);
-
-        return $response;
     }
 
     /**

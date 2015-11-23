@@ -1,13 +1,12 @@
 <?php namespace Academe\SagePayMsg\Message;
 
 /**
- * There will be completely different transaction response
- * messages, depending upon the request that was made. This
- * class (maybe to be made an abstract) contains what is
- * common for the responses.
- *
- * TODO: if the status is "3DAuth" then a URL will be passed back from SagePay.
- * This is not documented for the API yet and not supported anyway for API v1.
+ * At the moment (12-11-2015 BETA), this resource is the result of a
+ * transaction request. It is *not* the details of the transaction
+ * that was sent.
+ * There is one sub-resource, the Secure3D object, that will be included
+ * with this resource automatically so long as the 3D Secure process is
+ * final (i.e. no more actions required).
  */
 
 use Exception;
@@ -52,8 +51,8 @@ class TransactionResponse extends AbstractResponse
      * 3DSecure object being passed in, rather than just strings and numbers,
      * it changes things a little.
      */
-    public function __construct(
-        $transactionId,
+    public function __construct($data, $httpCode = null
+/*        $transactionId,
         $trasactionType,
         $status,
         $statusCode,
@@ -63,24 +62,9 @@ class TransactionResponse extends AbstractResponse
         $bankAuthorisationCode = null,
         Secure3DResponse $Secure3D = null,
         $acsUrl = null,
-        $paReq = null
+        $paReq = null*/
     ) {
-        $this->transactionId = $transactionId;
-        $this->trasactionType = $trasactionType;
-        $this->status = $status;
-        $this->statusCode = $statusCode;
-        $this->statusDetail = $statusDetail;
-        $this->retrievalReference = $retrievalReference;
-        $this->bankResponseCode = $bankResponseCode;
-        $this->bankAuthorisationCode = $bankAuthorisationCode;
-        $this->Secure3D = $Secure3D;
-        $this->acsUrl = $acsUrl;
-        $this->paReq = $paReq;
-    }
-
-    public static function fromData($data, $httpCode = null)
-    {
-        // Note the object is called "3DSecure" and not "Secure3D" that use
+        // Note the resource is called "3DSecure" and not "Secure3D" that use
         // for valid class, method and variable names.
         $Secure3D = Helper::structureGet($data, '3DSecure', null);
 
@@ -97,26 +81,27 @@ class TransactionResponse extends AbstractResponse
             // TODO: Exception.
         }
 
-        $response = new static(
-            Helper::structureGet($data, 'transactionId', null),
-            Helper::structureGet($data, 'trasactionType', null),
-            Helper::structureGet($data, 'status', null),
-            Helper::structureGet($data, 'statusCode', null),
-            Helper::structureGet($data, 'statusDetail', null),
-            Helper::structureGet($data, 'retrievalReference', null),
-            Helper::structureGet($data, 'bankResponseCode', null),
-            Helper::structureGet($data, 'bankAuthorisationCode', null),
-            // 3D Secure details.
-            $Secure3D,
-            Helper::structureGet($data, 'acsUrl', null),
-            Helper::structureGet($data, 'paReq', null)
-        );
+        $this->transactionId = Helper::structureGet($data, 'transactionId', null);
+        $this->trasactionType = Helper::structureGet($data, 'trasactionType', null);
+        $this->status = Helper::structureGet($data, 'status', null);
+        $this->statusCode = Helper::structureGet($data, 'statusCode', null);
+        $this->statusDetail = Helper::structureGet($data, 'statusDetail', null);
+        $this->retrievalReference = Helper::structureGet($data, 'retrievalReference', null);
+        $this->bankResponseCode = Helper::structureGet($data, 'bankResponseCode', null);
+        $this->bankAuthorisationCode = Helper::structureGet($data, 'bankAuthorisationCode', null);
+        $this->Secure3D = $Secure3D;
+        $this->acsUrl = Helper::structureGet($data, 'acsUrl', null);
+        $this->paReq = Helper::structureGet($data, 'paReq', null);
 
-        // We can access the protected method here, because $response is an
-        // instantiation of stetic.
-        $response->storeHttpCode($response, $data, $httpCode);
+        $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
+    }
 
-        return $response;
+    /**
+     * @deprecated
+     */
+    public static function fromData($data, $httpCode = null)
+    {
+        return new static($data, $httpCode);
     }
 
     /**

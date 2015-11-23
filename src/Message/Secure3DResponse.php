@@ -55,10 +55,11 @@ class Secure3DResponse extends AbstractResponse
      *
      * @return static New instance of Secure3D object
      */
-    public static function fromData($data)
+    public static function fromData($data, $httpCode = null)
     {
         return new static(
-            Helper::structureGet($data, '3DSecure.status', Helper::structureGet($data, 'status', null))
+            Helper::structureGet($data, '3DSecure.status', Helper::structureGet($data, 'status', null)),
+            $httpCode
         );
     }
 

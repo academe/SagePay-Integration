@@ -25,7 +25,10 @@ class ErrorCollection implements \IteratorAggregate
      */
     public function __construct(array $items = [])
     {
-        $this->items = array_values($items);
+        // Add each item individually, providing some validation.
+        foreach($items as $item) {
+            $this->add($item);
+        }
     }
 
     /**
@@ -59,6 +62,7 @@ class ErrorCollection implements \IteratorAggregate
 
         if (is_array($errors)) {
             foreach($errors as $error) {
+                // The $error may be an Errot object or an array.
                 $collection->add(Error::fromData($error));
             }
         } else {

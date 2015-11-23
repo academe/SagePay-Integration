@@ -19,11 +19,25 @@ class CardIdentifierResponse extends AbstractResponse
     protected $expiry;
     protected $cardType;
 
-    public function __construct($cardIdentifier, $expiry, $cardType)
+    /**
+     * @param array|object $data The data returned from SagePay in the response body.
+     */
+    public function __construct($data, $httpCode = null)
     {
-        $this->cardIdentifier = $cardIdentifier;
-        $this->expiry = Helper::parseDateTime($expiry);
-        $this->cardType = $cardType;
+        $this->cardIdentifier = Helper::structureGet($data, 'cardIdentifier', null);
+        $this->expiry = Helper::parseDateTime(Helper::structureGet($data, 'expiry', null));
+        $this->cardType = Helper::structureGet($data, 'cardType', null);
+        $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
+    }
+
+    /**
+     * Return an instantiation from the data returned by SagePay.
+     *
+     * @deprecated
+     */
+    public static function fromData($data, $httpCode = null)
+    {
+        return new static($data, $httpCode);
     }
 
     public function getCardIdentifier()
@@ -55,22 +69,6 @@ class CardIdentifierResponse extends AbstractResponse
     }
 
     /**
-     * Return an instantiation from the data returned by SagePay.
-     */
-    public static function fromData($data, $httpCode = null)
-    {
-        $cardIdentifier = Helper::structureGet($data, 'cardIdentifier', null);
-        $expiry = Helper::structureGet($data, 'expiry', null);
-        $cardType = Helper::structureGet($data, 'cardType', null);
-
-        $response = new static($cardIdentifier, $expiry, $cardType);
-
-        $response->storeHttpCode($response, $data, $httpCode);
-
-        return $response;
-    }
-
-    /**
      * Reduce the object to an array so it can be serialised.
      */
     public function toArray()
@@ -79,6 +77,7 @@ class CardIdentifierResponse extends AbstractResponse
             'cardIdentifier' => $this->cardIdentifier,
             'expiry' => $this->expiry->format(Helper::SAGEPAY_DATE_FORMAT),
             'cardType' => $this->cardType,
+            'httpCode' => $this->httpCode,
         ];
     }
 }

@@ -86,7 +86,7 @@ $response = $client->send($request);
 // The response, if all is well, is a JSON body.
 
 // Creaye a SessionKeyResponse object from the Sage Pay Response.
-$session_key_response = SessionKeyResponse::fromData($response->json(), $response->getStatusCode());
+$session_key_response = new SessionKeyResponse($response->json(), $response->getStatusCode());
 ~~~
 
 If we want to check with the API that the session key is still valid, we can do it like this:
@@ -105,7 +105,7 @@ try {
     // such as 5XX and handle them differently.
     $http_response = $e->getResponse();
 }
-$validate_response = SessionKeyResponse::fromData($http_response->json(), $http_response->getStatusCode());
+$validate_response = new SessionKeyResponse($http_response->json(), $http_response->getStatusCode());
 
 if ($validate_response->isValid()) {
     echo "This session key seems to be valid";
@@ -154,7 +154,7 @@ $response = $client->send($request);
 
 // Collecting the response body.
 // This can be intialised using any array that contains element `cardIdentifier` at a minimum.
-$card_identifier_response = CardIdentifierResponse::fromData($response->json(), $response->getStatusCode());
+$card_identifier_response = new CardIdentifierResponse($response->json(), $response->getStatusCode());
 
 var_dump($card_identifier_response->toArray());
 
@@ -234,7 +234,7 @@ $response = $client->send($request);
 // errors, etc. The API is still a little in flux in this area, so I'll leave detailed
 // examples until later.
 // Assuming there are no problems and we get a HTTP 200, the result object is captured:
-$transaction_response = TransactionResponse::fromData($response->json(), $response->getStatusCode());
+$transaction_response = new TransactionResponse($response->json(), $response->getStatusCode());
 
 // The results of the payment should be in that object.
 // More work is needed to make sense of the result, but that's the basic flow. Here it
@@ -247,7 +247,7 @@ try {
     $response = $client->send($request);
 
     // Now create the transaction response from the return data.
-    $transaction_response = TransactionResponse::fromData($response->json(), $response->getStatusCode());
+    $transaction_response = new TransactionResponse($response->json(), $response->getStatusCode());
     var_dump($transaction_response);
 
     // If a 3DSecure action is needed, then do that here.
