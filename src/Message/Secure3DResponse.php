@@ -34,12 +34,13 @@ class Secure3DResponse extends AbstractResponse
     ];
 
     /**
-     * @param string $status The status of the 3DSecure result
+     * @param array|object $data The 3DSecure resource from Sage Pay
      */
-    public function __construct($status, $httpCode = null)
+    public function __construct($data, $httpCode = null)
     {
-        $this->status = $status;
-        $this->setHttpCode($httpCode);
+        $this->status = Helper::structureGet($data, 'status', null);
+
+        $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
     }
 
     /**
@@ -50,17 +51,16 @@ class Secure3DResponse extends AbstractResponse
      * at all in the response, then the overall transaction status will be picked
      * up here.
      */
+
     /**
      * @param $data Array of single-level data or raw transaction response to initialise the object
      *
      * @return static New instance of Secure3D object
+     * @deprecated
      */
     public static function fromData($data, $httpCode = null)
     {
-        return new static(
-            Helper::structureGet($data, '3DSecure.status', Helper::structureGet($data, 'status', null)),
-            $httpCode
-        );
+        return new static ($data, $httpCode);
     }
 
     /**

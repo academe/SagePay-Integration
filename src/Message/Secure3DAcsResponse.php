@@ -12,28 +12,26 @@ use UnexpectedValueException;
 
 use Academe\SagePayMsg\Helper;
 
-class Secure3DAcsResponse extends AbstractMessage
+class Secure3DAcsResponse extends AbstractResponse
 {
     protected $PaRes;
     protected $MD;
 
-    public function __construct(
-        $PaRes,
-        $MD = null
-    ) {
-        $this->PaRes = $PaRes;
-        $this->MD = $MD;
+    public function __construct($data, $httpCode = null) {
+        $this->PaRes = Helper::structureGet($data, 'PaRes', null);
+        $this->MD = Helper::structureGet($data, 'MD', null);
+
+        $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
     }
 
     /**
      * Data passed in here will normally be the raw POST array from the ACS.
+     *
+     * @deprecated
      */
-    public static function fromData($data)
+    public static function fromData($data, $httpCode = null)
     {
-        return new static(
-            Helper::structureGet($data, 'PaRes', null),
-            Helper::structureGet($data, 'MD', null)
-        );
+        return new static($data, $httpCode);
     }
 
     public function asArray()

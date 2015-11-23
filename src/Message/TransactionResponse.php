@@ -52,17 +52,6 @@ class TransactionResponse extends AbstractResponse
      * it changes things a little.
      */
     public function __construct($data, $httpCode = null
-/*        $transactionId,
-        $trasactionType,
-        $status,
-        $statusCode,
-        $statusDetail,
-        $retrievalReference,
-        $bankResponseCode = null,
-        $bankAuthorisationCode = null,
-        Secure3DResponse $Secure3D = null,
-        $acsUrl = null,
-        $paReq = null*/
     ) {
         // Note the resource is called "3DSecure" and not "Secure3D" that use
         // for valid class, method and variable names.
