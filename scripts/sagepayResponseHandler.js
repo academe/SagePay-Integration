@@ -47,7 +47,7 @@ function sagepayResponseHandler(status, response, options) {
 		options.init.apply(this);
 	}
 
-	// The 201 status means the card token resouce has been created.
+	// The 201 status means the card token resource has been created.
 	if (status === 201) {
 		this.cardIdentifier = response.cardIdentifier;
 		this.expiry = response.expiry;
@@ -59,9 +59,9 @@ function sagepayResponseHandler(status, response, options) {
 	} else if (status === 401) {
 		// The session token has expired - it is 400 seconds old or has been used three times.
 		// It needs to be renewed - provide a callback so the site can decide how to do that:
-		// maybe an AJAX fetch of a token, maybe an AJAX fetch of the section of the form
+		// maybe an AJAX fetch of a fresh session token, maybe an AJAX fetch of the section of the form
 		// containing the card details fields, maybe submitting the whole form to refresh.
-		// TODO: fallback action if no callback provided.
+		// TODO: fallback action if no callback is provided.
 
 		if (typeof options.renewsession === "function") {
 			options.renewsession.apply(this);

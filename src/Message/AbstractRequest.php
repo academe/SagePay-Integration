@@ -22,11 +22,28 @@ abstract class AbstractRequest extends AbstractMessage
     protected $method = 'POST';
 
     /**
+     * Support substitution strings; any {fooBar} mapped to $this->getFooBar()
+     *
      * @returns array The path of this resource, as an array of path segments
      */
     public function getResourcePath()
     {
-        return $this->resource_path;
+        $path = $this->resource_path;
+
+        // Look for segments that need a substitution.
+        $subtitution_parameters = preg_grep('/^\{.*\}$/', $path);
+
+        if ( ! empty($subtitution_parameters)) {
+            foreach($subtitution_parameters as $key => $sub) {
+                // The name of the getter method.
+                $method_name = 'get' . ucfirst(substr($sub, 1, -1));
+
+                // Replace the value from the getter method.
+                $path[$key] = $this->$method_name();
+            }
+        }
+
+        return $path;
     }
 
     /**

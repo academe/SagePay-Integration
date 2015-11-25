@@ -12,7 +12,7 @@ use Academe\SagePayMsg\Model\Auth;
 
 class SessionKeyValidateRequest extends AbstractRequest
 {
-    protected $resource_path = ['merchant-session-keys'];
+    protected $resource_path = ['merchant-session-keys', '{merchantSessionKey}'];
 
     protected $auth;
     protected $sessionKey;
@@ -32,16 +32,6 @@ class SessionKeyValidateRequest extends AbstractRequest
     {
         $this->auth = $auth;
         $this->sessionKey = $sessionKey;
-    }
-
-    /**
-     * The path of this resource.
-     *
-     * @return array The components of the path.
-     */
-    public function getResourcePath()
-    {
-        return array_merge($this->resource_path, [$this->getMerchantSessionKey()]);
     }
 
     /**

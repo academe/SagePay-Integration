@@ -34,19 +34,6 @@ class Secure3DRequest extends AbstractRequest
         $this->auth = $auth;
     }
 
-    /**
-     * @return array The components of the path
-     */
-    public function getResourcePath()
-    {
-        return array_replace($this->resource_path,
-            array_fill_keys(
-                array_keys($this->resource_path, '{transactionId}'),
-                $this->getTransactionId()
-            )
-        );
-    }
-
     public function getBody()
     {
         return [
