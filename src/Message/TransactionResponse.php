@@ -17,7 +17,7 @@ use Academe\SagePayMsg\Helper;
 class TransactionResponse extends AbstractResponse
 {
     protected $transactionId;
-    protected $trasactionType;
+    protected $transactionType;
     protected $status;
     protected $statusCode;
     protected $statusDetail;
@@ -71,7 +71,7 @@ class TransactionResponse extends AbstractResponse
         }
 
         $this->transactionId = Helper::structureGet($data, 'transactionId', null);
-        $this->trasactionType = Helper::structureGet($data, 'trasactionType', null);
+        $this->transactionType = Helper::structureGet($data, 'transactionType', null);
         $this->status = Helper::structureGet($data, 'status', null);
         $this->statusCode = Helper::structureGet($data, 'statusCode', null);
         $this->statusDetail = Helper::structureGet($data, 'statusDetail', null);
