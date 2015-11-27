@@ -132,6 +132,6 @@ class ErrorCollection implements \IteratorAggregate
      */
     public function first()
     {
-        return reset($this);
+        return reset($this->items);
     }
 }
