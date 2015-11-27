@@ -54,7 +54,7 @@ class ErrorCollection implements \IteratorAggregate
      *
      * @return static Collection of Error instances
      */
-    public static function fromData($data)
+    public static function fromData($data, $httpCode = null)
     {
         $errors = Helper::structureGet($data, 'errors', null);
 
@@ -63,10 +63,10 @@ class ErrorCollection implements \IteratorAggregate
         if (is_array($errors)) {
             foreach($errors as $error) {
                 // The $error may be an Errot object or an array.
-                $collection->add(Error::fromData($error));
+                $collection->add(Error::fromData($error, $httpCode));
             }
         } else {
-            $collection->add(Error::fromData($data));
+            $collection->add(Error::fromData($data, $httpCode));
         }
 
         return($collection);
@@ -125,5 +125,13 @@ class ErrorCollection implements \IteratorAggregate
     public function hasErrors()
     {
         return $this->count() > 0;
+    }
+
+    /**
+     * @return Error The first error in the collection.
+     */
+    public function first()
+    {
+        return reset($this);
     }
 }

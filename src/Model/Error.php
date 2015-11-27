@@ -30,17 +30,19 @@ class Error
     protected $code;
     protected $description;
     protected $property;
+    protected $httpCode;
 
     /**
      * @param string|int $code The error code supplied by the remote API
      * @param string $description The textual detail of the error
      * @param null|string $property The property name (field name) of the property the error applies to
      */
-    public function __construct($code, $description, $property = null)
+    public function __construct($code, $description, $property = null, $httpCode = null)
     {
         $this->code = $code;
         $this->description = $description;
         $this->property = $property;
+        $this->httpCode = $httpCode;
     }
 
     /**
@@ -81,13 +83,13 @@ class Error
      *
      * @return static New instance of Error object
      */
-    public static function fromData($data)
+    public static function fromData($data, $httpCode = null)
     {
         if ($data instanceof Error) {
             return $data;
         }
 
-        $code = Helper::structureGet($data, 'code', Helper::structureGet($data, 'statusCode', null));
+        $code = Helper::structureGet($data, 'code', Helper::structureGet($data, 'statusCode', $httpCode));
         $description = Helper::structureGet($data, 'description', Helper::structureGet($data, 'statusDetail', null));
         $property = Helper::structureGet($data, 'property', null);
 
