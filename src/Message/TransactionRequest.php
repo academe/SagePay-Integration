@@ -17,7 +17,8 @@ use Academe\SagePayMsg\PaymentMethod\PaymentMethodInterface;
 use Academe\SagePayMsg\Money\AmountInterface;
 use Academe\SagePayMsg\Model\AddressInterface;
 use Academe\SagePayMsg\Model\ShippingDetails;
-use Academe\SagePayMsg\Model\BillingDetails;
+use Academe\SagePayMsg\Model\Address;
+use Academe\SagePayMsg\Model\Person;
 
 class TransactionRequest extends AbstractRequest
 {
@@ -31,7 +32,8 @@ class TransactionRequest extends AbstractRequest
     protected $vendorTxCode;
     protected $amount;
     protected $description;
-    protected $billingDetails;
+    protected $billingAddress;
+    protected $customer;
 
     // Optional or overridable data (setters).
     protected $entryMethod;
@@ -54,10 +56,12 @@ class TransactionRequest extends AbstractRequest
     const RECURRING_INDICATOR_RECURRING             = 'Recurring';
     const RECURRING_INDICATOR_INSTALMENT            = 'Instalment';
 
+    const APPLY_AVS_CVC_CHECK_USEMSPSETTING         = 'UseMSPSetting';
     const APPLY_AVS_CVC_CHECK_FORCE                 = 'Force';
     const APPLY_AVS_CVC_CHECK_DISABLE               = 'Disable';
     const APPLY_AVS_CVC_CHECK_FORCEIGNORINGRULES    = 'ForceIgnoringRules';
 
+    const APPLY_3D_SECURE_USEMSPSETTING             = 'UseMSPSetting';
     const APPLY_3D_SECURE_FORCE                     = 'Force';
     const APPLY_3D_SECURE_DISABLE                   = 'Disable';
     const APPLY_3D_SECURE_FORCEIGNORINGRULES        = 'ForceIgnoringRules';
@@ -69,7 +73,8 @@ class TransactionRequest extends AbstractRequest
         $vendorTxCode,
         AmountInterface $amount,
         $description,
-        BillingDetails $billingDetails,
+        Address $billingAddress,
+        Person $customer,
         ShippingDetails $shippingDetails = null
     ) {
         $this->auth = $auth;
@@ -89,7 +94,8 @@ class TransactionRequest extends AbstractRequest
         $this->paymentMethod = $paymentMethod;
         $this->vendorTxCode = $vendorTxCode;
         $this->amount = $amount;
-        $this->billingDetails = $billingDetails;
+        $this->billingAddress = $billingAddress->withFieldPrefix('');
+        $this->customer = $customer->withFieldPrefix('customer');
         $this->shippingDetails = $shippingDetails;
     }
 
@@ -215,10 +221,14 @@ class TransactionRequest extends AbstractRequest
             'amount' => $this->amount->getAmount(),
             'currency' => $this->amount->getCurrencyCode(),
             'description' => $this->description,
+            'billingAddress' => $this->billingAddress->getBody(),
         ];
 
-        // Add the billing details.
-        $result = array_merge($result, $this->billingDetails->getBody());
+        // Add the billing details (just an address).
+        //$result = array_merge($result, $this->billingDetails->getBody());
+
+        // The customer details 
+        $result = array_merge($result, $this->customer->getBody());
 
         // If there are shipping details, then merge this in:
         if ( ! empty($this->shippingDetails)) {

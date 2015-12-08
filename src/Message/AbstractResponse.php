@@ -10,9 +10,11 @@ use UnexpectedValueException;
 use Academe\SagePayMsg\Helper;
 
 // Teapot here provides HTTP response code constants.
+// Not sure why RFC4918 is not included in Http; it contains some responses we expect to get.
 use Teapot\StatusCode\Http;
+use Teapot\StatusCode\RFC\RFC4918;
 
-abstract class AbstractResponse extends AbstractMessage implements Http
+abstract class AbstractResponse extends AbstractMessage implements Http, RFC4918
 {
     /**
      * @var integer The HTTP response code.

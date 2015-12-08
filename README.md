@@ -170,11 +170,11 @@ var_dump($card_identifier_response->toArray());
 
 Now we can make a payment with details from the customer. That payment will include
 customer and product or service details, and the card token we just obtained.
+The ShippingDetails is optional, and contains an Address and Person, if needed.
 
 ~~~php
 use Academe\SagePayMsg\Model\Address;
 use Academe\SagePayMsg\Model\Person;
-use Academe\SagePayMsg\Model\BillingDetails;
 use Academe\SagePayMsg\Money\Amount;
 use Academe\SagePayMsg\PaymentMethod\Card;
 use Academe\SagePayMsg\Message\TransactionRequest;
@@ -190,19 +190,16 @@ $billing_address = Address::fromData([
 ]);
 
 // A customer to bill:
-$billing_person = new Person(
+$customer = new Person(
     'Bill Firstname',
     'Bill Lastname',
     'billing@example.com',
     '+44 191 12345678'
 );
 
-// And we put the two together.
-$billing_details = new BillingDetails($billing_person, $billing_address);
-
 // We can do the same for shipping, but that is optional.
 
-// There is an amount, in GBP in this case, to pay:
+// There is an amount, in GBP in this case, to pay (£9.99):
 $amount = Amount::GBP()->withMajorUnit(9.99);
 
 // And we are going to be paying that by card:
@@ -216,7 +213,8 @@ $transaction = new TransactionRequest(
     'MyVendorTxCode-' . rand(10000000, 99999999),
     $amount,
     'My Purchase Description',
-    $billing_details
+    $billing_address,
+    $customer
 );
 
 // Create a REST client to send the transaction:
