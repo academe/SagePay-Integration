@@ -43,6 +43,8 @@ class TransactionRequest extends AbstractRequest
     protected $apply3DSecure;
     protected $shippingDetails;
 
+    protected $customerFieldsPrefix = 'customer';
+
     /**
      * Valid values for enumerated input types.
      */
@@ -95,7 +97,7 @@ class TransactionRequest extends AbstractRequest
         $this->vendorTxCode = $vendorTxCode;
         $this->amount = $amount;
         $this->billingAddress = $billingAddress->withFieldPrefix('');
-        $this->customer = $customer->withFieldPrefix('customer');
+        $this->customer = $customer->withFieldPrefix($this->customerFieldsPrefix);
         $this->shippingDetails = $shippingDetails;
     }
 
@@ -223,9 +225,6 @@ class TransactionRequest extends AbstractRequest
             'description' => $this->description,
             'billingAddress' => $this->billingAddress->getBody(),
         ];
-
-        // Add the billing details (just an address).
-        //$result = array_merge($result, $this->billingDetails->getBody());
 
         // The customer details 
         $result = array_merge($result, $this->customer->getBody());
