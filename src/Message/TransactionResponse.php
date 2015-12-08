@@ -33,6 +33,8 @@ class TransactionResponse extends AbstractResponse
         'Payment',
     ];
 
+    // TODO: move these to the constants, with introspection to get the list
+    // where needed.
     protected $statuses = [
         'ok' => 'Ok',
         'notauthed' => 'NotAuthed',
@@ -42,6 +44,14 @@ class TransactionResponse extends AbstractResponse
         'invalid' => 'Invalid',
         'error' => 'Error',
     ];
+
+    const STATUS_OK         = 'Ok';
+    const STATUS_NOTAUTHED  = 'NotAuthed';
+    const STATUS_REJECTED   = 'Rejected';
+    const STATUS_3DAUTH     = '3DAuth';
+    const STATUS_MALFORMED  = 'Malformed';
+    const STATUS_INVALID    = 'Invalid';
+    const STATUS_ERROR      = 'Error';
 
     /**
      * Big long list of parameters is beginning to smell a bit.

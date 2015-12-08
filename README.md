@@ -254,7 +254,7 @@ try {
     // leaving the site.
     if (
         $transaction_response->getHttpCode() == $transaction_response::ACCEPTED
-        && $transaction_response->getStatus() == '3DAuth'
+        && $transaction_response->getStatus() == $transaction_response::STATUS_3DAUTH
     ) {
         $acsUrl = $transaction_response->getAcsUrl();
         $TermUrl = 'http://example.com/TermUrlHandler.php';
