@@ -201,6 +201,11 @@ $customer = new Person(
 
 // There is an amount, in GBP in this case, to pay (£9.99):
 $amount = Amount::GBP()->withMajorUnit(9.99);
+// or
+$amount = Amount::GBP()->withMinorUnit(999);
+// or
+$amount = new Amount(new Currency('GBP'), 999);
+
 
 // And we are going to be paying that by card:
 $card = new Card($session_key, $card_identifier_response);
@@ -249,7 +254,7 @@ try {
     var_dump($transaction_response);
 
     // If a 3DSecure action is needed, then do that here.
-    // The HTTP response code will be 202.
+    // The HTTP response code will be 202 (ACCEPTED).
     // All this can be put into an iframe so the user does not feel like they are
     // leaving the site.
     if (
@@ -263,7 +268,7 @@ try {
         $paRequestFields = $transaction_response->getPaRequestFields($TermUrl, $md);
 
         echo "<p>Do 3DSecure</p>";
-        echo "<form method='post' action='$url'>";
+        echo "<form method='post' action='$acsUrl'>";
         foreach($paRequestFields as $field_name => $field_value) {
             // These will be hidden fields; they are shown for demo purposes.
             echo "<p>$field_name <input type='text' name='$field_name' value='$field_value' /></p>";

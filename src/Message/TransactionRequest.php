@@ -63,10 +63,11 @@ class TransactionRequest extends AbstractRequest
     const APPLY_AVS_CVC_CHECK_DISABLE               = 'Disable';
     const APPLY_AVS_CVC_CHECK_FORCEIGNORINGRULES    = 'ForceIgnoringRules';
 
-    const APPLY_3D_SECURE_USEMSPSETTING             = 'UseMSPSetting';
-    const APPLY_3D_SECURE_FORCE                     = 'Force';
-    const APPLY_3D_SECURE_DISABLE                   = 'Disable';
-    const APPLY_3D_SECURE_FORCEIGNORINGRULES        = 'ForceIgnoringRules';
+    // The numeric values are the Sage Pay Direct equivalents.
+    const APPLY_3D_SECURE_USEMSPSETTING             = 'UseMSPSetting'; // 0
+    const APPLY_3D_SECURE_FORCE                     = 'Force'; // 1
+    const APPLY_3D_SECURE_DISABLE                   = 'Disable'; // 2
+    const APPLY_3D_SECURE_FORCEIGNORINGRULES        = 'ForceIgnoringRules'; // 3
 
     public function __construct(
         Auth $auth,

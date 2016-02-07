@@ -27,8 +27,7 @@ class Amount implements AmountInterface
     public function __construct(Currency $currency, $amount = 0)
     {
         $this->currency = $currency;
-
-        $this->withMinorUnit($amount);
+        $this->setMinorUnit($amount);
     }
 
     /**
@@ -47,38 +46,54 @@ class Amount implements AmountInterface
             if (floor($amount) != $amount) {
                 // Too many decimal digits for the currency.
                 throw new UnexpectedValueException(sprintf(
-                    'Amount has too many decimal places. Minor unit %f should be an integer.',
+                    'Amount has too many decimal places. Calculated minor unit %f should be an integer.',
                     $amount
                 ));
             }
 
-            $copy = clone $this;
-            $copy->amount = (int)$amount;
-            return $copy;
+            $clone = clone $this;
+            $clone->amount = (int)$amount;
+            return $clone;
         } else {
+            throw new UnexpectedValueException(sprintf(
+                'Amount is an unexpected data type.'
+            ));
         }
     }
 
     /**
-     * Allow the smallest units of the currency to be supplied,
+     * Set the minot unit.
+     *
+     * @param int|string $amount An amount in minor units, with no decimal part
+     */
+    protected function setMinorUnit($amount)
+    {
+        if (is_int($amount) || (is_string($amount) && preg_match('/^[0-9]+$/', $string))) {
+            $this->amount = (int)$amount;
+        } else {
+            throw new UnexpectedValueException(sprintf(
+                'Amount is an unexpected data type.'
+            ));
+        }
+    }
+
+    /**
+     * Allow the smallest units of the currency to be supplied
      * as an integer or a string.
-     * FIXME: complete this
      *
      * @param int|string $amount An amount in minor units, with no decimal part
      */
     public function withMinorUnit($amount)
     {
-        if (is_int($amount) || (is_string($amount) && preg_match('/^[0-9]+$/', $string))) {
-            $this->amount = (int)$amount;
-        } else {
-        }
+        $clone = clone $this;
+        $clone->setMinorUnit($amount);
+        return $clone;
     }
 
     /**
      * Magic method to support e.g. $amount = Amount::EUR(995)
      * equivalent to: new Amount(new Currency('EUR'), 995)
-     */
-    /**
+     *
      * @param string $name The three-letter ISO currency code
      * @param array $arguments [0] = required amount
      *
@@ -90,7 +105,7 @@ class Amount implements AmountInterface
     {
         try {
             $currency = new Currency($name);
-        } catch (Exception $e) {
+        } catch (UnexpectedValueException $e) {
             $trace = debug_backtrace();
             throw new Exception(sprintf(
                 'Call to undefined method $class::%s() in %s on line %d',
