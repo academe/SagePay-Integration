@@ -5,6 +5,9 @@
  * Both v1.3 and v3.x (in alpha) should work.
  * The getAmount() method of Money\Money already returns the amount in the required
  * minor unit format.
+ *
+ * moneyphp/money is an optional package, so must be required manually if you want
+ * to use it.
  */
 
 use Money\Money as MoneyMoney;
