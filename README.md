@@ -205,6 +205,8 @@ $amount = Amount::GBP()->withMajorUnit(9.99);
 $amount = Amount::GBP()->withMinorUnit(999);
 // or
 $amount = new Amount(new Currency('GBP'), 999);
+// or if using xxx:
+$amount = new \Academe\SagePayMsg\Money\Money(999, new \Money\Currency('GBP'));
 
 
 // And we are going to be paying that by card:
