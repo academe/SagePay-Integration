@@ -1,22 +1,31 @@
 <?php namespace Academe\SagePayMsg\Money;
 
 /**
- * Value object for the amount, based on extending the moneyphp/money package.
+ * Value object for the amount, wrapping the moneyphp/money package.
  * Both v1.3 and v3.x (in alpha) should work.
- * The getAmount() method of Money\Money already returns the amount in the required
- * minor unit format.
  *
  * moneyphp/money is an optional package, so must be required manually if you want
  * to use it.
  */
 
-use Money\Money as MoneyMoney;
+use Money\Money;
 
-class Money extends MoneyMoney implements AmountInterface
+class MoneyAmount implements AmountInterface
 {
+    protected $money;
+
+    public function __construct(Money $money)
+    {
+        $this->money = $money;
+    }
+
+    public function getAmount() {
+        return $this->money->getAmount();
+    }
+
     public function getCurrencyCode()
     {
-        $currency = $this->getCurrency();
+        $currency = $this->money->getCurrency();
 
         // To support Money ~1.x and ~3.x
         if (method_exists($currency, 'getCode')) {

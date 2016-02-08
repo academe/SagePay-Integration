@@ -180,6 +180,11 @@ use Academe\SagePayMsg\PaymentMethod\Card;
 use Academe\SagePayMsg\Message\TransactionRequest;
 use Academe\SagePayMsg\Message\TransactionResponse;
 
+// Optional
+use Money\Money;
+use Money\Currency;
+use Academe\SagePayMsg\Money\MoneyAmount;
+
 // We have a billing address:
 $billing_address = Address::fromData([
     'address1' => 'address one',
@@ -205,8 +210,8 @@ $amount = Amount::GBP()->withMajorUnit(9.99);
 $amount = Amount::GBP()->withMinorUnit(999);
 // or
 $amount = new Amount(new Currency('GBP'), 999);
-// or if using xxx:
-$amount = new \Academe\SagePayMsg\Money\Money(999, new \Money\Currency('GBP'));
+// or if using the moneyphp/money package:
+$amount = new MoneyAmount(Money::GBP(999));
 
 
 // And we are going to be paying that by card:
