@@ -212,7 +212,8 @@ $amount = Amount::GBP()->withMinorUnit(999);
 $amount = new Amount(new Currency('GBP'), 999);
 // or if using the moneyphp/money package:
 $amount = new MoneyAmount(Money::GBP(999));
-
+// or
+$amount = new MoneyAmount(new Money(999, new Currency('GBP')));
 
 // And we are going to be paying that by card:
 $card = new Card($session_key, $card_identifier_response);
