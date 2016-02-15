@@ -1,4 +1,4 @@
-# Sage Pay Integration Messages
+# Sage Pay Integration PSR-7 Messages
 
 This package provides the data models and business logic for the *Sage Pay Integration* payment gateway
 (sometimes called the `Pi` API).
