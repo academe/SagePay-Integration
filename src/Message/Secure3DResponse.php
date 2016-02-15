@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePayMsg\Message;
+<?php namespace Academe\SagePay\Psr7\Message;
 
 /**
  * The 3DSecure response embedded within a Sage Pay transaction
@@ -10,7 +10,7 @@
 use Exception;
 use UnexpectedValueException;
 
-use Academe\SagePayMsg\Helper;
+use Academe\SagePay\Psr7\Helper;
 
 class Secure3DResponse extends AbstractResponse
 {

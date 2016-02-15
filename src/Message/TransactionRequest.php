@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePayMsg\Message;
+<?php namespace Academe\SagePay\Psr7\Message;
 
 /**
  * The transaction value object to send a transaction to SagePay.
@@ -12,13 +12,13 @@ use UnexpectedValueException;
 
 use ReflectionClass;
 
-use Academe\SagePayMsg\Model\Auth;
-use Academe\SagePayMsg\PaymentMethod\PaymentMethodInterface;
-use Academe\SagePayMsg\Money\AmountInterface;
-use Academe\SagePayMsg\Model\AddressInterface;
-use Academe\SagePayMsg\Model\ShippingDetails;
-use Academe\SagePayMsg\Model\Address;
-use Academe\SagePayMsg\Model\Person;
+use Academe\SagePay\Psr7\Model\Auth;
+use Academe\SagePay\Psr7\PaymentMethod\PaymentMethodInterface;
+use Academe\SagePay\Psr7\Money\AmountInterface;
+use Academe\SagePay\Psr7\Model\AddressInterface;
+use Academe\SagePay\Psr7\Model\ShippingDetails;
+use Academe\SagePay\Psr7\Model\Address;
+use Academe\SagePay\Psr7\Model\Person;
 
 class TransactionRequest extends AbstractRequest
 {

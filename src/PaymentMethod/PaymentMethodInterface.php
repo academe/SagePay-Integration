@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePayMsg\PaymentMethod;
+<?php namespace Academe\SagePay\Psr7\PaymentMethod;
 
 /**
  * Interface for a payment method.

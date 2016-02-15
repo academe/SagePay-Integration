@@ -1,10 +1,10 @@
-<?php namespace Academe\SagePayMsg\Message;
+<?php namespace Academe\SagePay\Psr7\Message;
 
 /**
  * The request for a session key.
  */
 
-use Academe\SagePayMsg\Model\Auth;
+use Academe\SagePay\Psr7\Model\Auth;
 
 class SessionKeyRequest extends AbstractRequest
 {

@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePayMsg\Model;
+<?php namespace Academe\SagePay\Psr7\Model;
 
 /**
  * Value object used to define the customer's billing address.
@@ -8,9 +8,9 @@
 use Exception;
 use UnexpectedValueException;
 
-use Academe\SagePayMsg\Iso3166\Countries;
-use Academe\SagePayMsg\Iso3166\States;
-use Academe\SagePayMsg\Helper;
+use Academe\SagePay\Psr7\Iso3166\Countries;
+use Academe\SagePay\Psr7\Iso3166\States;
+use Academe\SagePay\Psr7\Helper;
 
 class Address implements AddressInterface
 {

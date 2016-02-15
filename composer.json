@@ -23,14 +23,15 @@
         "shrikeh/teapot": "^1.0"
     },
     "suggest": {
-        "mathiasverraes/money": "^1.3"
+        "mathiasverraes/money": "^1.3",
+        "guzzlehttp/psr7": "^1.0.0"
     },
     "require-dev": {
         "phpunit/phpunit": "4.0.*"
     },
     "autoload": {
         "psr-4": {
-            "Academe\\SagePayMsg\\": "src/"
+            "Academe\\SagePay\\Psr7\\": "src/"
         }
     }
 }

@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePayMsg\Message;
+<?php namespace Academe\SagePay\Psr7\Message;
 
 /**
  * Value object to hold the card identifier, returned by SagePay.
@@ -11,7 +11,7 @@ use DateTimeZone;
 use Exception;
 use UnexpectedValueException;
 
-use Academe\SagePayMsg\Helper;
+use Academe\SagePay\Psr7\Helper;
 
 class CardIdentifierResponse extends AbstractResponse
 {

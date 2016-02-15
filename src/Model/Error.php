@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePayMsg\Model;
+<?php namespace Academe\SagePay\Psr7\Model;
 
 /**
  * Value object to hold an error, returned by SagePay when posting a transaction.
@@ -20,7 +20,7 @@
 use Exception;
 use UnexpectedValueException;
 
-use Academe\SagePayMsg\Helper;
+use Academe\SagePay\Psr7\Helper;
 
 class Error
 {

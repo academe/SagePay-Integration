@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePayMsg\Money;
+<?php namespace Academe\SagePay\Psr7\Money;
 
 /**
  * Value object for the amount, in the appropriate currency.
@@ -17,7 +17,7 @@ class Amount implements AmountInterface
     protected $currency;
 
     /**
-     * @param Academe\SagePayMsg\Money\Currency $currency
+     * @param Academe\SagePay\Psr7\Money\Currency $currency
      * @param int $amount Minor unit total amount, with no decimal part
      */
     public function __construct(Currency $currency, $amount = 0)

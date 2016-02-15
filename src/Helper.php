@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePayMsg;
+<?php namespace Academe\SagePay\Psr7;
 
 /**
  * Shared message abstract.

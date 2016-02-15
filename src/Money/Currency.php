@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePayMsg\Money;
+<?php namespace Academe\SagePay\Psr7\Money;
 
 /**
  * Defines a currency.

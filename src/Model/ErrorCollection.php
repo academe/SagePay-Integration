@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePayMsg\Model;
+<?php namespace Academe\SagePay\Psr7\Model;
 
 /**
  * A collection of errors, normally validation errors.
@@ -11,7 +11,7 @@ use UnexpectedValueException;
 
 use ArrayIterator;
 
-use Academe\SagePayMsg\Helper;
+use Academe\SagePay\Psr7\Helper;
 
 class ErrorCollection implements \IteratorAggregate
 {

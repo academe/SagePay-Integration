@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePayMsg\Message;
+<?php namespace Academe\SagePay\Psr7\Message;
 
 /**
  * At the moment (12-11-2015 BETA), this resource is the result of a
@@ -12,7 +12,7 @@
 use Exception;
 use UnexpectedValueException;
 
-use Academe\SagePayMsg\Helper;
+use Academe\SagePay\Psr7\Helper;
 
 class TransactionResponse extends AbstractResponse
 {

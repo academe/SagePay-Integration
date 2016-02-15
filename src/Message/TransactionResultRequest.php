@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePayMsg\Message;
+<?php namespace Academe\SagePay\Psr7\Message;
 
 /**
  * Request the result of a transaction, stored on Sage Pay.
@@ -9,7 +9,7 @@ use UnexpectedValueException;
 
 //use ReflectionClass;
 
-use Academe\SagePayMsg\Model\Auth;
+use Academe\SagePay\Psr7\Model\Auth;
 
 class TransactionResultRequest extends AbstractRequest
 {

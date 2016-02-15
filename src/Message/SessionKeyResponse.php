@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePayMsg\Message;
+<?php namespace Academe\SagePay\Psr7\Message;
 
 /**
  * Value object holding the merchant session key returned by SagePay.
@@ -11,7 +11,7 @@ use UnexpectedValueException;
 use DateTime;
 use DateTimeZone;
 
-use Academe\SagePayMsg\Helper;
+use Academe\SagePay\Psr7\Helper;
 
 class SessionKeyResponse extends AbstractResponse
 {

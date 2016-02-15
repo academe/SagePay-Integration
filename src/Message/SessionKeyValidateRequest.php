@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePayMsg\Message;
+<?php namespace Academe\SagePay\Psr7\Message;
 
 /**
  * The request for fetching a copy of a session key, to check its validity.
@@ -8,7 +8,7 @@
 use Exception;
 use UnexpectedValueException;
 
-use Academe\SagePayMsg\Model\Auth;
+use Academe\SagePay\Psr7\Model\Auth;
 
 class SessionKeyValidateRequest extends AbstractRequest
 {
