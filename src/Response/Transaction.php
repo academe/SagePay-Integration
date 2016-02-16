@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePay\Psr7\Message;
+<?php namespace Academe\SagePay\Psr7\Response;
 
 /**
  * At the moment (12-11-2015 BETA), this resource is the result of a
@@ -14,7 +14,7 @@ use UnexpectedValueException;
 
 use Academe\SagePay\Psr7\Helper;
 
-class TransactionResponse extends AbstractResponse
+class Transaction extends AbstractResponse
 {
     protected $transactionId;
     protected $transactionType;

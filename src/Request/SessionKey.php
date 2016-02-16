@@ -1,12 +1,13 @@
-<?php namespace Academe\SagePay\Psr7\Message;
+<?php namespace Academe\SagePay\Psr7\Request;
 
 /**
  * The request for a session key.
  */
 
 use Academe\SagePay\Psr7\Model\Auth;
+use Academe\SagePay\Psr7\AbstractMessage;
 
-class SessionKeyRequest extends AbstractRequest
+class SessionKey extends AbstractRequest
 {
     protected $resource_path = ['merchant-session-keys'];
 

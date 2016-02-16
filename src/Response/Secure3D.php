@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePay\Psr7\Message;
+<?php namespace Academe\SagePay\Psr7\Response;
 
 /**
  * The 3DSecure response embedded within a Sage Pay transaction
@@ -12,7 +12,7 @@ use UnexpectedValueException;
 
 use Academe\SagePay\Psr7\Helper;
 
-class Secure3DResponse extends AbstractResponse
+class Secure3D extends AbstractResponse
 {
     /**
      * The acsUrl and paReq should NEVER be stored in the database.

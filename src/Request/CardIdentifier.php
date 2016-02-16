@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePay\Psr7\Message;
+<?php namespace Academe\SagePay\Psr7\Request;
 
 /**
  * Value object to hold the card details, for sending to SagePay.
@@ -15,9 +15,10 @@ use Exception;
 use UnexpectedValueException;
 
 use Academe\SagePay\Psr7\Model\Auth;
-use Academe\SagePay\Psr7\Message\SessionKeyResponse;
+use Academe\SagePay\Psr7\Response\SessionKey;
+use Academe\SagePay\Psr7\AbstractMessage;
 
-class CardIdentifierRequest extends AbstractRequest
+class CardIdentifier extends AbstractRequest
 {
     protected $resource_path = ['card-identifiers'];
 

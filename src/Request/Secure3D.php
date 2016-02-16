@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePay\Psr7\Message;
+<?php namespace Academe\SagePay\Psr7\Request;
 
 /**
  * The 3DSecure request sent to Sage Pay .
@@ -10,7 +10,7 @@ use UnexpectedValueException;
 use Academe\SagePay\Psr7\Helper;
 use Academe\SagePay\Psr7\Model\Auth;
 
-class Secure3DRequest extends AbstractRequest
+class Secure3D extends AbstractRequest
 {
     protected $auth;
     protected $paRes;

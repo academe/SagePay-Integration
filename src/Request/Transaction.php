@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePay\Psr7\Message;
+<?php namespace Academe\SagePay\Psr7\Request;
 
 /**
  * The transaction value object to send a transaction to SagePay.
@@ -20,7 +20,7 @@ use Academe\SagePay\Psr7\Model\ShippingDetails;
 use Academe\SagePay\Psr7\Model\Address;
 use Academe\SagePay\Psr7\Model\Person;
 
-class TransactionRequest extends AbstractRequest
+class Transaction extends AbstractRequest
 {
     protected $resource_path = ['transactions'];
 

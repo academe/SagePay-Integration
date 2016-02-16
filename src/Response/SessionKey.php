@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePay\Psr7\Message;
+<?php namespace Academe\SagePay\Psr7\Response;
 
 /**
  * Value object holding the merchant session key returned by SagePay.
@@ -13,7 +13,7 @@ use DateTimeZone;
 
 use Academe\SagePay\Psr7\Helper;
 
-class SessionKeyResponse extends AbstractResponse
+class SessionKey extends AbstractResponse
 {
     protected $merchantSessionKey;
     protected $expiry;

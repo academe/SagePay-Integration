@@ -8,14 +8,25 @@
 use Exception;
 use UnexpectedValueException;
 
+use Academe\SagePay\Psr7\Security\SensitiveValue;
+
 class Auth
 {
     /**
      * @var
      */
     protected $vendorName;
+
+    /**
+     * @var SensitiveValue
+     */
     protected $integrationKey;
+
+    /**
+     * @var SensitiveValue
+     */
     protected $integrationPassword;
+
     protected $mode;
 
     /**
@@ -31,6 +42,8 @@ class Auth
     const MODE_TEST = 2;
 
     /**
+     * TODO: move this out; some messages need the URL without needing authentication.
+     * Perhaps an Endpoint class will do the job, and could use a PSR-7 Url?
      * @var array The endpoint URLs, one for each mode.
      */
     protected $urls = [
@@ -51,8 +64,8 @@ class Auth
         $mode = self::MODE_LIVE
     ) {
         $this->vendorName = $vendorName;
-        $this->integrationKey = $integrationKey;
-        $this->integrationPassword = $integrationPassword;
+        $this->integrationKey = new SensitiveValue($integrationKey);
+        $this->integrationPassword = new SensitiveValue($integrationPassword);
 
         // The mode - testing or production. Possible others later.
         if ( ! isset($this->urls[$mode])) {
@@ -75,7 +88,7 @@ class Auth
      */
     public function getIntegrationKey()
     {
-        return $this->integrationKey;
+        return $this->integrationKey ? $this->integrationKey->peek() : $this->integrationKey;
     }
 
     /**
@@ -83,7 +96,7 @@ class Auth
      */
     public function getIntegrationPassword()
     {
-        return $this->integrationPassword;
+        return $this->integrationPassword ? $this->integrationPassword->peek() : $this->integrationPassword;
     }
 
     /**

@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePay\Psr7\Message;
+<?php namespace Academe\SagePay\Psr7\Response;
 
 /**
  * The ACS POST response that the issuing bank’s Access Control System (ACS)
@@ -12,7 +12,7 @@ use UnexpectedValueException;
 
 use Academe\SagePay\Psr7\Helper;
 
-class Secure3DAcsResponse extends AbstractResponse
+class Secure3DAcs extends AbstractResponse
 {
     protected $PaRes;
     protected $MD;

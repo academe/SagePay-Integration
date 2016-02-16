@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePay\Psr7\Message;
+<?php namespace Academe\SagePay\Psr7\Response;
 
 /**
  * Shared message abstract.
@@ -8,6 +8,7 @@ use Exception;
 use UnexpectedValueException;
 
 use Academe\SagePay\Psr7\Helper;
+use Academe\SagePay\Psr7\AbstractMessage;
 
 // Teapot here provides HTTP response code constants.
 // Not sure why RFC4918 is not included in Http; it contains some responses we expect to get.

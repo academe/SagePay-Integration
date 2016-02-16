@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePay\Psr7\Message;
+<?php namespace Academe\SagePay\Psr7\Request;
 
 /**
  * The request for fetching a copy of a session key, to check its validity.
@@ -10,7 +10,7 @@ use UnexpectedValueException;
 
 use Academe\SagePay\Psr7\Model\Auth;
 
-class SessionKeyValidateRequest extends AbstractRequest
+class SessionKeyValidate extends AbstractRequest
 {
     protected $resource_path = ['merchant-session-keys', '{merchantSessionKey}'];
 

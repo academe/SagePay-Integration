@@ -20,7 +20,8 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "shrikeh/teapot": "^1.0"
+        "shrikeh/teapot": "^1.0",
+	"psr/http-message": "~1.0"
     },
     "suggest": {
         "mathiasverraes/money": "^1.3",

@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePay\Psr7\Message;
+<?php namespace Academe\SagePay\Psr7\Request;
 
 /**
  * Shared message abstract.
@@ -10,6 +10,8 @@ use UnexpectedValueException;
 
 use DateTime;
 use DateTimeZone;
+
+use Academe\SagePay\Psr7\AbstractMessage;
 
 abstract class AbstractRequest extends AbstractMessage
 {
