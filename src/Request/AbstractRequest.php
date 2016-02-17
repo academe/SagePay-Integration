@@ -16,6 +16,7 @@ use Academe\SagePay\Psr7\AbstractMessage;
 abstract class AbstractRequest extends AbstractMessage
 {
     protected $auth;
+    protected $factory;
     protected $resource_path = [];
 
     /**
@@ -79,4 +80,20 @@ abstract class AbstractRequest extends AbstractMessage
         ];
     }
 
+    /**
+     * Return the PSR-7 request message.
+     * TODO: create a Guzzle factory as the default if no factory supplied.
+     * A getFactory() method could do the auto-create if needed. If the factory
+     * methods are static, then it probably does not even need to be instantiated - 
+     * just the full namespace and name would be enough to locate it.
+     */
+    public function getMessage()
+    {
+        return $this->factory->JsonRequest(
+            $this->getMethod(),
+            $this->getUrl(),
+            $this->getHeaders(),
+            $this->getBody()
+        );
+    }
 }
