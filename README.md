@@ -14,7 +14,7 @@ Sage Pay Integration REST API, so do get involved, as there is a lot of work to 
 
 Some notes about how PSR-7 is being incorporated.
 
-The `SessionKey` message has been converted to PSR-7, and can be used like this:
+The `SessionKey` message has had PSR-7 support added, and can be used like this:
 
 ~~~php
 // require "guzzlehttp/guzzle:~6.0" 
