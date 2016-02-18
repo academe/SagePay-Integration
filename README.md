@@ -17,7 +17,8 @@ Some notes about how PSR-7 is being incorporated.
 The `SessionKey` message has had PSR-7 support added, and can be used like this:
 
 ~~~php
-// require "guzzlehttp/guzzle:~6.0" 
+// require "guzzlehttp/guzzle:~6.0"
+// This will bring in guzzle/psr7 too, which is also needed.
 use GuzzleHttp\Client;
 
 // Set up auth details.

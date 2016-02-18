@@ -30,6 +30,7 @@ class Error
     protected $code;
     protected $description;
     protected $property;
+    protected $clientMessage;
     protected $httpCode;
 
     /**
@@ -37,11 +38,12 @@ class Error
      * @param string $description The textual detail of the error
      * @param null|string $property The property name (field name) of the property the error applies to
      */
-    public function __construct($code, $description, $property = null, $httpCode = null)
+    public function __construct($code, $description, $property = null, $clientMessage = null, $httpCode = null)
     {
         $this->code = $code;
         $this->description = $description;
         $this->property = $property;
+        $this->clientMessage = $clientMessage;
         $this->httpCode = $httpCode;
     }
 
@@ -70,6 +72,14 @@ class Error
     }
 
     /**
+     * @return null|string The end-person presentable message associated with some validation errors
+     */
+    public function getClientMessage()
+    {
+        return $this->clientMessage;
+    }
+
+    /**
      * The statusCode and statusDetail is a legacy error format that seems to have crept
      * into some validation errors. If this is a long-term "feature" of the API, then
      * it may be worth translating some of the errors. For example statusCode 3123
@@ -92,7 +102,8 @@ class Error
         $code = Helper::structureGet($data, 'code', Helper::structureGet($data, 'statusCode', $httpCode));
         $description = Helper::structureGet($data, 'description', Helper::structureGet($data, 'statusDetail', null));
         $property = Helper::structureGet($data, 'property', null);
+        $clientMessage = Helper::structureGet($data, 'clientMessage', null);
 
-        return new static($code, $description, $property);
+        return new static($code, $description, $propertym, $clientMessage, $httpCode);
     }
 }
