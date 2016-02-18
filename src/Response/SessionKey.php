@@ -13,13 +13,31 @@ use DateTimeZone;
 
 use Academe\SagePay\Psr7\Helper;
 
+use Psr\Http\Message\ResponseInterface;
+
 class SessionKey extends AbstractResponse
 {
     protected $merchantSessionKey;
     protected $expiry;
 
+    /**
+     * $data array|object|ResponseInterface
+     */
     public function __construct($data, $httpCode = null)
     {
+        // If $data is a PSR-7 message, then extract what we need.
+        if ($data instanceof ResponseInterface) {
+            $this->setHttpCode($data->getStatusCode());
+
+            if ($data->hasHeader('Content-Type') && $data->getHeaderLine('Content-Type') == 'application/json') {
+                $data = json_decode($data->getBody());
+            } else {
+                $data = [];
+            }
+        } else {
+            $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
+        }
+
         $this->merchantSessionKey = Helper::structureGet($data, 'merchantSessionKey');
 
         $expiry = Helper::structureGet($data, 'expiry');
@@ -27,8 +45,6 @@ class SessionKey extends AbstractResponse
         if (isset($expiry)) {
             $this->expiry = Helper::parseDateTime($expiry);
         }
-
-        $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
     }
 
     /**

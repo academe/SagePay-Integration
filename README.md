@@ -10,6 +10,45 @@ for example Guzzle, curl or a PSR-7 library.
 Issues, comments, suggestions and PRs are all welcome. So far as I know, this is the first API for the
 Sage Pay Integration REST API, so do get involved, as there is a lot of work to do.
 
+## PSR-7 Development (WIP)
+
+Some notes about how PSR-7 is being incorporated.
+
+The `SessionKey` message has been converted to PSR-7, and can be used like this:
+
+~~~php
+// require "guzzlehttp/guzzle:~6.0" 
+use GuzzleHttp\Client;
+
+// Set up auth details.
+$auth = new \Academe\SagePay\Psr7\Model\Auth('vendor-name', 'key', 'password', \Academe\SagePay\Psr7\Model\Auth::MODE_TEST);
+
+// Request for the session key.
+$key_request = new \Academe\SagePay\Psr7\Request\SessionKey($auth);
+
+// HTTP client to send this message.
+$client = new Client();
+
+// Send the PSR-7 message. Note *everything* needed is in this message.
+// TODO: we will want to catch or suppress exceptions here if we want to
+// capture any errors supplied by Sage Pay.
+$psr7_response = $client->send($key_request->message());
+
+// Capture the result in our local repsonse model.
+$response = new \Academe\SagePay\Psr7\Response\SessionKey($psr7_response);
+
+// The result we want.
+echo "Session key is: " . $response->getMerchantSessionKey();
+~~~
+
+That example involves capturing the PSR-7 message, then sending it.
+The `Request\SessionKey` class will generate the PSR-7 message using `Guzzle/Psr7`,
+so long as `Guzzle/Psr7` is installed,
+but you can pass in your own PSR-7 factory instead if you wish to use another library.
+
+No other messages have been converted to use PSR-7 yet - just playing with `SessionKey`
+first to explore how it can work in a simple, robust, and flexible way.
+
 ## Package Development
 
 The Sage Pay Integration payment gateway is a RESTful API run by by [Sage Pay](https://sagepay.com/).

@@ -13,6 +13,8 @@ use DateTimeZone;
 
 use Academe\SagePay\Psr7\AbstractMessage;
 
+use Academe\SagePay\Psr7\Factory\GuzzleFactory;
+
 abstract class AbstractRequest extends AbstractMessage
 {
     protected $auth;
@@ -81,15 +83,31 @@ abstract class AbstractRequest extends AbstractMessage
     }
 
     /**
+     * Get the PSR-7 factory.
+     * Create a factory if none supplied and 
+     */
+    public function getFactory()
+    {
+        if (!isset($this->factory) && GuzzleFactory::isSupported()) {
+            // If the GuzzleFactory is supported (relevant Guzzle package is
+            // installed) then instantiate this fatcory.
+
+            $this->factory = new GuzzleFactory();
+        }
+
+        return $this->factory;
+    }
+
+    /**
      * Return the PSR-7 request message.
      * TODO: create a Guzzle factory as the default if no factory supplied.
      * A getFactory() method could do the auto-create if needed. If the factory
      * methods are static, then it probably does not even need to be instantiated - 
      * just the full namespace and name would be enough to locate it.
      */
-    public function getMessage()
+    public function message()
     {
-        return $this->factory->JsonRequest(
+        return $this->getFactory()->JsonRequest(
             $this->getMethod(),
             $this->getUrl(),
             $this->getHeaders(),

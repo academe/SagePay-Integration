@@ -11,7 +11,7 @@ interface FactoryInterface
     /**
      * Return a new PSR-7 Request object, with the body to be sent as JSON.
      */
-    public static function JsonRequest(
+    public function JsonRequest(
         $method,
         $uri,
         array $headers = [],
