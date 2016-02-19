@@ -80,6 +80,14 @@ class Error
     }
 
     /**
+     * @return int|string The HTTP code associated with the error, if available
+     */
+    public function getHttpCode()
+    {
+        return $this->httpCode;
+    }
+
+    /**
      * The statusCode and statusDetail is a legacy error format that seems to have crept
      * into some validation errors. If this is a long-term "feature" of the API, then
      * it may be worth translating some of the errors. For example statusCode 3123
@@ -99,8 +107,14 @@ class Error
             return $data;
         }
 
-        $code = Helper::structureGet($data, 'code', Helper::structureGet($data, 'statusCode', $httpCode));
-        $description = Helper::structureGet($data, 'description', Helper::structureGet($data, 'statusDetail', null));
+        $code = Helper::structureGet($data, 'code',
+            Helper::structureGet($data, 'statusCode', $httpCode)
+        );
+
+        $description = Helper::structureGet($data, 'description',
+            Helper::structureGet($data, 'statusDetail', null)
+        );
+
         $property = Helper::structureGet($data, 'property', null);
         $clientMessage = Helper::structureGet($data, 'clientMessage', null);
 

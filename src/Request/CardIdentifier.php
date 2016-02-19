@@ -15,8 +15,11 @@ use Exception;
 use UnexpectedValueException;
 
 use Academe\SagePay\Psr7\Model\Auth;
-use Academe\SagePay\Psr7\Response\SessionKey;
+use Academe\SagePay\Psr7\Model\Endpoint;
 use Academe\SagePay\Psr7\AbstractMessage;
+use Academe\SagePay\Psr7\Factory\FactoryInterface;
+
+use Academe\SagePay\Psr7\Response\SessionKey as SessionKeyResponse;
 
 class CardIdentifier extends AbstractRequest
 {
@@ -25,6 +28,7 @@ class CardIdentifier extends AbstractRequest
     protected $auth;
     protected $sessionKey;
 
+    // TODO: store card details as sensitive information.
     protected $cardholderName;
     protected $cardNumber;
     protected $expiryDate;
@@ -36,33 +40,25 @@ class CardIdentifier extends AbstractRequest
      * $cardNumber Lunn check.
      * $securityCode Digits only.
      */
-    public function __construct(Auth $auth, SessionKeyResponse $sessionKey, $cardholderName, $cardNumber, $expiryDate, $securityCode)
-    {
+    public function __construct(
+        Endpoint $endpoint,
+        Auth $auth,
+        SessionKeyResponse $sessionKey,
+        $cardholderName,
+        $cardNumber,
+        $expiryDate,
+        $securityCode,
+        FactoryInterface $factory = null
+    ) {
+        $this->endpoint = $endpoint;
         $this->auth = $auth;
         $this->sessionKey = $sessionKey;
+        $this->factory = $factory;
 
         $this->cardholderName = $cardholderName;
         $this->cardNumber = $cardNumber;
         $this->expiryDate = $expiryDate;
         $this->securityCode = $securityCode;
-    }
-
-    /**
-     * An array of arrays, each containing the attributes required for the HTML
-     * input elements in the payment form.
-     *
-     * TODO: have a think about this. A HTML element object could be very useful here
-     * to formalise the data needed for constructing the HTML front end in a number of
-     * different places.
-     */
-    public function toAttributes()
-    {
-        return [
-            ['type' => 'text', 'data-sagepay' => 'cardholderName', 'value' => $this->cardholderName],
-            ['type' => 'text', 'data-sagepay' => 'cardNumber', 'value' => $this->cardNumber],
-            ['type' => 'text', 'data-sagepay' => 'expiryDate', 'value' => $this->expiryDate],
-            ['type' => 'text', 'data-sagepay' => 'securityCode', 'value' => $this->securityCode],
-        ];
     }
 
     public function getCardholderName()
@@ -83,14 +79,6 @@ class CardIdentifier extends AbstractRequest
     public function getSecurityCode()
     {
         return $this->securityCode;
-    }
-
-    /**
-     * The full URL of this resource.
-     */
-    public function getUrl()
-    {
-        return $this->auth->getUrl($this->getResourcePath());
     }
 
     /**

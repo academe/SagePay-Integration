@@ -10,8 +10,8 @@ use DateTimeZone;
 
 use Exception;
 use UnexpectedValueException;
-
 use Academe\SagePay\Psr7\Helper;
+use Psr\Http\Message\ResponseInterface;
 
 class CardIdentifier extends AbstractResponse
 {
@@ -24,14 +24,26 @@ class CardIdentifier extends AbstractResponse
      */
     public function __construct($data, $httpCode = null)
     {
+        // If $data is a PSR-7 message, then extract what we need.
+        if ($data instanceof ResponseInterface) {
+            $this->setHttpCode($data->getStatusCode());
+
+            if ($data->hasHeader('Content-Type') && $data->getHeaderLine('Content-Type') == 'application/json') {
+                $data = json_decode($data->getBody());
+            } else {
+                $data = [];
+            }
+        } else {
+            $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
+        }
+
         $this->cardIdentifier = Helper::structureGet($data, 'cardIdentifier', null);
         $this->expiry = Helper::parseDateTime(Helper::structureGet($data, 'expiry', null));
         $this->cardType = Helper::structureGet($data, 'cardType', null);
-        $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
     }
 
     /**
-     * Return an instantiation from the data returned by SagePay.
+     * Return an instantiation from the data returned by Sage Pay.
      *
      * @deprecated
      */

@@ -15,8 +15,9 @@ use Academe\SagePay\Psr7\AbstractMessage;
 
 use Academe\SagePay\Psr7\Factory\GuzzleFactory;
 
-abstract class AbstractRequest extends AbstractMessage
+abstract class AbstractRequest extends AbstractMessage implements  \JsonSerializable
 {
+    protected $endpoint;
     protected $auth;
     protected $factory;
     protected $resource_path = [];
@@ -25,6 +26,22 @@ abstract class AbstractRequest extends AbstractMessage
      * @var string Most messages are sent as POST requests, so this is the default
      */
     protected $method = 'POST';
+
+    /**
+     * 
+     */
+    public function getAuth()
+    {
+        return $this->auth;
+    }
+
+    /**
+     * 
+     */
+    public function getEndpoint()
+    {
+        return $this->endpoint;
+    }
 
     /**
      * Support substitution strings; any {fooBar} mapped to $this->getFooBar()
@@ -56,7 +73,7 @@ abstract class AbstractRequest extends AbstractMessage
      */
     public function getUrl()
     {
-        return $this->auth->getUrl($this->getResourcePath());
+        return $this->getEndpoint()->getUrl($this->getResourcePath());
     }
 
     /**
@@ -84,9 +101,9 @@ abstract class AbstractRequest extends AbstractMessage
 
     /**
      * Get the PSR-7 factory.
-     * Create a factory if none supplied and 
+     * Create a factory if none supplied and relevant libraries are installed.
      */
-    public function getFactory()
+    public function getFactory($exception = false)
     {
         if (!isset($this->factory) && GuzzleFactory::isSupported()) {
             // If the GuzzleFactory is supported (relevant Guzzle package is
@@ -95,23 +112,34 @@ abstract class AbstractRequest extends AbstractMessage
             $this->factory = new GuzzleFactory();
         }
 
+        // If the exception flag is set, then throw an exception if we do not
+        // have a factory.
+        if ($exception && empty($this->factory)) {
+            throw new Exception('No PSR-7 factory has been provided.');
+        }
+
         return $this->factory;
     }
 
     /**
-     * Return the PSR-7 request message.
-     * TODO: create a Guzzle factory as the default if no factory supplied.
-     * A getFactory() method could do the auto-create if needed. If the factory
-     * methods are static, then it probably does not even need to be instantiated - 
-     * just the full namespace and name would be enough to locate it.
+     * Return as a PSR-7 request message.
      */
     public function message()
     {
-        return $this->getFactory()->JsonRequest(
+        return $this->getFactory(true)->JsonRequest(
             $this->getMethod(),
             $this->getUrl(),
             $this->getHeaders(),
-            $this->getBody()
+            json_encode($this)
         );
+    }
+
+    /**
+     * Gathers the message body for JSON serialisation.
+     * {@inheritDoc}
+     */
+    public function jsonSerialize()
+    {
+        return $this->getBody();
     }
 }

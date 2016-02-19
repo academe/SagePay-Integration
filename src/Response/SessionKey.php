@@ -12,7 +12,6 @@ use DateTime;
 use DateTimeZone;
 
 use Academe\SagePay\Psr7\Helper;
-
 use Psr\Http\Message\ResponseInterface;
 
 class SessionKey extends AbstractResponse

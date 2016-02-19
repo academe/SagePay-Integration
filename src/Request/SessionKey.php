@@ -5,6 +5,7 @@
  */
 
 use Academe\SagePay\Psr7\Model\Auth;
+use Academe\SagePay\Psr7\Model\Endpoint;
 use Academe\SagePay\Psr7\AbstractMessage;
 use Academe\SagePay\Psr7\Factory\FactoryInterface;
 
@@ -12,24 +13,16 @@ class SessionKey extends AbstractRequest
 {
     protected $resource_path = ['merchant-session-keys'];
 
-    public function __construct(Auth $auth, FactoryInterface $factory = null)
+    public function __construct(Endpoint $endpoint, Auth $auth, FactoryInterface $factory = null)
     {
+        $this->endpoint = $endpoint;
         $this->auth = $auth;
         $this->factory = $factory;
     }
 
-    /**
-     * The vendorName goes into the request body.
-     * The integrationKey and integrationPassword is used as HTTP Basic Auth credentials.
-     */
-    public function getAuth()
-    {
-        return $this->auth;
-    }
-
     public function getBody()
     {
-        return ['vendorName' => $this->auth->getVendorName()];
+        return ['vendorName' => $this->getAuth()->getVendorName()];
     }
 
     /**

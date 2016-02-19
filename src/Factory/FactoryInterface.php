@@ -10,6 +10,12 @@ interface FactoryInterface
 {
     /**
      * Return a new PSR-7 Request object, with the body to be sent as JSON.
+     *
+     * @param null|string $method HTTP method for the request.
+     * @param null|string|UriInterface $uri URI for the request.
+     * @param array $headers Headers for the message.
+     * @param string|array|resource|StreamInterface $body Message body.
+     * @param string $protocolVersion HTTP protocol version.
      */
     public function JsonRequest(
         $method,

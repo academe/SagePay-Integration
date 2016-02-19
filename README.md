@@ -22,13 +22,22 @@ The `SessionKey` message has had PSR-7 support added, and can be used like this:
 use GuzzleHttp\Client;
 
 // Set up auth details.
-$auth = new \Academe\SagePay\Psr7\Model\Auth('vendor-name', 'key', 'password', \Academe\SagePay\Psr7\Model\Auth::MODE_TEST);
+$auth = new \Academe\SagePay\Psr7\Model\Auth('vendor-name', 'key', 'password');
+
+// Also the endpoint, which is now a separate class.
+$endpoint = new \Academe\SagePay\Psr7\Model\Endpoint('\Academe\SagePay\Psr7\Model\Auth::MODE_TEST);
 
 // Request for the session key.
-$key_request = new \Academe\SagePay\Psr7\Request\SessionKey($auth);
+$key_request = new \Academe\SagePay\Psr7\Request\SessionKey($endpoint, $auth);
 
 // HTTP client to send this message.
 $client = new Client();
+
+// You can turn all exceptions off if you want to handle all return codes and messages as
+// non-exceptions. This may make sense in some use-cases; a 401 with a valid error message
+// could still be a non-exceptional (i.e. possible expected) result in *your* code, so why
+// throw an exception?
+$client = new Client(['http_errors' => false]);
 
 // Send the PSR-7 message. Note *everything* needed is in this message.
 // TODO: we will want to catch or suppress exceptions here if we want to
@@ -36,10 +45,10 @@ $client = new Client();
 $psr7_response = $client->send($key_request->message());
 
 // Capture the result in our local repsonse model.
-$response = new \Academe\SagePay\Psr7\Response\SessionKey($psr7_response);
+$session_key = new \Academe\SagePay\Psr7\Response\SessionKey($psr7_response);
 
 // The result we want.
-echo "Session key is: " . $response->getMerchantSessionKey();
+echo "Session key is: " . $session_key->getMerchantSessionKey();
 ~~~
 
 That example involves capturing the PSR-7 message, then sending it.
@@ -49,6 +58,27 @@ but you can pass in your own PSR-7 factory instead if you wish to use another li
 
 No other messages have been converted to use PSR-7 yet - just playing with `SessionKey`
 first to explore how it can work in a simple, robust, and flexible way.
+
+This has been extended to getting the card identifier:
+
+~~~php
+// $endpoint, $auth and $session_key from before.
+$card_identifier_request = new \Academe\SagePay\Psr7\Request\CardIdentifier(
+    $endpoint, $auth, $session_key,
+    'Fred', '4929000000006', '1220', '123'
+);
+
+// Send the PSR-7 message.
+$response = $client->send($card_identifier_request->message());
+
+// Grab the result in the local object.
+$card_identifier = new \Academe\SagePay\Psr7\Response\CardIdentifier($response);
+
+echo "Card identifier = " . $card_identifier->getCardIdentifier();
+echo "Card type = " . $card_identifier->getCardType();
+~~~
+
+
 
 ## Package Development
 
