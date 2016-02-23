@@ -9,6 +9,7 @@ use UnexpectedValueException;
 
 use Academe\SagePay\Psr7\Helper;
 use Academe\SagePay\Psr7\AbstractMessage;
+use Psr\Http\Message\ResponseInterface;
 
 // Teapot here provides HTTP response code constants.
 // Not sure why RFC4918 is not included in Http; it contains some responses we expect to get.
@@ -71,5 +72,22 @@ abstract class AbstractResponse extends AbstractMessage implements Http, RFC4918
                 return (int)$code;
             }
         }
+    }
+
+    /**
+     * If the response is provided as a PSR-7 message, then extract
+     * the details from the message.
+     */
+    protected function extractPsr7(ResponseInterface $message, $httpCode)
+    {
+        $this->setHttpCode($message->getStatusCode());
+
+        if ($message->hasHeader('Content-Type') && $message->getHeaderLine('Content-Type') == 'application/json') {
+            $data = json_decode($message->getBody());
+        } else {
+            $data = [];
+        }
+
+        return $data;
     }
 }

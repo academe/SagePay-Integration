@@ -48,7 +48,8 @@ try {
     // You can catch the details of errors in an ErrorCollection like this.
     // The collection can handle all types of errors returned - a single error,
     // or a list of validation errors.
-    // You may also want to handle this in Guzzle as an event handler.
+    // You may want to handle this in Guzzle as an event handler, but that's not described
+    // here.
 
     $errors = new \Academe\SagePay\Psr7\Response\ErrorCollection($e->getResponse());
     var_dump($errors->all());

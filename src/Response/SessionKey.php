@@ -26,13 +26,7 @@ class SessionKey extends AbstractResponse
     {
         // If $data is a PSR-7 message, then extract what we need.
         if ($data instanceof ResponseInterface) {
-            $this->setHttpCode($data->getStatusCode());
-
-            if ($data->hasHeader('Content-Type') && $data->getHeaderLine('Content-Type') == 'application/json') {
-                $data = json_decode($data->getBody());
-            } else {
-                $data = [];
-            }
+            $data = $this->extractPsr7($data, $httpCode);
         } else {
             $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
         }
