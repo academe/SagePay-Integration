@@ -42,7 +42,19 @@ $client = new Client(['http_errors' => false]);
 // Send the PSR-7 message. Note *everything* needed is in this message.
 // TODO: we will want to catch or suppress exceptions here if we want to
 // capture any errors supplied by Sage Pay.
-$psr7_response = $client->send($key_request->message());
+try {
+    $psr7_response = $client->send($key_request->message());
+} catch (\GuzzleHttp\Exception\ClientException $e) {
+    // You can catch the details of errors in an ErrorCollection like this.
+    // The collection can handle all types of errors returned - a single error,
+    // or a list of validation errors.
+    // You may also want to handle this in Guzzle as an event handler.
+
+    $errors = new \Academe\SagePay\Psr7\Response\ErrorCollection($e->getResponse());
+    var_dump($errors->all());
+    var_dump($errors->first());
+    exit;
+}
 
 // Capture the result in our local repsonse model.
 $session_key = new \Academe\SagePay\Psr7\Response\SessionKey($psr7_response);
@@ -69,6 +81,7 @@ $card_identifier_request = new \Academe\SagePay\Psr7\Request\CardIdentifier(
 );
 
 // Send the PSR-7 message.
+// The same error handling as shown earlier can be used.
 $response = $client->send($card_identifier_request->message());
 
 // Grab the result in the local object.

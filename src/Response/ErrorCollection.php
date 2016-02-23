@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePay\Psr7\Model;
+<?php namespace Academe\SagePay\Psr7\Response;
 
 /**
  * A collection of errors, normally validation errors.
@@ -8,12 +8,14 @@
 
 use Exception;
 use UnexpectedValueException;
+use Psr\Http\Message\ResponseInterface;
 
 use ArrayIterator;
 
 use Academe\SagePay\Psr7\Helper;
+use Academe\SagePay\Psr7\Model\Error;
 
-class ErrorCollection implements \IteratorAggregate
+class ErrorCollection extends AbstractResponse implements \IteratorAggregate
 {
     /**
      * @var array
@@ -23,12 +25,36 @@ class ErrorCollection implements \IteratorAggregate
     /**
      * @param array $items Initial array of Error instances
      */
-    public function __construct(array $items = [])
+    public function __construct($data, $httpCode = null)
     {
-        // Add each item individually, providing some validation.
-        foreach($items as $item) {
-            $this->add($item);
+        // If $data is a PSR-7 message, then extract what we need.
+        if ($data instanceof ResponseInterface) {
+            $httpCode = $data->getStatusCode();
+
+            if ($data->hasHeader('Content-Type') && $data->getHeaderLine('Content-Type') == 'application/json') {
+                $data = json_decode($data->getBody());
+            } else {
+                $data = [];
+            }
+        } else {
+            $httpCode = $this->deriveHttpCode($httpCode, $data);
         }
+
+        // A list of errors will be provided in a wrapping "errors" element.
+        $errors = Helper::structureGet($data, 'errors', null);
+
+        // If there was no "errors" wrapper, then assume what we have is a single error,
+        // provided there is a "code" element at a minimum.
+        if (!isset($errors) && !empty(Helper::structureGet($data, 'code', null))) {
+            $this->add(Error::fromData($data, $httpCode));
+        } elseif (is_array($errors)) {
+            foreach($errors as $error) {
+                // The $error may be an Error object or an array.
+                $this->add(Error::fromData($error, $httpCode));
+            }
+        }
+
+        $this->httpCode = $httpCode;
     }
 
     /**
@@ -50,34 +76,10 @@ class ErrorCollection implements \IteratorAggregate
     }
 
     /**
-     * @param array|object $data List of Error instances or array of error details
-     *
-     * @return static Collection of Error instances
-     */
-    public static function fromData($data, $httpCode = null)
-    {
-        $errors = Helper::structureGet($data, 'errors', null);
-
-        $collection = new static();
-
-        if (is_array($errors)) {
-            foreach($errors as $error) {
-                // The $error may be an Errot object or an array.
-                $collection->add(Error::fromData($error, $httpCode));
-            }
-        } else {
-            $collection->add(Error::fromData($data, $httpCode));
-        }
-
-        return($collection);
-    }
-
-    /**
-     * Return errors for a specific property, including null for
-     * errors without a property reference..
+     * Return errors for a specific property.
+     * Use null to return errors without a property reference.
      * Returns ErrorCollection
-     */
-    /**
+     *
      * @param null|string $property_name The property name or null to get errors without a property name
      *
      * @return static A collection of zero or more Error objects
@@ -133,5 +135,13 @@ class ErrorCollection implements \IteratorAggregate
     public function first()
     {
         return reset($this->items);
+    }
+
+    /**
+     * @return array All errors in the collection.
+     */
+    public function all()
+    {
+        return $this->items;
     }
 }

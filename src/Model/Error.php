@@ -118,6 +118,6 @@ class Error
         $property = Helper::structureGet($data, 'property', null);
         $clientMessage = Helper::structureGet($data, 'clientMessage', null);
 
-        return new static($code, $description, $propertym, $clientMessage, $httpCode);
+        return new static($code, $description, $property, $clientMessage, $httpCode);
     }
 }
