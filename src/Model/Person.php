@@ -8,7 +8,7 @@
 use Exception;
 use UnexpectedValueException;
 
-class Person
+class Person implements PersonInterface
 {
     /**
      * @var
@@ -80,7 +80,7 @@ class Person
     /**
      * @return array The Person returned as an array for the API, requiring conversion to JSON
      */
-    public function getBody()
+    public function jsonSerialize()
     {
         // First/last name is always required.
         $return = $this->getNamesBody();

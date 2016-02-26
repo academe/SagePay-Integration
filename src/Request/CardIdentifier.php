@@ -82,9 +82,9 @@ class CardIdentifier extends AbstractRequest
     }
 
     /**
-     * Get the message body data as an array.
+     * Get the message body data for serializing.
      */
-    public function getBody()
+    public function jsonSerialize()
     {
         return [
             'cardDetails' => [

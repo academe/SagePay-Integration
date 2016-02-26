@@ -133,13 +133,4 @@ abstract class AbstractRequest extends AbstractMessage implements  \JsonSerializ
             json_encode($this)
         );
     }
-
-    /**
-     * Gathers the message body for JSON serialisation.
-     * {@inheritDoc}
-     */
-    public function jsonSerialize()
-    {
-        return $this->getBody();
-    }
 }

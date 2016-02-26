@@ -13,15 +13,15 @@
 use Exception;
 use UnexpectedValueException;
 
-use Academe\SagePay\Psr7\Message\CardIdentifierResponse;
-use Academe\SagePay\Psr7\Message\SessionKeyResponse;
+use Academe\SagePay\Psr7\Response\CardIdentifier;
+use Academe\SagePay\Psr7\Response\SessionKey;
 
 class Card implements PaymentMethodInterface
 {
     protected $sessionKey;
     protected $cardIdentifier;
 
-    public function __construct(SessionKeyResponse $sessionKey, CardIdentifierResponse $cardIdentifier)
+    public function __construct(SessionKey $sessionKey, CardIdentifier $cardIdentifier)
     {
         $this->cardIdentifier = $cardIdentifier;
         $this->sessionKey = $sessionKey;
@@ -30,7 +30,7 @@ class Card implements PaymentMethodInterface
     /**
      * Return the body partial for message construction.
      */
-    public function getBody()
+    public function jsonSerialize()
     {
         return array(
             'card' => array(

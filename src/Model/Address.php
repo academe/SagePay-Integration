@@ -124,11 +124,11 @@ class Address implements AddressInterface
      *
      * @return array Data for passing to the API, requiring JSON conversion first.
      */
-    public function getBody()
+    public function jsonSerialize()
     {
-        $return = array(
+        $return = [
             $this->addFieldPrefix('address1') => $this->address1,
-        );
+        ];
 
         if ( ! empty($this->address2)) {
             $return[$this->addFieldPrefix('address2')] = $this->address2;

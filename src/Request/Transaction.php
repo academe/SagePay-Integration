@@ -18,7 +18,8 @@ use Academe\SagePay\Psr7\Money\AmountInterface;
 use Academe\SagePay\Psr7\Model\AddressInterface;
 use Academe\SagePay\Psr7\Model\ShippingDetails;
 use Academe\SagePay\Psr7\Model\Address;
-use Academe\SagePay\Psr7\Model\Person;
+use Academe\SagePay\Psr7\Model\PersonInterface;
+use Academe\SagePay\Psr7\Model\Endpoint;
 
 class Transaction extends AbstractRequest
 {
@@ -41,9 +42,23 @@ class Transaction extends AbstractRequest
     protected $giftAid = false;
     protected $applyAvsCvcCheck;
     protected $apply3DSecure;
-    protected $shippingDetails;
+    protected $shippingAddress;
+    protected $shippingRecipient;
 
+    /**
+     * @var string The prefix is added to the name fields of the customer.
+     */
     protected $customerFieldsPrefix = 'customer';
+
+    /**
+     * @var string The prefix is added to the name fields when sending to Sage Pay
+     */
+    protected $shippingNameFieldPrefix = 'recipient';
+
+    /**
+     * @var string The prefix added to address name fields
+     */
+    protected $shippingAddressFieldPrefix = 'shipping';
 
     /**
      * Valid values for enumerated input types.
@@ -70,16 +85,21 @@ class Transaction extends AbstractRequest
     const APPLY_3D_SECURE_FORCEIGNORINGRULES        = 'ForceIgnoringRules'; // 3
 
     public function __construct(
+        Endpoint $endpoint,
         Auth $auth,
         $transactionType,
         PaymentMethodInterface $paymentMethod,
         $vendorTxCode,
         AmountInterface $amount,
         $description,
-        Address $billingAddress,
-        Person $customer,
-        ShippingDetails $shippingDetails = null
+        AddressInterface $billingAddress,
+        PersonInterface $customer,
+        AddressInterface $shippingAddress = null,
+        PersonInterface $shippingRecipient = null
+        // TODO: Why isn't this a shipping address and shipping person? Split it up and remove ShippingDetails.
+        //ShippingDetails $shippingDetails = null
     ) {
+        $this->endpoint = $endpoint;
         $this->auth = $auth;
         $this->description = $description;
 
@@ -99,7 +119,9 @@ class Transaction extends AbstractRequest
         $this->amount = $amount;
         $this->billingAddress = $billingAddress->withFieldPrefix('');
         $this->customer = $customer->withFieldPrefix($this->customerFieldsPrefix);
-        $this->shippingDetails = $shippingDetails;
+
+        $this->shippingAddress = $shippingAddress->withFieldPrefix($this->shippingAddressFieldPrefix);
+        $this->shippingRecipient = $shippingRecipient->withFieldPrefix($this->shippingNameFieldPrefix);
     }
 
     public function withEntryMethod($entryMethod)
@@ -215,27 +237,41 @@ class Transaction extends AbstractRequest
         return $copy;
     }
 
-    public function getBody()
+    /**
+     * Get the message body data for serializing.
+     */
+    public function jsonSerialize()
     {
         $result = [
             'transactionType' => $this->transactionType,
-            'paymentMethod' => $this->paymentMethod->getBody(),
+            'paymentMethod' => $this->paymentMethod,
             'vendorTxCode' => $this->vendorTxCode,
             'amount' => $this->amount->getAmount(),
             'currency' => $this->amount->getCurrencyCode(),
             'description' => $this->description,
-            'billingAddress' => $this->billingAddress->getBody(),
+            'billingAddress' => $this->billingAddress,
         ];
 
         // The customer details 
-        $result = array_merge($result, $this->customer->getBody());
+        $result = array_merge($result, $this->customer->jsonSerialize());
 
-        // If there are shipping details, then merge this in:
-        if ( ! empty($this->shippingDetails)) {
-            $result['shippingDetails'] = $this->shippingDetails->getBody();
+        $shippingDetails = [];
+
+        if ( ! empty($this->shippingAddress)) {
+            $shippingDetails = array_merge($shippingDetails, $this->shippingAddress->jsonSerialize());
         }
 
-        // Add remaining optional options.
+        if ( ! empty($this->shippingRecipient)) {
+            // We only want the names from the recipient details.
+            $shippingDetails = array_merge($shippingDetails, $this->shippingRecipient->getNamesBody());
+        }
+
+        // If there are shipping details, then merge this in:
+        if ( ! empty($shippingAddress)) {
+            $result['shippingDetails'] = $shippingDetails;
+        }
+
+        // Add remaining optional parameters.
 
         if ( ! empty($this->entryMethod)) {
             $result['entryMethod'] = $this->entryMethod;

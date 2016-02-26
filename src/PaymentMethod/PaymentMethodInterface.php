@@ -4,10 +4,6 @@
  * Interface for a payment method.
  */
 
-interface PaymentMethodInterface
+interface PaymentMethodInterface extends  \JsonSerializable
 {
-    /**
-     * Return the body partial for message construction.
-     */
-    public function getBody();
 }

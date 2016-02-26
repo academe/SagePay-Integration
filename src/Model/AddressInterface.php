@@ -5,6 +5,6 @@
  * and delivery address.
  */
 
-interface AddressInterface
+interface AddressInterface extends  \JsonSerializable
 {
 }

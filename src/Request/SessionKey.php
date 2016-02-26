@@ -20,11 +20,6 @@ class SessionKey extends AbstractRequest
         $this->factory = $factory;
     }
 
-    public function getBody()
-    {
-        return ['vendorName' => $this->getAuth()->getVendorName()];
-    }
-
     /**
      * The HTTP Basic Auth header, as an array.
      * Use this if your transport tool does not do "Basic Auth" out of the box.
@@ -32,5 +27,12 @@ class SessionKey extends AbstractRequest
     public function getHeaders()
     {
         return $this->getBasicAuthHeaders();
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'vendorName' => $this->getAuth()->getVendorName(),
+        ];
     }
 }
