@@ -1,7 +1,9 @@
 <?php namespace Academe\SagePay\Psr7\Request;
 
 /**
- * The 3DSecure request sent to Sage Pay .
+ * The 3DSecure request sent to Sage Pay, after the user is returned
+ * from entering their 3D Secure authentication details.
+ * See https://test.sagepay.com/documentation/#3-d-secure
  */
 
 use Exception;

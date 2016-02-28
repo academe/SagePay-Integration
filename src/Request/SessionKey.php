@@ -2,6 +2,7 @@
 
 /**
  * The request for a session key.
+ * See https://test.sagepay.com/documentation/#merchant-session-keys
  */
 
 use Academe\SagePay\Psr7\Model\Auth;

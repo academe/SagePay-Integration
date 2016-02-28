@@ -138,7 +138,14 @@ $transaction = new \Academe\SagePay\Psr7\Request\Transaction(
     $amount,
     'My Purchase Description',
     $billing_address,
-    $customer
+    $customer,
+    null,
+    null,
+    [
+	// Don't use 3DSecure this time.
+        'Apply3DSecure' => 'Ignore',
+    ]
+
 );
 
 // Send it to Sage Pay.

@@ -2,7 +2,7 @@
 
 /**
  * Value object holding the merchant session key returned by SagePay.
- * TODO: make expiry optional?
+ * See https://test.sagepay.com/documentation/#merchant-session-keys
  */
 
 use Exception;

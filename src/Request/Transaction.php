@@ -3,6 +3,7 @@
 /**
  * The transaction value object to send a transaction to SagePay.
  * See https://test.sagepay.com/documentation/#transactions
+ *
  * TODO: support an $options parameter for setting options, e.g. 3D Secure.
  * Options just need to map onto the `with*` methods, though the with* methods
  * can't actually be run in the constructor.
@@ -10,8 +11,6 @@
 
 use Exception;
 use UnexpectedValueException;
-
-use ReflectionClass;
 
 use Academe\SagePay\Psr7\Model\Auth;
 use Academe\SagePay\Psr7\PaymentMethod\PaymentMethodInterface;
@@ -96,7 +95,8 @@ class Transaction extends AbstractRequest
         AddressInterface $billingAddress,
         PersonInterface $customer,
         AddressInterface $shippingAddress = null,
-        PersonInterface $shippingRecipient = null
+        PersonInterface $shippingRecipient = null,
+        array $options = []
     ) {
         $this->endpoint = $endpoint;
         $this->auth = $auth;
@@ -120,9 +120,33 @@ class Transaction extends AbstractRequest
 
         $this->shippingAddress = $shippingAddress->withFieldPrefix($this->shippingAddressFieldPrefix);
         $this->shippingRecipient = $shippingRecipient->withFieldPrefix($this->shippingNameFieldPrefix);
+
+        $this->setOptions($options);
     }
 
-    public function withEntryMethod($entryMethod)
+    /**
+     * Set various flags - anything with a setFoo() method.
+     */
+    protected function setOptions(array $options = [])
+    {
+        foreach($options as $name => $value) {
+            $method = 'set' . ucfirst($name);
+            if (method_exists($this, $method)) {
+                $this->{$method}($value);
+            } else {
+                // Unknown option.
+                throw new UnexpectedValueException(sprintf('Unknown option %s', $name));
+            }
+        }
+    }
+
+    public function withOptions(array $options = [])
+    {
+        $copy = clone $this;
+        return $copy->setOptions($options);
+    }
+
+    public function setEntryMethod($entryMethod)
     {
         // Get the value from the class constants.
         $value = $this->constantValue('ENTRY_METHOD', $entryMethod);
@@ -135,9 +159,14 @@ class Transaction extends AbstractRequest
             ));
         }
 
+        $this->entryMethod = $value;
+        return $this;
+    }
+
+    public function withEntryMethod($entryMethod)
+    {
         $copy = clone $this;
-        $copy->entryMethod = $value;
-        return $copy;
+        return $copy->setEntryMethod($entryMethod);
     }
 
     public static function getEntryMethods()
@@ -145,7 +174,7 @@ class Transaction extends AbstractRequest
         return static::constantList('ENTRY_METHOD');
     }
 
-    public function withRecurringIndicator($recurringIndicator)
+    public function setRecurringIndicator($recurringIndicator)
     {
         // Get the value from the class constants.
         $value = $this->constantValue('RECURRING_INDICATOR', $recurringIndicator);
@@ -158,9 +187,14 @@ class Transaction extends AbstractRequest
             ));
         }
 
+        $this->recurringIndicator = $value;
+        return $this;
+    }
+
+    public function withRecurringIndicator($recurringIndicator)
+    {
         $copy = clone $this;
-        $copy->recurringIndicator = $value;
-        return $copy;
+        return $copy->withRecurringIndicator($recurringIndicator);
     }
 
     public static function getRecurringIndicators()
@@ -168,14 +202,19 @@ class Transaction extends AbstractRequest
         return static::constantList('RECURRING_INDICATOR');
     }
 
+    protected function setGiftAid($giftAid)
+    {
+        $this->giftAid = ! empty($giftAid);
+        return $this;
+    }
+
     public function withGiftAid($giftAid)
     {
         $copy = clone $this;
-        $copy->giftAid = ! empty($giftAid);
-        return $copy;
+        return $copy->setGiftAid($giftAid);
     }
 
-    public function withApplyAvsCvcCheck($applyAvsCvcCheck)
+    protected function setApplyAvsCvcCheck($applyAvsCvcCheck)
     {
         // Get the value from the class constants.
         $value = $this->constantValue('APPLY_AVS_CVC_CHECK', $applyAvsCvcCheck);
@@ -188,9 +227,14 @@ class Transaction extends AbstractRequest
             ));
         }
 
+        $this->applyAvsCvcCheck = $value;
+        return $this;
+    }
+
+    public function withApplyAvsCvcCheck($applyAvsCvcCheck)
+    {
         $copy = clone $this;
-        $copy->applyAvsCvcCheck = $value;
-        return $copy;
+        return $copy->setApplyAvsCvcCheck($applyAvsCvcCheck);
     }
 
     public static function getApplyAvsCvcChecks()
@@ -198,7 +242,7 @@ class Transaction extends AbstractRequest
         return static::constantList('APPLY_AVS_CVC_CHECK');
     }
 
-    public function withApply3DSecure($apply3DSecure)
+    protected function setApply3DSecure($apply3DSecure)
     {
         // Get the value from the class constants.
         $value = $this->constantValue('APPLY_3D_SECURE', $apply3DSecure);
@@ -211,9 +255,14 @@ class Transaction extends AbstractRequest
             ));
         }
 
+        $this->apply3DSecure = $value;
+        return $this;
+    }
+
+    public function withApply3DSecure($apply3DSecure)
+    {
         $copy = clone $this;
-        $copy->apply3DSecure = $value;
-        return $copy;
+        return $copy->setApply3DSecure($apply3DSecure);
     }
 
     public static function getApply3DSecures()

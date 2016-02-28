@@ -2,6 +2,7 @@
 
 /**
  * Request the result of a transaction, stored on Sage Pay.
+ * See "Retrieve and Transaction" https://test.sagepay.com/documentation/#transactions
  */
 
 use Exception;

@@ -1,4 +1,8 @@
-<?php namespace Academe\SagePay\Psr7;
+<?php
+
+namespace Academe\SagePay\Psr7;
+
+use ReflectionClass;
 
 /**
  * Shared (Request and Response) abstract message.
