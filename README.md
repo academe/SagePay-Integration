@@ -102,7 +102,61 @@ echo "Card identifier = " . $card_identifier->getCardIdentifier();
 echo "Card type = " . $card_identifier->getCardType();
 ~~~
 
+Then a transaction can be initiated.
 
+~~~php
+// We have a billing address:
+$billing_address = \Academe\SagePay\Psr7\Model\Address::fromData([
+    'address1' => 'address one',
+    'postalCode' => 'NE26',
+    'city' => 'Whitley',
+    'state' => 'AL',
+    'country' => 'US',
+]);
+
+// We have customer to bill:
+$customer = new \Academe\SagePay\Psr7\Model\Person(
+    'Bill Firstname',
+    'Bill Lastname',
+    'billing@example.com',
+    '+44 191 12345678'
+);
+
+// We have an amount to bill.
+$amount = \Academe\SagePay\Psr7\Money\Amount::GBP()->withMinorUnit(999);
+
+// We have a card to charge (we get the session key and captured the card identifier earlier).
+$card = new \Academe\SagePay\Psr7\PaymentMethod\Card($session_key, $card_identifier);
+
+// Put it all together into a transaction.
+$transaction = new \Academe\SagePay\Psr7\Request\Transaction(
+    $endpoint,
+    $auth,
+    \Academe\SagePay\Psr7\Request\Transaction::TRANSACTION_TYPE_PAYMENT,
+    $card,
+    'MyVendorTxCode-' . rand(10000000, 99999999),
+    $amount,
+    'My Purchase Description',
+    $billing_address,
+    $customer
+);
+
+// Send it to Sage Pay.
+$psr7_response = $client->send($transaction->message());
+
+// Assuming we got no exceptions, extract the response details.
+$transaction_response = new \Academe\SagePay\Psr7\Response\Transaction($psr7_response);
+
+echo "Final status is " . $transaction_response->getStatus();
+
+// If the result is "3dAuth" then we will need to send the user off to do their 3D Secure
+// authorisation (more about that process in a bit).
+// A status of "Ok" means the transaction was successful.
+// A number of validation errors can be captured and linked to specific submitted
+// fields (more about that in a bit too).
+~~~
+
+**Most of the stuff below here is outdated and is being replaced**
 
 ## Package Development
 

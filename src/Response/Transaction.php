@@ -13,6 +13,7 @@ use Exception;
 use UnexpectedValueException;
 
 use Academe\SagePay\Psr7\Helper;
+use Psr\Http\Message\ResponseInterface;
 
 class Transaction extends AbstractResponse
 {
@@ -29,22 +30,6 @@ class Transaction extends AbstractResponse
     protected $acsUrl;
     protected $paReq;
 
-    protected $transactionTypes = [
-        'Payment',
-    ];
-
-    // TODO: move these to the constants, with introspection to get the list
-    // where needed.
-    protected $statuses = [
-        'ok' => 'Ok',
-        'notauthed' => 'NotAuthed',
-        'rejected' => 'Rejected',
-        '3dauth' => '3DAuth',
-        'malformed' => 'Malformed',
-        'invalid' => 'Invalid',
-        'error' => 'Error',
-    ];
-
     const STATUS_OK         = 'Ok';
     const STATUS_NOTAUTHED  = 'NotAuthed';
     const STATUS_REJECTED   = 'Rejected';
@@ -54,15 +39,17 @@ class Transaction extends AbstractResponse
     const STATUS_ERROR      = 'Error';
 
     /**
-     * Big long list of parameters is beginning to smell a bit.
-     * We would normally instantiate using fromData() but allowing this
-     * constructor to accept a single array or object (simply passing it to
-     * fromData() would make it a little less cumbersome. Now we have the
-     * 3DSecure object being passed in, rather than just strings and numbers,
-     * it changes things a little.
+     * @param $data ResponseInterface|object|array
      */
-    public function __construct($data, $httpCode = null
-    ) {
+    public function __construct($data, $httpCode = null)
+    {
+        // If $data is a PSR-7 message, then extract what we need.
+        if ($data instanceof ResponseInterface) {
+            $data = $this->extractPsr7($data, $httpCode);
+        } else {
+            $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
+        }
+
         // Note the resource is called "3DSecure" and not "Secure3D" that use
         // for valid class, method and variable names.
         $Secure3D = Helper::structureGet($data, '3DSecure', null);
@@ -70,7 +57,7 @@ class Transaction extends AbstractResponse
         if ($Secure3D instanceof Secure3DResponse) {
             // A 3DSecure object has already been put together.
         } elseif (is_array($Secure3D)) {
-            // Create a 3DSecure object from the array data, but include 
+            // Create a 3DSecure object from the array data.
             $Secure3D = Secure3DResponse::fromData($data);
         } elseif (is_null($Secure3D)) {
             // No 3D Secure object; the 3D Secure part of the transactino is
@@ -91,16 +78,6 @@ class Transaction extends AbstractResponse
         $this->Secure3D = $Secure3D;
         $this->acsUrl = Helper::structureGet($data, 'acsUrl', null);
         $this->paReq = Helper::structureGet($data, 'paReq', null);
-
-        $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
-    }
-
-    /**
-     * @deprecated
-     */
-    public static function fromData($data, $httpCode = null)
-    {
-        return new static($data, $httpCode);
     }
 
     /**
@@ -113,9 +90,9 @@ class Transaction extends AbstractResponse
     {
         // Enforce the correct capitalisation.
 
-        return ! empty($this->statuses[strtolower($this->status)])
-            ? $this->statuses[strtolower($this->status)]
-            : $this->status;
+        $statusValue = $this->constantValue('STATUS', $this->status);
+
+        return ! empty($statusValue) ? $statusValue : $this->status;
     }
 
     /**

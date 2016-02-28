@@ -2,9 +2,10 @@
 
 /**
  * The transaction value object to send a transaction to SagePay.
- * TODO: look at all the other transaction types - they are very different messages.
- *   Maybe change this one to a Payment only, with an abstract class to hold
- *   the constants and shared request message functionality?
+ * See https://test.sagepay.com/documentation/#transactions
+ * TODO: support an $options parameter for setting options, e.g. 3D Secure.
+ * Options just need to map onto the `with*` methods, though the with* methods
+ * can't actually be run in the constructor.
  */
 
 use Exception;
@@ -96,22 +97,19 @@ class Transaction extends AbstractRequest
         PersonInterface $customer,
         AddressInterface $shippingAddress = null,
         PersonInterface $shippingRecipient = null
-        // TODO: Why isn't this a shipping address and shipping person? Split it up and remove ShippingDetails.
-        //ShippingDetails $shippingDetails = null
     ) {
         $this->endpoint = $endpoint;
         $this->auth = $auth;
         $this->description = $description;
 
-        // Some simple normalisation.
-        $transactionType = ucfirst(strtolower($transactionType));
-
-        // Is the transaction type one we are expecting?
+        // Is the transaction type valid?
         $transactionTypeValue = $this->constantValue('TRANSACTION_TYPE', $transactionType);
         if ( ! $transactionTypeValue) {
-            throw new UnexpectedValueException(sprintf('Unknown transaction type "%s".', (string)$transactionType));
+            throw new UnexpectedValueException(sprintf(
+                'Unknown transaction type "%s"',
+                (string)$transactionType
+            ));
         }
-
         $this->transactionType = $transactionTypeValue;
 
         $this->paymentMethod = $paymentMethod;
@@ -223,10 +221,17 @@ class Transaction extends AbstractRequest
         return static::constantList('APPLY_3D_SECURE');
     }
 
-    public function withShippingDetails(ShippingDetails $shippingDetails)
+    public function withShippingAddress(ShippingAddress $shippingAddress)
     {
         $copy = clone $this;
-        $copy->shippingDetails = $shippingDetails;
+        $copy->shippingAddress = $shippingAddress;
+        return $copy;
+    }
+
+    public function withShippingRecipient(ShippingRecipient $shippingRecipient)
+    {
+        $copy = clone $this;
+        $copy->shippingRecipient = $shippingRecipient;
         return $copy;
     }
 
@@ -266,7 +271,7 @@ class Transaction extends AbstractRequest
             $shippingDetails = array_merge($shippingDetails, $this->shippingRecipient->getNamesBody());
         }
 
-        // If there are shipping details, then merge this in:
+        // If there are shipping details, then merge it in:
         if ( ! empty($shippingAddress)) {
             $result['shippingDetails'] = $shippingDetails;
         }
@@ -294,41 +299,6 @@ class Transaction extends AbstractRequest
         }
 
         return $result;
-    }
-
-    /**
-     * Get an array of constants in this [late-bound] class, with an optional prefix.
-     */
-    public static function constantList($prefix = null)
-    {
-        $reflection = new ReflectionClass(__CLASS__);
-        $constants = $reflection->getConstants();
-
-        if (isset($prefix)) {
-            $result = [];
-            $prefix = strtoupper($prefix);
-            foreach($constants as $key => $value) {
-                if (strpos($key, $prefix) === 0) {
-                    $result[$key] = $value;
-                }
-            }
-            return $result;
-        } else {
-            return $constants;
-        }
-    }
-
-    /**
-     * Get a class constant value based on suffix and prefix.
-     * Returns null if not found.
-     */
-    public static function constantValue($prefix, $suffix)
-    {
-        $name = strtoupper($prefix . '_' . $suffix);
-
-        if (defined("static::$name")) {
-            return constant("static::$name");
-        }
     }
 
     public function getHeaders()
