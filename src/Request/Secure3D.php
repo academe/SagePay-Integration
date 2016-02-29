@@ -1,4 +1,6 @@
-<?php namespace Academe\SagePay\Psr7\Request;
+<?php
+
+namespace Academe\SagePay\Psr7\Request;
 
 /**
  * The 3DSecure request sent to Sage Pay, after the user is returned
@@ -11,10 +13,10 @@ use UnexpectedValueException;
 
 use Academe\SagePay\Psr7\Helper;
 use Academe\SagePay\Psr7\Model\Auth;
+use Academe\SagePay\Psr7\Model\Endpoint;
 
 class Secure3D extends AbstractRequest
 {
-    protected $auth;
     protected $paRes;
     protected $transactionId;
 
@@ -24,8 +26,11 @@ class Secure3D extends AbstractRequest
      * @param string|Secure3DAcsResponse $paRes The PA Result returned by the user's bank (or their agent)
      * @param string $transactionId The ID that Sage Pay gave to the transaction in its intial reponse
      */
-    public function __construct(Auth $auth, $paRes, $transactionId)
+    public function __construct(Endpoint $endpoint, Auth $auth, $paRes, $transactionId)
     {
+        $this->endpoint = $endpoint;
+        $this->auth = $auth;
+
         if ($paRes instanceof Secure3DAcsResponse) {
             $this->paRes = $paRes->getPaRes();
         } else {
@@ -33,10 +38,12 @@ class Secure3D extends AbstractRequest
         }
 
         $this->transactionId = $transactionId;
-        $this->auth = $auth;
     }
 
-    public function getBody()
+    /**
+     * Get the message body data for serializing.
+     */
+    public function jsonSerialize()
     {
         return [
             'paRes' => $this->getPaRes(),
@@ -60,10 +67,5 @@ class Secure3D extends AbstractRequest
     public function getTransactionId()
     {
         return $this->transactionId;
-    }
-
-    public function getAuth()
-    {
-        return $this->auth;
     }
 }

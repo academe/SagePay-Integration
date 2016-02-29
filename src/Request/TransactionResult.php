@@ -11,19 +11,17 @@ use UnexpectedValueException;
 //use ReflectionClass;
 
 use Academe\SagePay\Psr7\Model\Auth;
+use Academe\SagePay\Psr7\Model\Endpoint;
 
 class TransactionResult extends AbstractRequest
 {
     protected $resource_path = ['transactions', '{transactionId}'];
-
     protected $method = 'GET';
-
-    protected $auth;
 
     /**
      * @param string $transactionId The ID that Sage Pay gave to the transaction
      */
-    public function __construct(Auth $auth, $transactionId)
+    public function __construct(Endpoint $endpoint, Auth $auth, $transactionId)
     {
         $this->transactionId = $transactionId;
         $this->auth = $auth;
@@ -34,14 +32,12 @@ class TransactionResult extends AbstractRequest
         return $this->transactionId;
     }
 
-    public function getAuth()
+    /**
+     * Get the message body data for serializing.
+     * There is no body data for this message.
+     */
+    public function jsonSerialize()
     {
-        return $this->auth;
-    }
-
-    public function getBody()
-    {
-        return null;
     }
 
     public function getHeaders()

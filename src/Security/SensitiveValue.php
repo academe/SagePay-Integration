@@ -1,9 +1,12 @@
 <?php
+
 namespace Academe\SagePay\Psr7\Security;
 
 use Exception;
+use Serializable;
+use JsonSerializable;
 
-final class SensitiveValue implements \Serializable, \JsonSerializable
+final class SensitiveValue implements Serializable, JsonSerializable
 {
     private $value;
 
@@ -75,11 +78,11 @@ final class SensitiveValue implements \Serializable, \JsonSerializable
      */
     public function __clone()
     {
-        throw new Exception('It is not permitted to close this object.');
+        throw new Exception('It is not permitted to clone this object.');
     }
 
     /**
-     * var_dump or print_r (PHP5.6+)
+     * var_dump or print_r (works only for PHP5.6+)
      *
      * @return null for now
      */

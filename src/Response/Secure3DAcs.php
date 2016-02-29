@@ -9,7 +9,6 @@
 
 use Exception;
 use UnexpectedValueException;
-
 use Academe\SagePay\Psr7\Helper;
 
 class Secure3DAcs extends AbstractResponse
@@ -17,21 +16,15 @@ class Secure3DAcs extends AbstractResponse
     protected $PaRes;
     protected $MD;
 
+    /**
+     * TODO: $data can be a PSR-7 response.
+     * @param array|object $data The 3DSecure resource from Sage Pay
+     */
     public function __construct($data, $httpCode = null) {
         $this->PaRes = Helper::structureGet($data, 'PaRes', null);
         $this->MD = Helper::structureGet($data, 'MD', null);
 
         $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
-    }
-
-    /**
-     * Data passed in here will normally be the raw POST array from the ACS.
-     *
-     * @deprecated
-     */
-    public static function fromData($data, $httpCode = null)
-    {
-        return new static($data, $httpCode);
     }
 
     public function asArray()

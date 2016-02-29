@@ -133,4 +133,30 @@ abstract class AbstractRequest extends AbstractMessage implements  \JsonSerializ
             json_encode($this)
         );
     }
+
+    /**
+     * Set various flags - anything with a setFoo() method.
+     */
+    protected function setOptions(array $options = [])
+    {
+        foreach($options as $name => $value) {
+            $method = 'set' . ucfirst($name);
+            if (method_exists($this, $method)) {
+                $this->{$method}($value);
+            } else {
+                // Unknown option.
+                throw new UnexpectedValueException(sprintf('Unknown option %s', $name));
+            }
+        }
+    }
+
+    /**
+     * Set various flags - anything with a setFoo() method.
+     */
+    public function withOptions(array $options = [])
+    {
+        $copy = clone $this;
+        return $copy->setOptions($options);
+    }
+
 }

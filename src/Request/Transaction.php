@@ -124,28 +124,6 @@ class Transaction extends AbstractRequest
         $this->setOptions($options);
     }
 
-    /**
-     * Set various flags - anything with a setFoo() method.
-     */
-    protected function setOptions(array $options = [])
-    {
-        foreach($options as $name => $value) {
-            $method = 'set' . ucfirst($name);
-            if (method_exists($this, $method)) {
-                $this->{$method}($value);
-            } else {
-                // Unknown option.
-                throw new UnexpectedValueException(sprintf('Unknown option %s', $name));
-            }
-        }
-    }
-
-    public function withOptions(array $options = [])
-    {
-        $copy = clone $this;
-        return $copy->setOptions($options);
-    }
-
     public function setEntryMethod($entryMethod)
     {
         // Get the value from the class constants.
@@ -346,6 +324,9 @@ class Transaction extends AbstractRequest
         if ( ! empty($this->apply3DSecure)) {
             $result['apply3DSecure'] = $this->apply3DSecure;
         }
+
+        // Not yet supported.
+        //$result['referrerId'] = '3F7A4119-8671-464F-A091-9E59EB47B80C';
 
         return $result;
     }
