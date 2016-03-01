@@ -18,8 +18,8 @@ use Academe\SagePay\Psr7\Model\Auth;
 use Academe\SagePay\Psr7\Model\Endpoint;
 use Academe\SagePay\Psr7\AbstractMessage;
 use Academe\SagePay\Psr7\Factory\FactoryInterface;
-
 use Academe\SagePay\Psr7\Response\SessionKey as SessionKeyResponse;
+use Academe\SagePay\Psr7\Security\SensitiveValue;
 
 class CardIdentifier extends AbstractRequest
 {
@@ -28,7 +28,10 @@ class CardIdentifier extends AbstractRequest
     protected $auth;
     protected $sessionKey;
 
-    // TODO: store card details as sensitive information.
+    // Store card details as sensitive information.
+    // This won't protect us from JSON serialisation, since that function is needed
+    // for constructing messages, but should help protect from other types of serialisation.
+
     protected $cardholderName;
     protected $cardNumber;
     protected $expiryDate;
@@ -55,36 +58,53 @@ class CardIdentifier extends AbstractRequest
         $this->sessionKey = $sessionKey;
         $this->factory = $factory;
 
-        $this->cardholderName = $cardholderName;
-        $this->cardNumber = $cardNumber;
-        $this->expiryDate = $expiryDate;
-        $this->securityCode = $securityCode;
+        $this->cardholderName = new SensitiveValue($cardholderName);
+        $this->cardNumber = new SensitiveValue($cardNumber);
+        $this->expiryDate = new SensitiveValue($expiryDate);
+        $this->securityCode = new SensitiveValue($securityCode);
     }
 
     public function getCardholderName()
     {
-        return $this->cardholderName;
+        return $this->cardholderName ? $this->cardholderName->peek() : $this->cardholderName;
     }
 
     public function getCardNumber()
     {
-        return $this->cardNumber;
+        return $this->cardNumber ? $this->cardNumber->peek() : $this->cardNumber;
     }
 
     public function getExpiryDate()
     {
-        return $this->expiryDate;
+        return $this->expiryDate ? $this->expiryDate->peek() : $this->expiryDate;
     }
 
     public function getSecurityCode()
     {
-        return $this->securityCode;
+        return $this->securityCode ? $this->securityCode->peek() : $this->securityCode;
+    }
+
+    /**
+     * Protect this class from direct JSON serialisation.
+     */
+    public function jsonSerialize()
+    {
+        $data = $this->jsonSerializePeek();
+
+        array_walk_recursive($data, function(&$item, $key) {
+            if (is_string($item)) {
+                $item = str_repeat('*', strlen($item));
+            }
+        });
+
+        return $data;
     }
 
     /**
      * Get the message body data for serializing.
+     * 
      */
-    public function jsonSerialize()
+    public function jsonSerializePeek()
     {
         $data = [
             'cardDetails' => [

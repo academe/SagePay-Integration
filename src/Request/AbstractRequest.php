@@ -130,7 +130,7 @@ abstract class AbstractRequest extends AbstractMessage implements  \JsonSerializ
             $this->getMethod(),
             $this->getUrl(),
             $this->getHeaders(),
-            json_encode($this)
+            method_exists($this, 'jsonSerializePeek') ? json_encode($this->jsonSerializePeek()) : json_encode($this)
         );
     }
 
