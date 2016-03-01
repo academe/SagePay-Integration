@@ -47,7 +47,7 @@ class CardIdentifier extends AbstractRequest
         $cardholderName,
         $cardNumber,
         $expiryDate,
-        $securityCode,
+        $securityCode = null,
         FactoryInterface $factory = null
     ) {
         $this->endpoint = $endpoint;
@@ -86,14 +86,21 @@ class CardIdentifier extends AbstractRequest
      */
     public function jsonSerialize()
     {
-        return [
+        $data = [
             'cardDetails' => [
                 'cardholderName' => $this->getCardholderName(),
                 'cardNumber' => $this->getCardNumber(),
                 'expiryDate' => $this->getExpiryDate(),
-                'securityCode' => $this->getSecurityCode(),
             ],
         ];
+
+        // The security code is optional, so only provide it if it has been set.
+
+        if ( ! empty($this->getSecurityCode())) {
+            $data['cardDetails']['securityCode'] = $this->getSecurityCode();
+        }
+
+        return $data;
     }
 
     /**
