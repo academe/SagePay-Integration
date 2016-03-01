@@ -86,6 +86,7 @@ class CardIdentifier extends AbstractRequest
 
     /**
      * Protect this class from direct JSON serialisation.
+     * Replace all card detail characters with asterisks.
      */
     public function jsonSerialize()
     {
@@ -102,7 +103,7 @@ class CardIdentifier extends AbstractRequest
 
     /**
      * Get the message body data for serializing.
-     * 
+     * This is the explicit JSON serialisation method, not called up during debug.
      */
     public function jsonSerializePeek()
     {
