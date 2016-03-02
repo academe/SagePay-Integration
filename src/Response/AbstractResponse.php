@@ -6,7 +6,7 @@
 
 use Exception;
 use UnexpectedValueException;
-
+use JsonSerializable;
 use Academe\SagePay\Psr7\Helper;
 use Academe\SagePay\Psr7\AbstractMessage;
 use Psr\Http\Message\ResponseInterface;
@@ -16,7 +16,7 @@ use Psr\Http\Message\ResponseInterface;
 use Teapot\StatusCode\Http;
 use Teapot\StatusCode\RFC\RFC4918;
 
-abstract class AbstractResponse extends AbstractMessage implements Http, RFC4918
+abstract class AbstractResponse extends AbstractMessage implements Http, RFC4918, JsonSerializable
 {
     /**
      * @var integer The HTTP response code.
@@ -89,5 +89,14 @@ abstract class AbstractResponse extends AbstractMessage implements Http, RFC4918
         }
 
         return $data;
+    }
+
+    /**
+     * Handy serialisation.
+     * Will be overridden in most responses, then this default can be removed from here.
+     */
+    public function jsonSerialize()
+    {
+        return [];
     }
 }

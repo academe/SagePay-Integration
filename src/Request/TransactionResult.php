@@ -7,9 +7,6 @@
 
 use Exception;
 use UnexpectedValueException;
-
-//use ReflectionClass;
-
 use Academe\SagePay\Psr7\Model\Auth;
 use Academe\SagePay\Psr7\Model\Endpoint;
 

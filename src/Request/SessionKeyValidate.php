@@ -7,14 +7,13 @@
 
 use Exception;
 use UnexpectedValueException;
-
-use Academe\SagePay\Psr7\Model\Auth;
+use Academe\SagePay\Psr7\Model\Endpoint;
+use Academe\SagePay\Psr7\Response\SessionKey as SessionKeyResponse;
 
 class SessionKeyValidate extends AbstractRequest
 {
     protected $resource_path = ['merchant-session-keys', '{merchantSessionKey}'];
 
-    protected $auth;
     protected $sessionKey;
 
     /**
@@ -24,13 +23,10 @@ class SessionKeyValidate extends AbstractRequest
 
     /**
      * Supply the previously provided SessionKeyResponse for validation.
-     * TODO: some stuff to fix here. The URL construction is in Auth, but this endpoint
-     * does not actually require any authorisation. The URL construction should be done
-     * somewhere that can cater for both scenarios.
      */
-    public function __construct(Auth $auth, SessionKeyResponse $sessionKey)
+    public function __construct(Endpoint $endpoint, SessionKeyResponse $sessionKey)
     {
-        $this->auth = $auth;
+        $this->endpoint = $endpoint;
         $this->sessionKey = $sessionKey;
     }
 
@@ -42,4 +38,20 @@ class SessionKeyValidate extends AbstractRequest
     {
         return $this->sessionKey->getMerchantSessionKey();
     }
+
+    /**
+     * This message has no body.
+     */
+    public function jsonSerialize()
+    {
+    }
+
+    /**
+     * This message has no authentication headers.
+     */
+    public function getHeaders()
+    {
+        return [];
+    }
+
 }

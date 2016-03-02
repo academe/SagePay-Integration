@@ -77,7 +77,7 @@ class CardIdentifier extends AbstractResponse
     /**
      * Reduce the object to an array so it can be serialised.
      */
-    public function toArray()
+    public function jsonSerialize()
     {
         return [
             'cardIdentifier' => $this->cardIdentifier,

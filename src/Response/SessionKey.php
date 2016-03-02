@@ -20,10 +20,16 @@ class SessionKey extends AbstractResponse
     protected $expiry;
 
     /**
-     * $data array|object|ResponseInterface
+     * $data array|object|string|ResponseInterface
      */
     public function __construct($data, $httpCode = null)
     {
+        // If a string, then assume it is JSON.
+        // This way the session can be JSON serialised for passing between pages.
+        if (is_string($data)) {
+            $data = json_decode($data, true);
+        }
+
         // If $data is a PSR-7 message, then extract what we need.
         if ($data instanceof ResponseInterface) {
             $data = $this->extractPsr7($data, $httpCode);
@@ -128,9 +134,9 @@ class SessionKey extends AbstractResponse
     }
 
     /**
-     * Reduce the object to an array so it can be serialised.
+     * Handy serialisation.
      */
-    public function toArray()
+    public function jsonSerialize()
     {
         return [
             'merchantSessionKey' => $this->merchantSessionKey,
