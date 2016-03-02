@@ -23,8 +23,9 @@ class TransactionResult extends AbstractRequest
      */
     public function __construct(Endpoint $endpoint, Auth $auth, $transactionId)
     {
-        $this->transactionId = $transactionId;
+        $this->endpoint = $endpoint;
         $this->auth = $auth;
+        $this->transactionId = $transactionId;
     }
 
     public function getTransactionId()

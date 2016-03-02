@@ -142,7 +142,7 @@ $transaction = new \Academe\SagePay\Psr7\Request\Transaction(
     null,
     null,
     [
-	// Don't use 3DSecure this time.
+        // Don't use 3DSecure this time.
         'Apply3DSecure' => 'Ignore',
     ]
 
@@ -161,6 +161,27 @@ echo "Final status is " . $transaction_response->getStatus();
 // A status of "Ok" means the transaction was successful.
 // A number of validation errors can be captured and linked to specific submitted
 // fields (more about that in a bit too).
+~~~
+
+Given the TransactionId, you can fetch the transaction details.
+If the transaction was successful, then it will be available immediately.
+If a 3D Secure action was needed, then the 3D Secure results need to be sent
+to Sage Pay before you can fetch the transaction.
+Either way, this is how you do it:
+
+~~~php
+// Prepare the message.
+$transaction_result = new \Academe\SagePay\Psr7\Request\TransactionResult(
+    $endpoint,
+    $auth,
+    $transaction_response->getTransactionId() // From earlier
+);
+
+// Send it to Sage Pay.
+$response = $client->send($transaction_result->message());
+
+// Assuming no exceptions, this gives you the transaction model.
+$fetched_transaction = new \Academe\SagePay\Psr7\Response\Transaction($response);
 ~~~
 
 **Most of the stuff below here is outdated and is being replaced**
