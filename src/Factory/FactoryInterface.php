@@ -24,4 +24,9 @@ interface FactoryInterface
         $body = null,
         $protocolVersion = '1.1'
     );
+
+    /**
+     * Check whether the required libraries are installed so this factory can be used.
+     */
+    public static function isSupported();
 }

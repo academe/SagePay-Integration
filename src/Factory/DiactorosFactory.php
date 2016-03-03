@@ -1,14 +1,15 @@
 <?php namespace Academe\SagePay\Psr7\Factory;
 /**
- * Guzzle Factory for creating PSR-7 objects.
- * Requires guzzlehttp/guzzle:~6.0
+ * Zend Diactoros Factory for creating PSR-7 objects.
+ * Requires zendframework/zend-diactoros:~1.3
  */
 
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
-use GuzzleHttp\Psr7\Request;
+use Zend\Diactoros\Request;
+use Zend\Diactoros\Stream;
 
-class GuzzleFactory implements FactoryInterface
+class DiactorosFactory implements FactoryInterface
 {
     /**
      * Return a new GuzzleHttp\Psr7\Request object.
@@ -19,19 +20,26 @@ class GuzzleFactory implements FactoryInterface
         // If we are sending a JSON body, then the recipient needs to know.
         $headers['Content-type'] = 'application/json';
 
-        // If the body is already a stream or string of some sort, then it is
-        // assumed to already be a JSON stream.
+        // If the body is not already a stream or string of some sort, then JSON encode it for streaming.
         if ( ! is_string($body) && ! $body instanceof StreamInterface && gettype($body) != 'resource') {
             $body = json_encode($body);
         }
 
-        // Guzzle will accept the body as a string and generate a stream from it.
+        // Create a stream for the body if a string.
+        // Diactoros will treat a string as a resource URI and not as the body.
+        if (is_string($body)) {
+            $bodyStream = new Stream('php://memory', 'wb+');
+            $bodyStream->write($body);
+        } else {
+            // CHECKME: will Diactoros accept a resource as a body?
+            $bodyStream = $body;
+        }
+
         return new Request(
-            $method,
             $uri,
-            $headers,
-            $body,
-            $protocolVersion
+            $method,
+            $bodyStream,
+            $headers
         );
     }
 

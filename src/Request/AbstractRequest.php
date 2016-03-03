@@ -14,6 +14,7 @@ use DateTimeZone;
 use Academe\SagePay\Psr7\AbstractMessage;
 
 use Academe\SagePay\Psr7\Factory\GuzzleFactory;
+use Academe\SagePay\Psr7\Factory\DiactorosFactory;
 
 abstract class AbstractRequest extends AbstractMessage implements  \JsonSerializable
 {
@@ -107,9 +108,16 @@ abstract class AbstractRequest extends AbstractMessage implements  \JsonSerializ
     {
         if (!isset($this->factory) && GuzzleFactory::isSupported()) {
             // If the GuzzleFactory is supported (relevant Guzzle package is
-            // installed) then instantiate this fatcory.
+            // installed) then instantiate this factory.
 
             $this->factory = new GuzzleFactory();
+        }
+
+        if (!isset($this->factory) && DiactorosFactory::isSupported()) {
+            // If the DiactorosFactory is supported (relevant Zend package is
+            // installed) then instantiate this factory.
+
+            $this->factory = new DiactorosFactory();
         }
 
         // If the exception flag is set, then throw an exception if we do not
