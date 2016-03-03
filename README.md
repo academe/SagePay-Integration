@@ -19,6 +19,7 @@ The `SessionKey` message has had PSR-7 support added, and can be used like this:
 ~~~php
 // require "guzzlehttp/guzzle:~6.0"
 // This will bring in guzzle/psr7 too, which is also needed.
+// require "zendframework/zend-diactoros": "~1.3" if you prefer to use that instead.
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 // or use any other client that can handle PSR-7 messages.
