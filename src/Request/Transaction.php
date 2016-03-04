@@ -12,6 +12,7 @@
 use Exception;
 use UnexpectedValueException;
 
+use Academe\SagePay\Psr7\Model\Endpoint;
 use Academe\SagePay\Psr7\Model\Auth;
 use Academe\SagePay\Psr7\PaymentMethod\PaymentMethodInterface;
 use Academe\SagePay\Psr7\Money\AmountInterface;
@@ -19,13 +20,10 @@ use Academe\SagePay\Psr7\Model\AddressInterface;
 use Academe\SagePay\Psr7\Model\ShippingDetails;
 use Academe\SagePay\Psr7\Model\Address;
 use Academe\SagePay\Psr7\Model\PersonInterface;
-use Academe\SagePay\Psr7\Model\Endpoint;
 
 class Transaction extends AbstractRequest
 {
     protected $resource_path = ['transactions'];
-
-    protected $auth;
 
     // Minimum mandatory data (constructor).
     protected $transactionType;
@@ -98,9 +96,9 @@ class Transaction extends AbstractRequest
         PersonInterface $shippingRecipient = null,
         array $options = []
     ) {
-        $this->endpoint = $endpoint;
-        $this->auth = $auth;
-        $this->description = $description;
+        $this->setEndpoint($endpoint);
+        $this->setAuth($auth);
+        $this->setDescription($description);
 
         // Is the transaction type valid?
         $transactionTypeValue = $this->constantValue('TRANSACTION_TYPE', $transactionType);
@@ -262,11 +260,16 @@ class Transaction extends AbstractRequest
         return $copy;
     }
 
+    protected function setDescription($description)
+    {
+        $this->description = $description;
+        return $this;
+    }
+
     public function withDescription($description)
     {
         $copy = clone $this;
-        $copy->description = $description;
-        return $copy;
+        return $copy->setDescription($description);
     }
 
     /**

@@ -1,4 +1,6 @@
-<?php namespace Academe\SagePay\Psr7\Request;
+<?php
+
+namespace Academe\SagePay\Psr7\Request;
 
 /**
  * The request for a session key.
@@ -14,11 +16,13 @@ class SessionKey extends AbstractRequest
 {
     protected $resource_path = ['merchant-session-keys'];
 
-    public function __construct(Endpoint $endpoint, Auth $auth, FactoryInterface $factory = null)
+    /**
+     *
+     */
+    public function __construct(Endpoint $endpoint, Auth $auth)
     {
         $this->endpoint = $endpoint;
         $this->auth = $auth;
-        $this->factory = $factory;
     }
 
     /**

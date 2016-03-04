@@ -9,8 +9,8 @@
 
 use Exception;
 use UnexpectedValueException;
-
 use Academe\SagePay\Psr7\Helper;
+use Psr\Http\Message\ResponseInterface;
 
 class Secure3D extends AbstractResponse
 {
@@ -37,9 +37,13 @@ class Secure3D extends AbstractResponse
      */
     public function __construct($data, $httpCode = null)
     {
+        // If $data is a PSR-7 message, then extract what we need.
+        if ($data instanceof ResponseInterface) {
+            $data = $this->extractPsr7($data, $httpCode);
+        } else {
+            $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
+        }
         $this->status = Helper::structureGet($data, 'status', null);
-
-        $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
     }
 
     /**

@@ -44,4 +44,5 @@ abstract class AbstractMessage
             return constant("static::$name");
         }
     }
+
 }

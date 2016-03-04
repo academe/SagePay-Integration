@@ -1,4 +1,6 @@
-<?php namespace Academe\SagePay\Psr7\Request;
+<?php
+
+namespace Academe\SagePay\Psr7\Request;
 
 /**
  * Shared message abstract.
@@ -7,12 +9,12 @@
 
 use Exception;
 use UnexpectedValueException;
-
 use DateTime;
 use DateTimeZone;
-
 use Academe\SagePay\Psr7\AbstractMessage;
-
+use Academe\SagePay\Psr7\Model\Endpoint;
+use Academe\SagePay\Psr7\Model\Auth;
+use Academe\SagePay\Psr7\Factory\FactoryInterface;
 use Academe\SagePay\Psr7\Factory\GuzzleFactory;
 use Academe\SagePay\Psr7\Factory\DiactorosFactory;
 
@@ -31,9 +33,45 @@ abstract class AbstractRequest extends AbstractMessage implements  \JsonSerializ
     /**
      * 
      */
+    protected function setAuth(Auth $auth)
+    {
+        $this->auth = $auth;
+        return $this;
+    }
+
+    /**
+     * 
+     */
+    protected function withAuth(Auth $auth)
+    {
+        $clone = clone $this;
+        return $clone->setAuth($auth);
+    }
+
+    /**
+     * 
+     */
     public function getAuth()
     {
         return $this->auth;
+    }
+
+    /**
+     * 
+     */
+    protected function setEndpoint(Endpoint $endpoint)
+    {
+        $this->endpoint = $endpoint;
+        return $this;
+    }
+
+    /**
+     * 
+     */
+    protected function withEndpoint(Endpoint $endpoint)
+    {
+        $clone = clone $this;
+        return $clone->setEndpoint($endpoint);
     }
 
     /**
@@ -98,6 +136,24 @@ abstract class AbstractRequest extends AbstractMessage implements  \JsonSerializ
                     . ':' . $this->auth->getIntegrationPassword()
                 ),
         ];
+    }
+
+    /**
+     * 
+     */
+    protected function setFactory(FactoryInterface $factory)
+    {
+        $this->factory = $factory;
+        return $this;
+    }
+
+    /**
+     * 
+     */
+    protected function withFactory(FactoryInterface $factory)
+    {
+        $clone = clone $this;
+        return $clone->setAuth($factory);
     }
 
     /**
@@ -166,5 +222,4 @@ abstract class AbstractRequest extends AbstractMessage implements  \JsonSerializ
         $copy = clone $this;
         return $copy->setOptions($options);
     }
-
 }
