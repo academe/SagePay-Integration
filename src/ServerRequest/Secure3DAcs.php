@@ -20,7 +20,7 @@ class Secure3DAcs extends AbstractServerRequest
 
     /**
      * TODO: $data can be a PSR-7 response.
-     * @param array|object $data The 3DSecure resource from Sage Pay
+     * @param $data array|object|ServerRequestInterface The 3DSecure resource callback from Sage Pay.
      */
     public function __construct($data) {
         // If $data is a PSR-7 message, then extract what we need.

@@ -25,7 +25,6 @@ class CardIdentifier extends AbstractRequest
 {
     protected $resource_path = ['card-identifiers'];
 
-    protected $auth;
     protected $sessionKey;
 
     // Store card details as sensitive information.
@@ -50,13 +49,11 @@ class CardIdentifier extends AbstractRequest
         $cardholderName,
         $cardNumber,
         $expiryDate,
-        $securityCode = null,
-        FactoryInterface $factory = null
+        $securityCode = null
     ) {
-        $this->endpoint = $endpoint;
-        $this->auth = $auth;
+        $this->setEndpoint($endpoint);
+        $this->setAuth($auth);
         $this->sessionKey = $sessionKey;
-        $this->factory = $factory;
 
         $this->cardholderName = new SensitiveValue($cardholderName);
         $this->cardNumber = new SensitiveValue($cardNumber);
