@@ -25,7 +25,7 @@ class ErrorCollection extends AbstractResponse implements \IteratorAggregate
     /**
      * @param array $items Initial array of Error instances
      */
-    public function __construct(ResponseInterface $message)
+    public function __construct(ResponseInterface $message = null)
     {
         if (isset($message)) {
             $data = $this->parseBody($message);
