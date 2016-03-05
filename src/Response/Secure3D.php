@@ -35,15 +35,19 @@ class Secure3D extends AbstractResponse
      * TODO: $data can be a PSR-7 response.
      * @param array|object $data The 3DSecure resource from Sage Pay
      */
-    public function __construct($data, $httpCode = null)
+    public function __construct(ResponseInterface $message = null)
     {
-        // If $data is a PSR-7 message, then extract what we need.
-        if ($data instanceof ResponseInterface) {
-            $data = $this->extractPsr7($data, $httpCode);
-        } else {
-            $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
+        if (isset($message)) {
+            $data = $this->parseBody($message);
+            $this->setData($data, $message->getStatusCode);
         }
+    }
+
+    protected function setData($data, $httpCode = null)
+    {
+        $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
         $this->status = Helper::structureGet($data, 'status', null);
+        return $this;
     }
 
     /**
