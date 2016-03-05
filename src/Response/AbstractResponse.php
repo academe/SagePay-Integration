@@ -75,28 +75,29 @@ abstract class AbstractResponse extends AbstractMessage implements Http, RFC4918
     }
 
     /**
-     * If the response is provided as a PSR-7 message, then extract
-     * the details from the message.
-     */
-    protected function extractPsr7(ResponseInterface $message, $httpCode)
-    {
-        $this->setHttpCode($message->getStatusCode());
-
-        if ($message->hasHeader('Content-Type') && $message->getHeaderLine('Content-Type') == 'application/json') {
-            $data = json_decode($message->getBody());
-        } else {
-            $data = [];
-        }
-
-        return $data;
-    }
-
-    /**
      * Handy serialisation.
      * Will be overridden in most responses, then this default can be removed from here.
      */
     public function jsonSerialize()
     {
         return [];
+    }
+
+    /**
+     * Return an instantiation from the data returned by Sage Pay.
+     * TODO: make setData() an abstract method.
+     *
+     * @param string|array|object $data
+     */
+    public static function fromData($data, $httpCode = null)
+    {
+        // If a string, then assume it is JSON.
+        // This way the session can be JSON serialised for passing between pages.
+        if (is_string($data)) {
+            $data = json_decode($data, true);
+        }
+
+        $instance = new static();
+        return $instance->setData($data, $httpCode);
     }
 }

@@ -20,30 +20,34 @@ class CardIdentifier extends AbstractResponse
     protected $cardType;
 
     /**
-     * @param array|object $data The data returned from SagePay in the response body.
+     * @param array|object $message The data returned from SagePay in the response body.
      */
-    public function __construct($data, $httpCode = null)
+    public function __construct(ResponseInterface $message = null)
     {
-        // If $data is a PSR-7 message, then extract what we need.
-        if ($data instanceof ResponseInterface) {
-            $data = $this->extractPsr7($data, $httpCode);
-        } else {
-            $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
+        if (isset($message)) {
+            $this->setData($this->parseBody($message), $message->getStatusCode());
+            $this->setHttpCode($message->getStatusCode());
         }
+    }
+
+    /**
+     * @param array|object $data The parsed data sent or returned by Saeg Pay.
+     */
+    protected function setData($data, $httpCode)
+    {
+        $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
 
         $this->cardIdentifier = Helper::structureGet($data, 'cardIdentifier', null);
         $this->expiry = Helper::parseDateTime(Helper::structureGet($data, 'expiry', null));
         $this->cardType = Helper::structureGet($data, 'cardType', null);
+
+        return $this;
     }
 
-    /**
-     * Return an instantiation from the data returned by Sage Pay.
-     *
-     * @deprecated
-     */
     public static function fromData($data, $httpCode = null)
     {
-        return new static($data, $httpCode);
+        $message = new static();
+        return $message->setData($data, $httpCode);
     }
 
     public function getCardIdentifier()

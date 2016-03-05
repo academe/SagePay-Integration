@@ -41,14 +41,17 @@ class Transaction extends AbstractResponse
     /**
      * @param $data ResponseInterface|object|array
      */
-    public function __construct($data, $httpCode = null)
+    public function __construct(ResponseInterface $message = null)
     {
-        // If $data is a PSR-7 message, then extract what we need.
-        if ($data instanceof ResponseInterface) {
-            $data = $this->extractPsr7($data, $httpCode);
-        } else {
-            $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
+        if (isset($message)) {
+            $data = $this->parseBody($message);
+            $this->setData($data, $message->getStatusCode());
         }
+    }
+
+    protected function setData($data, $httpCode)
+    {
+        $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
 
         // Note the resource is called "3DSecure" and not "Secure3D" that use
         // for valid class, method and variable names.
@@ -78,6 +81,8 @@ class Transaction extends AbstractResponse
         $this->Secure3D = $Secure3D;
         $this->acsUrl = Helper::structureGet($data, 'acsUrl', null);
         $this->paReq = Helper::structureGet($data, 'paReq', null);
+
+        return $this;
     }
 
     /**

@@ -25,15 +25,16 @@ class ErrorCollection extends AbstractResponse implements \IteratorAggregate
     /**
      * @param array $items Initial array of Error instances
      */
-    public function __construct($data, $httpCode = null)
+    public function __construct(ResponseInterface $message)
     {
-        // If $data is a PSR-7 message, then extract what we need.
-        if ($data instanceof ResponseInterface) {
-            $data = $this->extractPsr7($data, $httpCode);
-        } else {
-            $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
+        if (isset($message)) {
+            $data = $this->parseBody($message);
+            $this->setData($data, $message->getStatusCode());
         }
+    }
 
+    protected function setData($data, $httpCode)
+    {
         // A list of errors will be provided in a wrapping "errors" element.
         $errors = Helper::structureGet($data, 'errors', null);
 
@@ -47,6 +48,8 @@ class ErrorCollection extends AbstractResponse implements \IteratorAggregate
                 $this->add(Error::fromData($error, $this->getHttpCode));
             }
         }
+
+        return $this;
     }
 
     /**

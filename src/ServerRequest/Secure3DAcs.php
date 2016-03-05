@@ -19,17 +19,22 @@ class Secure3DAcs extends AbstractServerRequest
     protected $MD;
 
     /**
-     * TODO: $data can be a PSR-7 response.
-     * @param $data array|object|ServerRequestInterface The 3DSecure resource callback from Sage Pay.
+     * @param $message ServerRequestInterface The 3DSecure resource callback from Sage Pay.
      */
-    public function __construct($data) {
-        // If $data is a PSR-7 message, then extract what we need.
-        if ($data instanceof ServerRequestInterface) {
-            $data = $this->extractPsr7($data);
+    public function __construct(ServerRequestInterface $message = null) {
+        if (isset($message)) {
+            $this->setData($this->parseBody($message));
         }
+    }
 
+    /**
+     * @param $data array|object The 3DSecure resource callback from Sage Pay.
+     */
+    protected function setData($data)
+    {
         $this->PaRes = Helper::structureGet($data, 'PaRes', null);
         $this->MD = Helper::structureGet($data, 'MD', null);
+        return $this;
     }
 
     public function jsonSerialize()
