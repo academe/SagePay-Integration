@@ -19,7 +19,7 @@ class Endpoint
      * This release is locked onto just one API version.
      * It is likely beta will remain v1 for its entire lifetime.
      */
-    const API_VERSION = 'v1';
+    protected $api_version = 'v1';
 
     /**
      * Modes of operation.
@@ -39,9 +39,8 @@ class Endpoint
     /**
      * @param int $mode The mode of operation
      */
-    public function __construct(
-        $mode = self::MODE_LIVE
-    ) {
+    public function __construct($mode = self::MODE_LIVE)
+    {
         // The mode - testing or production. Possible others later.
         if ( ! isset($this->urls[$mode])) {
             throw new UnexpectedValueException(sprintf('Unexpected mode value "%s"', $mode));
@@ -51,11 +50,41 @@ class Endpoint
     }
 
     /**
+     * @return static Clone of $this with the new API version set.
+     */
+    public function withApiVersion($version)
+    {
+        $clone = clone $this;
+        $clone->api_version = $version;
+        return $clone;
+    }
+
+    /**
      * @return string The API version
      */
     public function getApiVersion()
     {
-        return static::API_VERSION;
+        return $this->api_version;
+    }
+
+    /**
+     * Override any of the URLs.
+     * Supports replacement fields {version} and {resource}
+     *
+     * @param $mode The mode to set the endpoint URL for
+     * @param $url The absolute URL or URL template with placeholders
+     *
+     * @return Auth A clone of $this with the new URL or URL template set
+     */
+    public function withUrl($mode, $url)
+    {
+        if ( ! isset($this->urls[$mode])) {
+            throw new UnexpectedValueException(sprintf('Unexpected mode value "%s"', $mode));
+        }
+
+        $copy = clone $this;
+        $copy->urls[$mode] = $url;
+        return $copy;
     }
 
     /**
@@ -117,26 +146,6 @@ class Endpoint
      */
     public function isTesting()
     {
-        return $this->mode == static::MODE_TEST;
-    }
-
-    /**
-     * Override any of the URLs.
-     * Supports replacement fields {version} and {resource}
-     *
-     * @param $mode The mode to set the endpoint URL for
-     * @param $url The absolute URL or URL template with placeholders
-     *
-     * @return Auth A clone of $this with the new URL or URL template set
-     */
-    public function withUrl($mode, $url)
-    {
-        if ( ! isset($this->urls[$mode])) {
-            throw new UnexpectedValueException(sprintf('Unexpected mode value "%s"', $mode));
-        }
-
-        $copy = clone $this;
-        $copy->urls[$mode] = $url;
-        return $copy;
+        return $this->mode === static::MODE_TEST;
     }
 }

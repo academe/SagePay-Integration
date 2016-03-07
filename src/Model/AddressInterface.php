@@ -2,9 +2,11 @@
 
 /**
  * Value object used to define the customer's billing address
- * and delivery address.
+ * and the delivery address.
  */
 
-interface AddressInterface extends  \JsonSerializable
+use JsonSerializable;
+
+interface AddressInterface extends JsonSerializable
 {
 }
