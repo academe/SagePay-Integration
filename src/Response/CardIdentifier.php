@@ -8,6 +8,7 @@
 use DateTime;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
+use Academe\SagePay\Psr7\Helper;
 
 class CardIdentifier extends AbstractResponse
 {

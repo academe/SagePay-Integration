@@ -55,7 +55,7 @@ abstract class Helper
     protected static function _value($value)
     {
         if ($value instanceof Closure) {
-            return {$value}();
+            return ${value}();
         } else {
             return $value;
         }

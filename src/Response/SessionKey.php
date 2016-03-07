@@ -7,6 +7,7 @@
 
 use DateTime;
 use Psr\Http\Message\ResponseInterface;
+use Academe\SagePay\Psr7\Helper;
 
 class SessionKey extends AbstractResponse
 {
