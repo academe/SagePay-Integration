@@ -3,7 +3,6 @@
 namespace Academe\SagePay\Psr7\ServerRequest;
 
 use Academe\SagePay\Psr7\Request\AbstractRequest;
-use Psr\Http\Message\ServerRequestInterface;
 
 abstract class AbstractServerRequest extends AbstractRequest
 {

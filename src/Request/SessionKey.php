@@ -9,8 +9,6 @@ namespace Academe\SagePay\Psr7\Request;
 
 use Academe\SagePay\Psr7\Model\Auth;
 use Academe\SagePay\Psr7\Model\Endpoint;
-use Academe\SagePay\Psr7\AbstractMessage;
-use Academe\SagePay\Psr7\Factory\FactoryInterface;
 
 class SessionKey extends AbstractRequest
 {

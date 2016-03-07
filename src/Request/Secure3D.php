@@ -8,10 +8,6 @@ namespace Academe\SagePay\Psr7\Request;
  * See https://test.sagepay.com/documentation/#3-d-secure
  */
 
-use Exception;
-use UnexpectedValueException;
-
-use Academe\SagePay\Psr7\Helper;
 use Academe\SagePay\Psr7\Model\Auth;
 use Academe\SagePay\Psr7\Model\Endpoint;
 

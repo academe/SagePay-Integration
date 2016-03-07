@@ -5,8 +5,6 @@
  * See "Retrieve and Transaction" https://test.sagepay.com/documentation/#transactions
  */
 
-use Exception;
-use UnexpectedValueException;
 use Academe\SagePay\Psr7\Model\Auth;
 use Academe\SagePay\Psr7\Model\Endpoint;
 
@@ -14,6 +12,7 @@ class TransactionResult extends AbstractRequest
 {
     protected $resource_path = ['transactions', '{transactionId}'];
     protected $method = 'GET';
+    protected $transactionId;
 
     /**
      * @param Endpoint $endpoint

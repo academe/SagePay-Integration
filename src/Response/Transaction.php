@@ -9,9 +9,6 @@
  * final (i.e. no more actions required).
  */
 
-use Exception;
-use UnexpectedValueException;
-
 use Academe\SagePay\Psr7\Helper;
 use Psr\Http\Message\ResponseInterface;
 

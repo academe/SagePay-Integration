@@ -7,8 +7,6 @@
  * result for the transaction.
  */
 
-use Exception;
-use UnexpectedValueException;
 use Academe\SagePay\Psr7\Helper;
 use Psr\Http\Message\ResponseInterface;
 
@@ -32,7 +30,6 @@ class Secure3D extends AbstractResponse
     const STATUS_ISSUERNOTENROLLED = 'IssuerNotEnrolled';
 
     /**
-     * TODO: $data can be a PSR-7 response.
      * @param ResponseInterface $message
      * @internal param array|object $data The 3DSecure resource from Sage Pay
      */
@@ -40,7 +37,7 @@ class Secure3D extends AbstractResponse
     {
         if (isset($message)) {
             $data = $this->parseBody($message);
-            $this->setData($data, $message->getStatusCode);
+            $this->setData($data, $message->getStatusCode());
         }
     }
 

@@ -5,8 +5,6 @@
  * Provides the as needed, and the correct base URL.
  */
 
-use Exception;
-use UnexpectedValueException;
 use Academe\SagePay\Psr7\Security\SensitiveValue;
 
 class Auth

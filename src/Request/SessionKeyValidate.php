@@ -5,8 +5,6 @@
  * The response will be a SessionKeyResponse message.
  */
 
-use Exception;
-use UnexpectedValueException;
 use Academe\SagePay\Psr7\Model\Endpoint;
 use Academe\SagePay\Psr7\Response\SessionKey as SessionKeyResponse;
 

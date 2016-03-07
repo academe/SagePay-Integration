@@ -6,12 +6,8 @@
  * property names (fields), error types etc.
  */
 
-use Exception;
-use UnexpectedValueException;
 use Psr\Http\Message\ResponseInterface;
-
 use ArrayIterator;
-
 use Academe\SagePay\Psr7\Helper;
 use Academe\SagePay\Psr7\Model\Error;
 
@@ -46,7 +42,7 @@ class ErrorCollection extends AbstractResponse implements \IteratorAggregate
         } elseif (is_array($errors)) {
             foreach($errors as $error) {
                 // The $error may be an Error object or an array.
-                $this->add(Error::fromData($error, $this->getHttpCode));
+                $this->add(Error::fromData($error, $this->getHttpCode()));
             }
         }
 

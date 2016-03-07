@@ -7,8 +7,6 @@
  * PaRes result that is then sent to Sage Pay to complete the transaction.
  */
 
-use Exception;
-use UnexpectedValueException;
 use Academe\SagePay\Psr7\Helper;
 use Academe\SagePay\Psr7\ServerRequest\AbstractServerRequest;
 use Psr\Http\Message\ServerRequestInterface;

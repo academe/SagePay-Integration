@@ -5,7 +5,6 @@
  * Details include just a first name and last name.
  */
 
-use Exception;
 use UnexpectedValueException;
 
 class Person implements PersonInterface
@@ -74,7 +73,7 @@ class Person implements PersonInterface
      */
     public function getPhone()
     {
-        return $this->lastPhone;
+        return $this->phone;
     }
 
     /**

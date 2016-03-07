@@ -1,17 +1,18 @@
-<?php namespace Academe\SagePay\Psr7\Money;
+<?php
+
+namespace Academe\SagePay\Psr7\Money;
 
 /**
  * Defines a currency.
  * Only supports currencies that SagePay supports.
  */
 
-use Exception;
 use UnexpectedValueException;
 
 class Currency
 {
     /**
-     * @var ISO 4217 currency code
+     * @var string ISO 4217 currency code
      */
     protected $code;
 

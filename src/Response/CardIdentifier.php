@@ -6,11 +6,7 @@
  */
 
 use DateTime;
-use DateTimeZone;
-
 use Exception;
-use UnexpectedValueException;
-use Academe\SagePay\Psr7\Helper;
 use Psr\Http\Message\ResponseInterface;
 
 class CardIdentifier extends AbstractResponse

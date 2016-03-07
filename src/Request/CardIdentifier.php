@@ -11,13 +11,7 @@
  * as SagePay Direct would.
  */
 
-use Exception;
-use UnexpectedValueException;
-
-use Academe\SagePay\Psr7\Model\Auth;
 use Academe\SagePay\Psr7\Model\Endpoint;
-use Academe\SagePay\Psr7\AbstractMessage;
-use Academe\SagePay\Psr7\Factory\FactoryInterface;
 use Academe\SagePay\Psr7\Response\SessionKey as SessionKeyResponse;
 use Academe\SagePay\Psr7\Security\SensitiveValue;
 

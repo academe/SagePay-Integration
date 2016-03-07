@@ -4,8 +4,6 @@
  * Shared message abstract.
  */
 
-use Exception;
-use UnexpectedValueException;
 use JsonSerializable;
 use Academe\SagePay\Psr7\Helper;
 use Academe\SagePay\Psr7\AbstractMessage;

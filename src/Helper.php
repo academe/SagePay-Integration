@@ -49,9 +49,16 @@ abstract class Helper
         return $data;
     }
 
+    /**
+     * @param $value
+     */
     protected static function _value($value)
     {
-        return $value instanceof Closure ? $value() : $value;
+        if ($value instanceof Closure) {
+            return {$value}();
+        } else {
+            return $value;
+        }
     }
 
     /**

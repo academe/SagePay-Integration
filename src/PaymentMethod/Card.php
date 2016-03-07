@@ -10,9 +10,6 @@
  * The card identifier lasts for 400 seconds from creation.
  */
 
-use Exception;
-use UnexpectedValueException;
-
 use Academe\SagePay\Psr7\Response\CardIdentifier;
 use Academe\SagePay\Psr7\Response\SessionKey;
 

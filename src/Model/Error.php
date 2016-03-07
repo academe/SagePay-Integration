@@ -17,9 +17,6 @@
  * as they are not targetted as specific fields.
  */
 
-use Exception;
-use UnexpectedValueException;
-
 use Academe\SagePay\Psr7\Helper;
 
 class Error

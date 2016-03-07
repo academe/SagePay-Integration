@@ -9,16 +9,13 @@
  * can't actually be run in the constructor.
  */
 
-use Exception;
 use UnexpectedValueException;
-
 use Academe\SagePay\Psr7\Model\Endpoint;
 use Academe\SagePay\Psr7\Model\Auth;
 use Academe\SagePay\Psr7\PaymentMethod\PaymentMethodInterface;
 use Academe\SagePay\Psr7\Money\AmountInterface;
 use Academe\SagePay\Psr7\Model\AddressInterface;
 use Academe\SagePay\Psr7\Model\ShippingDetails;
-use Academe\SagePay\Psr7\Model\Address;
 use Academe\SagePay\Psr7\Model\PersonInterface;
 
 class Transaction extends AbstractRequest
@@ -190,6 +187,10 @@ class Transaction extends AbstractRequest
         return $copy->setGiftAid($giftAid);
     }
 
+    /**
+     * @param $applyAvsCvcCheck
+     * @return $this
+     */
     protected function setApplyAvsCvcCheck($applyAvsCvcCheck)
     {
         // Get the value from the class constants.
@@ -199,7 +200,7 @@ class Transaction extends AbstractRequest
             throw new UnexpectedValueException(sprintf(
                 'Unknown applyAvsCvcCheck "%s"; require one of %s',
                 (string)$applyAvsCvcCheck,
-                implode(', ', staticgetApplyAvsCvcChecks())
+                implode(', ', static::getApplyAvsCvcChecks())
             ));
         }
 
@@ -207,17 +208,28 @@ class Transaction extends AbstractRequest
         return $this;
     }
 
+    /**
+     * @param $applyAvsCvcCheck
+     * @return Transaction
+     */
     public function withApplyAvsCvcCheck($applyAvsCvcCheck)
     {
         $copy = clone $this;
         return $copy->setApplyAvsCvcCheck($applyAvsCvcCheck);
     }
 
+    /**
+     * @return array
+     */
     public static function getApplyAvsCvcChecks()
     {
         return static::constantList('APPLY_AVS_CVC_CHECK');
     }
 
+    /**
+     * @param $apply3DSecure
+     * @return $this
+     */
     protected function setApply3DSecure($apply3DSecure)
     {
         // Get the value from the class constants.
@@ -235,17 +247,28 @@ class Transaction extends AbstractRequest
         return $this;
     }
 
+    /**
+     * @param $apply3DSecure
+     * @return Transaction
+     */
     public function withApply3DSecure($apply3DSecure)
     {
         $copy = clone $this;
         return $copy->setApply3DSecure($apply3DSecure);
     }
 
+    /**
+     * @return array
+     */
     public static function getApply3DSecures()
     {
         return static::constantList('APPLY_3D_SECURE');
     }
 
+    /**
+     * @param ShippingAddress $shippingAddress
+     * @return Transaction
+     */
     public function withShippingAddress(ShippingAddress $shippingAddress)
     {
         $copy = clone $this;
@@ -253,6 +276,10 @@ class Transaction extends AbstractRequest
         return $copy;
     }
 
+    /**
+     * @param ShippingRecipient $shippingRecipient
+     * @return Transaction
+     */
     public function withShippingRecipient(ShippingRecipient $shippingRecipient)
     {
         $copy = clone $this;
@@ -260,12 +287,20 @@ class Transaction extends AbstractRequest
         return $copy;
     }
 
+    /**
+     * @param $description
+     * @return $this
+     */
     protected function setDescription($description)
     {
         $this->description = $description;
         return $this;
     }
 
+    /**
+     * @param $description
+     * @return Transaction
+     */
     public function withDescription($description)
     {
         $copy = clone $this;
@@ -334,6 +369,9 @@ class Transaction extends AbstractRequest
         return $result;
     }
 
+    /**
+     * @return array
+     */
     public function getHeaders()
     {
         return $this->getBasicAuthHeaders();

@@ -64,7 +64,7 @@ class Amount implements AmountInterface
      */
     protected function setMinorUnit($amount)
     {
-        if (is_int($amount) || (is_string($amount) && preg_match('/^[0-9]+$/', $string))) {
+        if (is_int($amount) || (is_string($amount) && preg_match('/^[0-9]+$/', $amount))) {
             $this->amount = (int)$amount;
         } else {
             throw new UnexpectedValueException(sprintf(

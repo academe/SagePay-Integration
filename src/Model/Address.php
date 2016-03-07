@@ -5,9 +5,7 @@
  * Reasonable validation is done at creation.
  */
 
-use Exception;
 use UnexpectedValueException;
-
 use Academe\SagePay\Psr7\Iso3166\Countries;
 use Academe\SagePay\Psr7\Iso3166\States;
 use Academe\SagePay\Psr7\Helper;

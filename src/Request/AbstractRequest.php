@@ -9,8 +9,7 @@ namespace Academe\SagePay\Psr7\Request;
 
 use Exception;
 use UnexpectedValueException;
-use DateTime;
-use DateTimeZone;
+use JsonSerializable;
 use Academe\SagePay\Psr7\AbstractMessage;
 use Academe\SagePay\Psr7\Model\Endpoint;
 use Academe\SagePay\Psr7\Model\Auth;
@@ -18,7 +17,7 @@ use Academe\SagePay\Psr7\Factory\FactoryInterface;
 use Academe\SagePay\Psr7\Factory\GuzzleFactory;
 use Academe\SagePay\Psr7\Factory\DiactorosFactory;
 
-abstract class AbstractRequest extends AbstractMessage implements  \JsonSerializable
+abstract class AbstractRequest extends AbstractMessage implements JsonSerializable
 {
     protected $endpoint;
     protected $auth;
@@ -79,7 +78,7 @@ abstract class AbstractRequest extends AbstractMessage implements  \JsonSerializ
     }
 
     /**
-     * 
+     * @return Endpoint|null
      */
     public function getEndpoint()
     {
@@ -120,6 +119,14 @@ abstract class AbstractRequest extends AbstractMessage implements  \JsonSerializ
     }
 
     /**
+     * @returns array Headers for the request, usually the authentication headers.
+     */
+    public function getHeaders()
+    {
+        return [];
+    }
+
+    /**
      * @returns string The HTTP method that the 
      */
     public function getMethod()
@@ -136,8 +143,8 @@ abstract class AbstractRequest extends AbstractMessage implements  \JsonSerializ
         return [
             'Authorization' => 'Basic '
                 . base64_encode(
-                    $this->auth->getIntegrationKey()
-                    . ':' . $this->auth->getIntegrationPassword()
+                    $this->getAuth()->getIntegrationKey()
+                    . ':' . $this->getAuth()->getIntegrationPassword()
                 ),
         ];
     }
@@ -210,6 +217,7 @@ abstract class AbstractRequest extends AbstractMessage implements  \JsonSerializ
     /**
      * Set various flags - anything with a setFoo() method.
      * @param array $options
+     * @return $this
      */
     protected function setOptions(array $options = [])
     {
@@ -229,6 +237,7 @@ abstract class AbstractRequest extends AbstractMessage implements  \JsonSerializ
     /**
      * Set various flags - anything with a setFoo() method.
      * @param array $options
+     * @return AbstractRequest
      */
     public function withOptions(array $options = [])
     {
