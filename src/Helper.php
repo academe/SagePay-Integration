@@ -21,6 +21,10 @@ abstract class Helper
     /**
      * Get an element from a nested array, nested objects, or mix of the two.
      * The key uses "dot notation" to walk the nested data structure.
+     * @param $data
+     * @param $key
+     * @param null $default
+     * @return
      */
     public static function structureGet($data, $key, $default = null)
     {
@@ -52,6 +56,8 @@ abstract class Helper
 
     /**
      * Parse a date, returning a DateTime.
+     * @param $date
+     * @return DateTime
      */
     public static function parseDateTime($date)
     {

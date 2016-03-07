@@ -23,7 +23,8 @@ class ErrorCollection extends AbstractResponse implements \IteratorAggregate
     protected $items = array();
 
     /**
-     * @param array $items Initial array of Error instances
+     * @param ResponseInterface $message
+     * @internal param array $items Initial array of Error instances
      */
     public function __construct(ResponseInterface $message = null)
     {

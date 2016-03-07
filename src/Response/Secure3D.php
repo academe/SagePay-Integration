@@ -33,7 +33,8 @@ class Secure3D extends AbstractResponse
 
     /**
      * TODO: $data can be a PSR-7 response.
-     * @param array|object $data The 3DSecure resource from Sage Pay
+     * @param ResponseInterface $message
+     * @internal param array|object $data The 3DSecure resource from Sage Pay
      */
     public function __construct(ResponseInterface $message = null)
     {

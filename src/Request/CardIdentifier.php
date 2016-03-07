@@ -41,6 +41,13 @@ class CardIdentifier extends AbstractRequest
      * $expiryDate MMYY (maybe convert some common formats).
      * $cardNumber Lunn check.
      * $securityCode Digits only.
+     * @param Endpoint $endpoint
+     * @param Auth $auth
+     * @param SessionKeyResponse $sessionKey
+     * @param $cardholderName
+     * @param $cardNumber
+     * @param $expiryDate
+     * @param null $securityCode
      */
     public function __construct(
         Endpoint $endpoint,

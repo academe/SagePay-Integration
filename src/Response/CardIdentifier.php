@@ -20,7 +20,7 @@ class CardIdentifier extends AbstractResponse
     protected $cardType;
 
     /**
-     * @param array|object $message The data returned from SagePay in the response body.
+     * @param array|object|ResponseInterface $message The data returned from SagePay in the response body.
      */
     public function __construct(ResponseInterface $message = null)
     {
@@ -32,6 +32,8 @@ class CardIdentifier extends AbstractResponse
 
     /**
      * @param array|object $data The parsed data sent or returned by Saeg Pay.
+     * @param $httpCode
+     * @return $this
      */
     protected function setData($data, $httpCode)
     {

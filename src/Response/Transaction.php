@@ -39,7 +39,8 @@ class Transaction extends AbstractResponse
     const STATUS_ERROR      = 'Error';
 
     /**
-     * @param $data ResponseInterface|object|array
+     * @param ResponseInterface $message
+     * @internal param array|object|ResponseInterface $data
      */
     public function __construct(ResponseInterface $message = null)
     {
@@ -176,6 +177,8 @@ class Transaction extends AbstractResponse
         if (isset($this->Secure3D)) {
             return $this->Secure3D->getStatus();
         }
+
+        return null;
     }
 
     /**
@@ -201,11 +204,10 @@ class Transaction extends AbstractResponse
      * $termUrl is the return URL after the PA Request is complete. Add it here,
      * or set it explicitly in your form.
      *
-     * @param string $merchantData The MD key to identify the transaction in the callback
      * @param string|null $termUrl The callback URL, if known at this point
      * @param string|null $md The Merchant Data, if known at this point
-     *
      * @return array List of parameter fields and values to go into the PA Req POST
+     * @internal param string $merchantData The MD key to identify the transaction in the callback
      */
     public function getPaRequestFields($termUrl = null, $md = null)
     {

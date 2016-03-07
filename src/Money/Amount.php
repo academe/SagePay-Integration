@@ -17,7 +17,7 @@ class Amount implements AmountInterface
     protected $currency;
 
     /**
-     * @param Academe\SagePay\Psr7\Money\Currency $currency
+     * @param Academe\SagePay\Psr7\Money\Currency|Currency $currency
      * @param int $amount Minor unit total amount, with no decimal part
      */
     public function __construct(Currency $currency, $amount = 0)
@@ -78,6 +78,7 @@ class Amount implements AmountInterface
      * as an integer or a string.
      *
      * @param int|string $amount An amount in minor units, with no decimal part
+     * @return Amount
      */
     public function withMinorUnit($amount)
     {

@@ -17,7 +17,8 @@ class SessionKey extends AbstractRequest
     protected $resource_path = ['merchant-session-keys'];
 
     /**
-     *
+     * @param Endpoint $endpoint
+     * @param Auth $auth
      */
     public function __construct(Endpoint $endpoint, Auth $auth)
     {

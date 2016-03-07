@@ -74,4 +74,4 @@ function sagepayResponseHandler(status, response, options) {
 			options.invalid.apply(this);
 		}
 	}
-};
+}

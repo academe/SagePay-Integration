@@ -21,6 +21,7 @@ class SessionKey extends AbstractResponse
 
     /**
      * $data array|object|string|ResponseInterface
+     * @param ResponseInterface $message
      */
     public function __construct(ResponseInterface $message = null)
     {

@@ -14,6 +14,12 @@ class DiactorosFactory implements FactoryInterface
     /**
      * Return a new GuzzleHttp\Psr7\Request object.
      * The body is to be sent as a JSON request.
+     * @param null|string $method
+     * @param UriInterface|null|string $uri
+     * @param array $headers
+     * @param null $body
+     * @param string $protocolVersion
+     * @return Request
      */
     public function JsonRequest($method, $uri, array $headers = [], $body = null, $protocolVersion = '1.1')
     {

@@ -23,6 +23,8 @@ class SessionKeyValidate extends AbstractRequest
 
     /**
      * Supply the previously provided SessionKeyResponse for validation.
+     * @param Endpoint $endpoint
+     * @param SessionKeyResponse $sessionKey
      */
     public function __construct(Endpoint $endpoint, SessionKeyResponse $sessionKey)
     {

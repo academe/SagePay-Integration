@@ -13,6 +13,8 @@ abstract class AbstractMessage
 {
     /**
      * Get an array of constants in this [late-bound] class, with an optional prefix.
+     * @param null $prefix
+     * @return array
      */
     public static function constantList($prefix = null)
     {
@@ -36,6 +38,9 @@ abstract class AbstractMessage
     /**
      * Get a class constant value based on suffix and prefix.
      * Returns null if not found.
+     * @param $prefix
+     * @param $suffix
+     * @return mixed|null
      */
     public static function constantValue($prefix, $suffix)
     {
@@ -44,11 +49,14 @@ abstract class AbstractMessage
         if (defined("static::$name")) {
             return constant("static::$name");
         }
+
+        return null;
     }
 
     /**
      * Parse the body of a PSR-7 message, into a PHP array.
      * @param $message MessageInterface
+     * @return array|mixed
      */
     public function parseBody(MessageInterface $message)
     {

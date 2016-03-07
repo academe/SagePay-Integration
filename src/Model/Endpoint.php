@@ -50,6 +50,7 @@ class Endpoint
     }
 
     /**
+     * @param $version
      * @return static Clone of $this with the new API version set.
      */
     public function withApiVersion($version)

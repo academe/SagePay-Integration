@@ -70,6 +70,9 @@ class States
      * The API states that state codes must be an ISO3166-2 code. These codes
      * all start with the country code, e.g. "US-AL". The documentation states this
      * gateway supports the two-chacater codes only.
+     * @param $country
+     * @param $code
+     * @return bool
      */
     public static function isValid($country, $code)
     {

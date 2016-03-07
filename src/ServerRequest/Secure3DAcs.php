@@ -29,6 +29,7 @@ class Secure3DAcs extends AbstractServerRequest
 
     /**
      * @param $data array|object The 3DSecure resource callback from Sage Pay.
+     * @return $this
      */
     protected function setData($data)
     {

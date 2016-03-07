@@ -23,6 +23,8 @@ class Secure3D extends AbstractRequest
     protected $resource_path = ['transactions', '{transactionId}', '3d-secure'];
 
     /**
+     * @param Endpoint $endpoint
+     * @param Auth $auth
      * @param string|Secure3DAcsResponse $paRes The PA Result returned by the user's bank (or their agent)
      * @param string $transactionId The ID that Sage Pay gave to the transaction in its intial reponse
      */

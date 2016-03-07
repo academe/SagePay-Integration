@@ -37,6 +37,8 @@ class Error
      * @param string|int $code The error code supplied by the remote API
      * @param string $description The textual detail of the error
      * @param null|string $property The property name (field name) of the property the error applies to
+     * @param null $clientMessage
+     * @param null $httpCode
      */
     public function __construct($code, $description, $property = null, $clientMessage = null, $httpCode = null)
     {
@@ -99,6 +101,7 @@ class Error
     /**
      * @param array|object $data Error data from the API to initialise the Error object
      *
+     * @param null $httpCode
      * @return static New instance of Error object
      */
     public static function fromData($data, $httpCode = null)

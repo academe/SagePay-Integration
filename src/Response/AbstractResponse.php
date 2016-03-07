@@ -57,7 +57,9 @@ abstract class AbstractResponse extends AbstractMessage implements Http, RFC4918
 
     /**
      * Extract the http response code from the supplied data or the code provied.
-     * @return integer|null The HTTP code as an integer.
+     * @param $httpCode
+     * @param null $data
+     * @return int|null The HTTP code as an integer.
      */
     protected function deriveHttpCode($httpCode, $data = null)
     {
@@ -72,6 +74,8 @@ abstract class AbstractResponse extends AbstractMessage implements Http, RFC4918
                 return (int)$code;
             }
         }
+
+        return null;
     }
 
     /**
@@ -88,6 +92,8 @@ abstract class AbstractResponse extends AbstractMessage implements Http, RFC4918
      * TODO: make setData() an abstract method.
      *
      * @param string|array|object $data
+     * @param null $httpCode
+     * @return
      */
     public static function fromData($data, $httpCode = null)
     {

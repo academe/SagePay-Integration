@@ -31,7 +31,8 @@ abstract class AbstractRequest extends AbstractMessage implements  \JsonSerializ
     protected $method = 'POST';
 
     /**
-     * 
+     * @param Auth $auth
+     * @return $this
      */
     protected function setAuth(Auth $auth)
     {
@@ -40,7 +41,8 @@ abstract class AbstractRequest extends AbstractMessage implements  \JsonSerializ
     }
 
     /**
-     * 
+     * @param Auth $auth
+     * @return AbstractRequest
      */
     protected function withAuth(Auth $auth)
     {
@@ -57,7 +59,8 @@ abstract class AbstractRequest extends AbstractMessage implements  \JsonSerializ
     }
 
     /**
-     * 
+     * @param Endpoint $endpoint
+     * @return $this
      */
     protected function setEndpoint(Endpoint $endpoint)
     {
@@ -66,7 +69,8 @@ abstract class AbstractRequest extends AbstractMessage implements  \JsonSerializ
     }
 
     /**
-     * 
+     * @param Endpoint $endpoint
+     * @return AbstractRequest
      */
     protected function withEndpoint(Endpoint $endpoint)
     {
@@ -139,7 +143,8 @@ abstract class AbstractRequest extends AbstractMessage implements  \JsonSerializ
     }
 
     /**
-     * 
+     * @param FactoryInterface $factory
+     * @return $this
      */
     protected function setFactory(FactoryInterface $factory)
     {
@@ -148,7 +153,8 @@ abstract class AbstractRequest extends AbstractMessage implements  \JsonSerializ
     }
 
     /**
-     * 
+     * @param FactoryInterface $factory
+     * @return AbstractRequest
      */
     protected function withFactory(FactoryInterface $factory)
     {
@@ -159,6 +165,9 @@ abstract class AbstractRequest extends AbstractMessage implements  \JsonSerializ
     /**
      * Get the PSR-7 factory.
      * Create a factory if none supplied and relevant libraries are installed.
+     * @param bool $exception
+     * @return DiactorosFactory|GuzzleFactory
+     * @throws Exception
      */
     public function getFactory($exception = false)
     {
@@ -200,6 +209,7 @@ abstract class AbstractRequest extends AbstractMessage implements  \JsonSerializ
 
     /**
      * Set various flags - anything with a setFoo() method.
+     * @param array $options
      */
     protected function setOptions(array $options = [])
     {
@@ -212,10 +222,13 @@ abstract class AbstractRequest extends AbstractMessage implements  \JsonSerializ
                 throw new UnexpectedValueException(sprintf('Unknown option %s', $name));
             }
         }
+
+        return $this;
     }
 
     /**
      * Set various flags - anything with a setFoo() method.
+     * @param array $options
      */
     public function withOptions(array $options = [])
     {

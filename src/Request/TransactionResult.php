@@ -16,6 +16,8 @@ class TransactionResult extends AbstractRequest
     protected $method = 'GET';
 
     /**
+     * @param Endpoint $endpoint
+     * @param Auth $auth
      * @param string $transactionId The ID that Sage Pay gave to the transaction
      */
     public function __construct(Endpoint $endpoint, Auth $auth, $transactionId)
