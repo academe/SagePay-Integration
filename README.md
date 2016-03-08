@@ -39,6 +39,8 @@ Note that this example code deals only with using the gateway from the back-end.
 There is a JavaScript front-end to come too, with a protocol to deal with expired
 session keys and card tokens.
 
+### Get a Session Key
+
 The `SessionKey` message has had PSR-7 support added, and can be used like this:
 
 ~~~php
@@ -100,6 +102,8 @@ $session_key = new SessionKeyResponse($psr7_response);
 echo "Session key is: " . $session_key->getMerchantSessionKey();
 ~~~
 
+### Get a Card Identifier
+
 That example involves capturing the PSR-7 message, then sending it.
 The `Request\SessionKey` class will generate the PSR-7 message using `Guzzle/Psr7`,
 so long as `Guzzle/Psr7` is installed,
@@ -130,6 +134,8 @@ $card_identifier = new CardIdentifierResponse($response);
 echo "Card identifier = " . $card_identifier->getCardIdentifier();
 echo "Card type = " . $card_identifier->getCardType();
 ~~~
+
+### Submit a Transaction
 
 Then a transaction can be initiated.
 
@@ -192,6 +198,8 @@ echo "Final status is " . $transaction_response->getStatus();
 // fields (more about that in a bit too).
 ~~~
 
+### Fetch a Transaction Result Again
+
 Given the TransactionId, you can fetch the transaction details.
 If the transaction was successful, then it will be available immediately.
 If a 3D Secure action was needed, then the 3D Secure results need to be sent
@@ -213,6 +221,8 @@ $response = $client->send($transaction_result->message());
 $fetched_transaction = new \Academe\SagePay\Psr7\Response\Transaction($response);
 ~~~
 
+### Using 3D Secure
+
 Now, if you want to use 3D Secure (and you really should) then we have a callback to deal with.
 
 To turn on 3D Secure, use the appropriate option when sending the transaction:
@@ -223,6 +233,8 @@ To turn on 3D Secure, use the appropriate option when sending the transaction:
         'Apply3DSecure' => \Academe\SagePay\Psr7\Request\Transaction::APPLY_3D_SECURE_FORCE,
     ]
 ~~~
+
+### 3D Secure Callback
 
 The result of the transaction, assuming all is otherwise fine, will be `3DAuth`.
 Given this, a POST redirection is needed.
@@ -316,6 +328,8 @@ Handling the 3D Secure result involve two steps:
     echo $secure3d_response->getStatus();
 ~~~
 
+### Final Transaction After 3D Secure
+
 Assuming 3D Secure passed, then get the transaction. However - *do not get it too soon*.
 The test instance of Sage Pay has a slight delay between getting the 3D Secure result and
 being able to fetch the transaction.
@@ -323,7 +337,7 @@ It is safer just to sleep for one second at this time, which is an arbitrary per
 seems to work for now.
 
 ~~~php
-    // A fix for the need for this is in hand at Sage Pay.
+    // A fix for the need to do this is in hand at Sage Pay.
     sleep(1);
 
     // Get fetch the transaction with full details.
