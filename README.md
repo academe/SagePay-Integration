@@ -313,10 +313,10 @@ Handling the 3D Secure result involve two steps:
         $endpoint,
         $auth,
         $secure3d_server_request,
-        // Include your transaction ID, i.e. the vendorTxCode.
+        // Include the transaction ID.
         // For this demo we sent that as `MD` data rather than storing it in the session.
         // The transaction ID will generally be in the session; putting it in MD is lazy
-        // and exposes it to the end user.
+        // and exposes it to the end user, so don't do this!
         $secure3d_server_request->getMD()
     );
 
