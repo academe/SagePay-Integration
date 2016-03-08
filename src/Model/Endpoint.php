@@ -3,6 +3,9 @@
 /**
  * The endpoint to use to access the Sage Pay API.
  * TODO: support PSR-7 Url objects as well as strings.
+ * Using the PSR-7 UriInterface seens like it could be useful, but we still have to
+ * mess around constructing a path from strings and handling encoding, so maybe just
+ * bypass the UriInterface.
  */
 
 //use Exception;

@@ -7,6 +7,7 @@
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Uri;
 
 class GuzzleFactory implements FactoryInterface
 {
@@ -42,7 +43,17 @@ class GuzzleFactory implements FactoryInterface
     }
 
     /**
-     * Check whether Guzzle is installed so this factory can be used.
+     * Create a PSR-7 UriInterface object.
+     * @param string $uri
+     */
+    public function Uri($uri)
+    {
+        return new Uri($uri);
+    }
+
+    /**
+     * Check whether Guzzle PSR-7 is installed so this factory can be used.
+     * Note: Guzzle does not support everything (e.g. not ServerRequestInterface at this time).
      */
     public static function isSupported()
     {

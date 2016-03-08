@@ -26,7 +26,7 @@ class Secure3DAcs extends AbstractServerRequest
     }
 
     /**
-     * @param $data array|object The 3DSecure resource callback from Sage Pay.
+     * @param $data array|object The 3DSecure resource callback from Sage Pay; $_POST will work here.
      * @return $this
      */
     protected function setData($data)
@@ -36,6 +36,10 @@ class Secure3DAcs extends AbstractServerRequest
         return $this;
     }
 
+    /**
+     * Only needed for debugging or logging.
+     * @return array
+     */
     public function jsonSerialize()
     {
         return [
@@ -45,7 +49,7 @@ class Secure3DAcs extends AbstractServerRequest
     }
 
     /**
-     * @returns string The optional Merchant Data (MD) to identify the transaction.
+     * @return string The optional Merchant Data (MD) to identify the transaction.
      */
     public function getMD()
     {
@@ -53,10 +57,21 @@ class Secure3DAcs extends AbstractServerRequest
     }
 
     /**
-     * @returns string The encrypted 3DSecure result (PaRes) to pass on to Sage Pay for validation.
+     * @return string The encrypted 3DSecure result (PaRes) to pass on to Sage Pay for validation.
      */
     public function getPaRes()
     {
         return $this->PaRes;
+    }
+
+    /**
+     * Determine if this message is a valid 3D Secure ACS server request.
+     * @return boolean
+     */
+    public function isValid()
+    {
+        // If paRes is set, then this is [likely to be] the user returning from
+        // the bank's 3D Secure password entry.
+        return ! empty($this->getPaRes());
     }
 }

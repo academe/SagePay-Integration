@@ -10,6 +10,7 @@ namespace Academe\SagePay\Psr7\Request;
 
 use Academe\SagePay\Psr7\Model\Auth;
 use Academe\SagePay\Psr7\Model\Endpoint;
+use Academe\SagePay\Psr7\ServerRequest\Secure3DAcs;
 
 class Secure3D extends AbstractRequest
 {
@@ -26,10 +27,10 @@ class Secure3D extends AbstractRequest
      */
     public function __construct(Endpoint $endpoint, Auth $auth, $paRes, $transactionId)
     {
-        $this->endpoint = $endpoint;
-        $this->auth = $auth;
+        $this->setEndpoint($endpoint);
+        $this->setAuth($auth);
 
-        if ($paRes instanceof Secure3DAcsResponse) {
+        if ($paRes instanceof Secure3DAcs) {
             $this->paRes = $paRes->getPaRes();
         } else {
             $this->paRes = $paRes;
@@ -62,6 +63,9 @@ class Secure3D extends AbstractRequest
         return $this->paRes;
     }
 
+    /**
+     * Getter used to construct the URL.
+     */
     public function getTransactionId()
     {
         return $this->transactionId;
