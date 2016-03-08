@@ -222,4 +222,24 @@ class Transaction extends AbstractResponse
 
         return $fields;
     }
+
+    /**
+     * Convenient serialisation for logging and debugging.
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'transactionId' => $this->transactionId,
+            'transactionType' => $this->transactionType,
+            'status' => $this->status,
+            'statusCode' => $this->statusCode,
+            'statusDetail' => $this->statusDetail,
+            'retrievalReference' => $this->retrievalReference,
+            'bankResponseCode' => $this->bankResponseCode,
+            'bankAuthorisationCode' => $this->bankAuthorisationCode,
+            'Secure3D' => $this->Secure3D,
+            'acsUrl' => $this->acsUrl,
+            'paReq' => $this->paReq,
+        ];
+    }
 }

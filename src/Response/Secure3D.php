@@ -41,21 +41,15 @@ class Secure3D extends AbstractResponse
         }
     }
 
+    /**
+     * Set properties from an array or object of values.
+     */
     protected function setData($data, $httpCode = null)
     {
         $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
         $this->status = Helper::structureGet($data, 'status', null);
         return $this;
     }
-
-    /**
-     * Create a new instance from an array or object of values.
-     * The data will normally be the whole transaction response with various items
-     * of data at different levels, or a flat array.
-     * This is possibly misleading, because if there is no 3DSecure data returned
-     * at all in the response, then the overall transaction status will be picked
-     * up here.
-     */
 
     /**
      * @return string The status of the 3DSecure result
