@@ -26,6 +26,13 @@ Sage Pay Integration REST API, so do get involved, as there is a lot of work to 
 Tests need to be written. I can extend tests, but have not got to the stage where I can set up a test
 framework from scratch.
 
+More examples of how to handle errors is also needed. Exceptions can be raised in many places.
+Some exceptions are issues at the remote end, some fatal authentication errors, and some just relate
+to validation errors on the payment form, needing the user to fix their details. Temporary tokens
+expire over a period and after a small number of uses, so those all need to be caught and the
+user taken back to the relevant place in the protocal without losing anything they have entered
+so far (that has not expired).
+
 ## Overview; How to use
 
 Note that this example code deals only with using the gateway from the back-end.
