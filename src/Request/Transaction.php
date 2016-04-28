@@ -5,8 +5,7 @@
  * See https://test.sagepay.com/documentation/#transactions
  *
  * TODO: support an $options parameter for setting options, e.g. 3D Secure.
- * Options just need to map onto the `with*` methods, though the with* methods
- * can't actually be run in the constructor.
+ * Options just need to map onto the `set*` methods.
  */
 
 use UnexpectedValueException;
@@ -39,6 +38,7 @@ class Transaction extends AbstractRequest
     protected $apply3DSecure;
     protected $shippingAddress;
     protected $shippingRecipient;
+    protected $referrerId = '3F7A4119-8671-464F-A091-9E59EB47B80C';
 
     /**
      * @var string The prefix is added to the name fields of the customer.
@@ -112,7 +112,6 @@ class Transaction extends AbstractRequest
         $this->amount = $amount;
         $this->billingAddress = $billingAddress->withFieldPrefix('');
         $this->customer = $customer->withFieldPrefix($this->customerFieldsPrefix);
-
         $this->shippingAddress = $shippingAddress->withFieldPrefix($this->shippingAddressFieldPrefix);
         $this->shippingRecipient = $shippingRecipient->withFieldPrefix($this->shippingNameFieldPrefix);
 
@@ -308,10 +307,31 @@ class Transaction extends AbstractRequest
     }
 
     /**
+     * @param $referrerId
+     * @return $this
+     */
+    protected function setReferrerId($referrerId)
+    {
+        $this->referrerId = $referrerId;
+        return $this;
+    }
+
+    /**
+     * @param $referrerId
+     * @return Transaction
+     */
+    public function withReferrerId($referrerId)
+    {
+        $copy = clone $this;
+        return $copy->setReferrerId($referrerId);
+    }
+
+    /**
      * Get the message body data for serializing.
      */
     public function jsonSerialize()
     {
+        // The mandatory fields.
         $result = [
             'transactionType' => $this->transactionType,
             'paymentMethod' => $this->paymentMethod,
@@ -322,7 +342,9 @@ class Transaction extends AbstractRequest
             'billingAddress' => $this->billingAddress,
         ];
 
-        // The customer details 
+        // The customer details.
+        // The customer firstname and lastname are mandatory, while the customer
+        // email and phone number are optional.
         $result = array_merge($result, $this->customer->jsonSerialize());
 
         $shippingDetails = [];
@@ -363,8 +385,9 @@ class Transaction extends AbstractRequest
             $result['apply3DSecure'] = $this->apply3DSecure;
         }
 
-        // Not yet supported.
-        //$result['referrerId'] = '3F7A4119-8671-464F-A091-9E59EB47B80C';
+        if ( ! empty($this->referrerId)) {
+            $result['referrerId'] = $this->referrerId;
+        }
 
         return $result;
     }

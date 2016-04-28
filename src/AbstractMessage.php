@@ -55,6 +55,9 @@ abstract class AbstractMessage
 
     /**
      * Parse the body of a PSR-7 message, into a PHP array.
+     * TODO: if this message is a ServerRequestInterface, then the parsed body may already
+     * be available through getParsedBody() - that that first. Maybe even move that check to
+     * AbstractServerRequest and fall back to this (the parent) if not set.
      * @param $message MessageInterface
      * @return array|mixed
      */

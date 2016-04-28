@@ -223,11 +223,12 @@ abstract class AbstractRequest extends AbstractMessage implements JsonSerializab
     {
         foreach($options as $name => $value) {
             $method = 'set' . ucfirst($name);
+
             if (method_exists($this, $method)) {
                 $this->{$method}($value);
             } else {
                 // Unknown option.
-                throw new UnexpectedValueException(sprintf('Unknown option %s', $name));
+                throw new UnexpectedValueException(sprintf('Unknown option "%s"', $name));
             }
         }
 
