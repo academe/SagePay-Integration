@@ -3,9 +3,6 @@
 /**
  * The transaction value object to send a transaction to SagePay.
  * See https://test.sagepay.com/documentation/#transactions
- *
- * TODO: support an $options parameter for setting options, e.g. 3D Secure.
- * Options just need to map onto the `set*` methods.
  */
 
 use UnexpectedValueException;
