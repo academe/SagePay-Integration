@@ -279,11 +279,14 @@ of inline. That is out of scope for this simple description.
 This form will then take the user off to the 3D Secure password page. For Sage Pay testing, use the code
 `password` to get a successful response when you reach the test 3D Secure form.
 
-Now you need to handle the return from the bank. Using Diactoros you can catch the return message as
-a PSR-7 ServerRequest like this:
+Now you need to handle the return from the bank. Using Diactoros (and now Guzzle) you can catch the return
+message as a PSR-7 ServerRequest like this:
 
 ~~~php
 $psr7ServerRequest = \Zend\Diactoros\ServerRequestFactory::fromGlobals();
+// or from guzzlehttp/psr7 v1.3
+$psr7ServerRequest = \GuzzleHttp\Psr7\ServerRequest::fromGlobals();
+
 $secure3d_server_request = new \Academe\SagePay\Psr7\ServerRequest\Secure3DAcs($psr7ServerRequest);
 if ($secure3d_server_request->isValid()) {
     // Yeah, we got a 3d Secure response. Process it here.
