@@ -30,6 +30,11 @@ class ErrorCollection extends AbstractResponse implements \IteratorAggregate
         }
     }
 
+    /**
+     * @param $data
+     * @param $httpCode
+     * @return $this
+     */
     protected function setData($data, $httpCode)
     {
         // A list of errors will be provided in a wrapping "errors" element.

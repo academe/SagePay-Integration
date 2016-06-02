@@ -11,9 +11,18 @@ use Academe\SagePay\Psr7\Request\AbstractRequest;
 
 abstract class AbstractServerRequest extends AbstractRequest
 {
+    /**
+     * @param $data
+     * @return mixed
+     */
     public static function fromData($data)
     {
         $instance = new static();
         return $instance->setData($data);
     }
+
+    /**
+     * @param $data
+     */
+    protected function setData($data);
 }

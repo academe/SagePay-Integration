@@ -33,6 +33,7 @@ class SessionKeyValidate extends AbstractRequest
     /**
      * The merchantSessionKey will be sent as a URL parameter.
      * This message to SagePay has no body otherwise, and no authorisation is required.
+     * @return null|string
      */
     public function getMerchantSessionKey()
     {
@@ -48,10 +49,10 @@ class SessionKeyValidate extends AbstractRequest
 
     /**
      * This message has no authentication headers.
+     * @return array
      */
     public function getHeaders()
     {
         return [];
     }
-
 }

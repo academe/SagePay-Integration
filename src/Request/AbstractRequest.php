@@ -50,7 +50,7 @@ abstract class AbstractRequest extends AbstractMessage implements JsonSerializab
     }
 
     /**
-     * 
+     * @return mixed
      */
     public function getAuth()
     {
@@ -137,6 +137,7 @@ abstract class AbstractRequest extends AbstractMessage implements JsonSerializab
     /**
      * The HTTP Basic Auth header, as an array.
      * Use this if your transport tool does not do "Basic Auth" out of the box.
+     * @return array
      */
     protected function getBasicAuthHeaders()
     {
@@ -203,6 +204,8 @@ abstract class AbstractRequest extends AbstractMessage implements JsonSerializab
 
     /**
      * Return as a PSR-7 request message.
+     * @return \GuzzleHttp\Psr7\Request|\Zend\Diactoros\Request
+     * @throws Exception
      */
     public function message()
     {

@@ -45,6 +45,7 @@ class GuzzleFactory implements FactoryInterface
     /**
      * Create a PSR-7 UriInterface object.
      * @param string $uri
+     * @return Uri
      */
     public function Uri($uri)
     {
@@ -54,6 +55,7 @@ class GuzzleFactory implements FactoryInterface
     /**
      * Check whether Guzzle PSR-7 is installed so this factory can be used.
      * Note: Guzzle does not support everything (e.g. not ServerRequestInterface at this time).
+     * @return bool
      */
     public static function isSupported()
     {

@@ -257,6 +257,10 @@ class Countries
         'ZW' => 'Zimbabwe',
     );
 
+    /**
+     * @param $code
+     * @return bool
+     */
     public static function isValid($code)
     {
         return isset(static::$countries[$code]);

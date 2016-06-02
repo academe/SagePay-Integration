@@ -63,21 +63,33 @@ class CardIdentifier extends AbstractRequest
         $this->securityCode = new SensitiveValue($securityCode);
     }
 
+    /**
+     * @return SensitiveValue|mixed
+     */
     public function getCardholderName()
     {
         return $this->cardholderName ? $this->cardholderName->peek() : $this->cardholderName;
     }
 
+    /**
+     * @return SensitiveValue|mixed
+     */
     public function getCardNumber()
     {
         return $this->cardNumber ? $this->cardNumber->peek() : $this->cardNumber;
     }
 
+    /**
+     * @return SensitiveValue|mixed
+     */
     public function getExpiryDate()
     {
         return $this->expiryDate ? $this->expiryDate->peek() : $this->expiryDate;
     }
 
+    /**
+     * @return SensitiveValue|mixed
+     */
     public function getSecurityCode()
     {
         return $this->securityCode ? $this->securityCode->peek() : $this->securityCode;
@@ -86,6 +98,7 @@ class CardIdentifier extends AbstractRequest
     /**
      * Protect this class from direct JSON serialisation.
      * Replace all card detail characters with asterisks.
+     * @return array
      */
     public function jsonSerialize()
     {
@@ -103,6 +116,7 @@ class CardIdentifier extends AbstractRequest
     /**
      * Get the message body data for serializing.
      * This is the explicit JSON serialisation method, not called up during debug.
+     * @return array
      */
     public function jsonSerializePeek()
     {
@@ -128,6 +142,7 @@ class CardIdentifier extends AbstractRequest
      * This request does not use the HTTP Basic Auth, but the temporary session
      * key token instead. This is because it will accessible to end users, and
      * the secure integration key and password cannot be exposed here.
+     * @return array
      */
     public function getHeaders()
     {

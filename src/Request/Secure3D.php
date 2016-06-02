@@ -41,6 +41,7 @@ class Secure3D extends AbstractRequest
 
     /**
      * Get the message body data for serializing.
+     * @return array
      */
     public function jsonSerialize()
     {
@@ -52,12 +53,16 @@ class Secure3D extends AbstractRequest
     /**
      * The HTTP Basic Auth header, as an array.
      * Use this if your transport tool does not do "Basic Auth" out of the box.
+     * @return array
      */
     public function getHeaders()
     {
         return $this->getBasicAuthHeaders();
     }
 
+    /**
+     * @return Secure3DAcsResponse|string
+     */
     public function getPaRes()
     {
         return $this->paRes;
@@ -65,6 +70,7 @@ class Secure3D extends AbstractRequest
 
     /**
      * Getter used to construct the URL.
+     * @return string
      */
     public function getTransactionId()
     {

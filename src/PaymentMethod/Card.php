@@ -18,6 +18,11 @@ class Card implements PaymentMethodInterface
     protected $sessionKey;
     protected $cardIdentifier;
 
+    /**
+     * Card constructor.
+     * @param SessionKey $sessionKey
+     * @param CardIdentifier $cardIdentifier
+     */
     public function __construct(SessionKey $sessionKey, CardIdentifier $cardIdentifier)
     {
         $this->cardIdentifier = $cardIdentifier;
@@ -26,6 +31,7 @@ class Card implements PaymentMethodInterface
 
     /**
      * Return the body partial for message construction.
+     * @return array
      */
     public function jsonSerialize()
     {

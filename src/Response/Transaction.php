@@ -47,6 +47,11 @@ class Transaction extends AbstractResponse
         }
     }
 
+    /**
+     * @param $data
+     * @param $httpCode
+     * @return $this
+     */
     protected function setData($data, $httpCode)
     {
         $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
@@ -118,6 +123,7 @@ class Transaction extends AbstractResponse
 
     /**
      * The ID given to the transaction by Sage Pay.
+     * @return mixed
      */
     public function getTransactionId()
     {
@@ -126,6 +132,7 @@ class Transaction extends AbstractResponse
 
     /**
      * The type of the transaction.
+     * @return mixed
      */
     public function getTransactionType()
     {
@@ -135,6 +142,7 @@ class Transaction extends AbstractResponse
     /**
      * Sage Pay unique Authorisation Code for a successfully authorised
      * transaction. Only present if Status is OK (or Ok).
+     * @return mixed
      */
     public function getRetrievalReference()
     {
@@ -144,6 +152,7 @@ class Transaction extends AbstractResponse
     /**
      * Also known as the decline code, these are codes that are
      * specific to the merchant bank. 
+     * @return mixed
      */
     public function getBankResponseCode()
     {
@@ -152,6 +161,7 @@ class Transaction extends AbstractResponse
 
     /**
      * The authorisation code returned from your merchant bank.
+     * @return mixed
      */
     public function getBankAuthorisationCode()
     {
@@ -160,6 +170,7 @@ class Transaction extends AbstractResponse
 
     /**
      * The 3D Secure object.
+     * @return mixed
      */
     public function get3DSecure()
     {
@@ -225,6 +236,7 @@ class Transaction extends AbstractResponse
 
     /**
      * Convenient serialisation for logging and debugging.
+     * @return array
      */
     public function jsonSerialize()
     {

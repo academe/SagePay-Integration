@@ -27,12 +27,16 @@ class SessionKey extends AbstractRequest
     /**
      * The HTTP Basic Auth header, as an array.
      * Use this if your transport tool does not do "Basic Auth" out of the box.
+     * @return array
      */
     public function getHeaders()
     {
         return $this->getBasicAuthHeaders();
     }
 
+    /**
+     * @return array
+     */
     public function jsonSerialize()
     {
         return [

@@ -14,15 +14,25 @@ class MoneyAmount implements AmountInterface
 {
     protected $money;
 
+    /**
+     * MoneyAmount constructor.
+     * @param Money $money
+     */
     public function __construct(Money $money)
     {
         $this->money = $money;
     }
 
+    /**
+     * @return mixed
+     */
     public function getAmount() {
         return $this->money->getAmount();
     }
 
+    /**
+     * @return mixed
+     */
     public function getCurrencyCode()
     {
         $currency = $this->money->getCurrency();

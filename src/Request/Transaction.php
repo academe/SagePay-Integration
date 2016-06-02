@@ -76,6 +76,21 @@ class Transaction extends AbstractRequest
     const APPLY_3D_SECURE_DISABLE                   = 'Disable'; // 2
     const APPLY_3D_SECURE_FORCEIGNORINGRULES        = 'ForceIgnoringRules'; // 3
 
+    /**
+     * Transaction constructor.
+     * @param Endpoint $endpoint
+     * @param Auth $auth
+     * @param $transactionType
+     * @param PaymentMethodInterface $paymentMethod
+     * @param $vendorTxCode
+     * @param AmountInterface $amount
+     * @param $description
+     * @param AddressInterface $billingAddress
+     * @param PersonInterface $customer
+     * @param AddressInterface|null $shippingAddress
+     * @param PersonInterface|null $shippingRecipient
+     * @param array $options
+     */
     public function __construct(
         Endpoint $endpoint,
         Auth $auth,
@@ -115,6 +130,10 @@ class Transaction extends AbstractRequest
         $this->setOptions($options);
     }
 
+    /**
+     * @param $entryMethod
+     * @return $this
+     */
     public function setEntryMethod($entryMethod)
     {
         // Get the value from the class constants.
@@ -132,17 +151,28 @@ class Transaction extends AbstractRequest
         return $this;
     }
 
+    /**
+     * @param $entryMethod
+     * @return Transaction
+     */
     public function withEntryMethod($entryMethod)
     {
         $copy = clone $this;
         return $copy->setEntryMethod($entryMethod);
     }
 
+    /**
+     * @return array
+     */
     public static function getEntryMethods()
     {
         return static::constantList('ENTRY_METHOD');
     }
 
+    /**
+     * @param $recurringIndicator
+     * @return $this
+     */
     public function setRecurringIndicator($recurringIndicator)
     {
         // Get the value from the class constants.
@@ -160,23 +190,38 @@ class Transaction extends AbstractRequest
         return $this;
     }
 
+    /**
+     * @param $recurringIndicator
+     * @return mixed
+     */
     public function withRecurringIndicator($recurringIndicator)
     {
         $copy = clone $this;
         return $copy->withRecurringIndicator($recurringIndicator);
     }
 
+    /**
+     * @return array
+     */
     public static function getRecurringIndicators()
     {
         return static::constantList('RECURRING_INDICATOR');
     }
 
+    /**
+     * @param $giftAid
+     * @return $this
+     */
     protected function setGiftAid($giftAid)
     {
         $this->giftAid = ! empty($giftAid);
         return $this;
     }
 
+    /**
+     * @param $giftAid
+     * @return Transaction
+     */
     public function withGiftAid($giftAid)
     {
         $copy = clone $this;
@@ -325,6 +370,7 @@ class Transaction extends AbstractRequest
 
     /**
      * Get the message body data for serializing.
+     * @return array
      */
     public function jsonSerialize()
     {

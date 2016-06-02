@@ -43,6 +43,9 @@ class Secure3D extends AbstractResponse
 
     /**
      * Set properties from an array or object of values.
+     * @param $data
+     * @param null|string $httpCode
+     * @return $this
      */
     protected function setData($data, $httpCode = null)
     {

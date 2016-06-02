@@ -51,6 +51,7 @@ class DiactorosFactory implements FactoryInterface
 
     /**
      * Check whether Guzzle is installed so this factory can be used.
+     * @return bool
      */
     public static function isSupported()
     {

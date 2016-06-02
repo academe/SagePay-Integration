@@ -75,8 +75,8 @@ class Endpoint
      * Override any of the URLs.
      * Supports replacement fields {version} and {resource}
      *
-     * @param $mode The mode to set the endpoint URL for
-     * @param $url The absolute URL or URL template with placeholders
+     * @param string $mode The mode to set the endpoint URL for
+     * @param string $url The absolute URL or URL template with placeholders
      *
      * @return Auth A clone of $this with the new URL or URL template set
      */

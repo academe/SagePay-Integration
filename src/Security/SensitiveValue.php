@@ -38,6 +38,9 @@ final class SensitiveValue implements Serializable, JsonSerializable
         return $value;
     }
 
+    /**
+     *
+     */
     public function erase()
     {
         $this->value = null;

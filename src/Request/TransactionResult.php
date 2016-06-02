@@ -26,6 +26,9 @@ class TransactionResult extends AbstractRequest
         $this->transactionId = $transactionId;
     }
 
+    /**
+     * @return string
+     */
     public function getTransactionId()
     {
         return $this->transactionId;
@@ -39,6 +42,9 @@ class TransactionResult extends AbstractRequest
     {
     }
 
+    /**
+     * @return array
+     */
     public function getHeaders()
     {
         return $this->getBasicAuthHeaders();

@@ -43,27 +43,44 @@ class CardIdentifier extends AbstractResponse
         return $this;
     }
 
+    /**
+     * @param array|object|string $data
+     * @param null $httpCode
+     * @return mixed
+     */
     public static function fromData($data, $httpCode = null)
     {
         $message = new static();
         return $message->setData($data, $httpCode);
     }
 
+    /**
+     * @return mixed
+     */
     public function getCardIdentifier()
     {
         return $this->cardIdentifier;
     }
 
+    /**
+     * @return mixed
+     */
     public function getExpiry()
     {
         return $this->expiry;
     }
 
+    /**
+     * @return mixed
+     */
     public function getCardType()
     {
         return $this->cardType;
     }
 
+    /**
+     * @return bool
+     */
     public function isExpired()
     {
         // Use the default system timezone; the DateTime comparison
@@ -79,6 +96,7 @@ class CardIdentifier extends AbstractResponse
 
     /**
      * Reduce the object to an array so it can be serialised.
+     * @return array
      */
     public function jsonSerialize()
     {

@@ -61,6 +61,10 @@ class States
         ),
     );
 
+    /**
+     * @param $country
+     * @return bool
+     */
     public static function hasStates($country)
     {
         return isset(static::$states[$country]);

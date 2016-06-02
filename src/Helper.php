@@ -38,7 +38,7 @@ abstract class Helper
                 continue;
             }
 
-            if (is_array($target) && array_key_exists($segment, $data)) {
+            if (is_array($target) && array_key_exists($segment, $target)) {
                 $target = $target[$segment];
                 continue;
             }
@@ -55,7 +55,7 @@ abstract class Helper
     protected static function _value($value)
     {
         if ($value instanceof Closure) {
-            return ${value}();
+            return $value();
         } else {
             return $value;
         }

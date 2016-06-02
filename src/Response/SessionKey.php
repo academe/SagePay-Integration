@@ -26,6 +26,11 @@ class SessionKey extends AbstractResponse
         }
     }
 
+    /**
+     * @param $data
+     * @param $httpCode
+     * @return $this
+     */
     protected function setData($data, $httpCode)
     {
         $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
