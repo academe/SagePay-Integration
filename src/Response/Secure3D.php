@@ -47,7 +47,7 @@ class Secure3D extends AbstractResponse
     protected function setData($data, $httpCode = null)
     {
         $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
-        $this->status = Helper::structureGet($data, 'status', null);
+        $this->status = Helper::dataGet($data, 'status', null);
         return $this;
     }
 

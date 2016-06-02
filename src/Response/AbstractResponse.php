@@ -66,7 +66,7 @@ abstract class AbstractResponse extends AbstractMessage implements Http, RFC4918
         }
 
         if (isset($data)) {
-            $code = Helper::structureGet($data, 'httpCode');
+            $code = Helper::dataGet($data, 'httpCode');
 
             if (isset($code)) {
                 return (int)$code;

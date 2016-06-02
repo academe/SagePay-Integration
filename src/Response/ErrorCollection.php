@@ -33,11 +33,11 @@ class ErrorCollection extends AbstractResponse implements \IteratorAggregate
     protected function setData($data, $httpCode)
     {
         // A list of errors will be provided in a wrapping "errors" element.
-        $errors = Helper::structureGet($data, 'errors', null);
+        $errors = Helper::dataGet($data, 'errors', null);
 
         // If there was no "errors" wrapper, then assume what we have is a single error,
         // provided there is a "code" element at a minimum.
-        if (!isset($errors) && !empty(Helper::structureGet($data, 'code', null))) {
+        if (!isset($errors) && !empty(Helper::dataGet($data, 'code', null))) {
             $this->add(Error::fromData($data, $this->getHttpCode()));
         } elseif (is_array($errors)) {
             foreach($errors as $error) {

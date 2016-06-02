@@ -88,12 +88,12 @@ class Address implements AddressInterface
     public static function fromData($data)
     {
         return new static(
-            Helper::structureGet($data, 'address1', null),
-            Helper::structureGet($data, 'address2', null),
-            Helper::structureGet($data, 'city', null),
-            Helper::structureGet($data, 'postalCode', null),
-            Helper::structureGet($data, 'country', null),
-            Helper::structureGet($data, 'state', null)
+            Helper::dataGet($data, 'address1', null),
+            Helper::dataGet($data, 'address2', null),
+            Helper::dataGet($data, 'city', null),
+            Helper::dataGet($data, 'postalCode', null),
+            Helper::dataGet($data, 'country', null),
+            Helper::dataGet($data, 'state', null)
         );
     }
 

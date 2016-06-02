@@ -53,7 +53,7 @@ class Transaction extends AbstractResponse
 
         // Note the resource is called "3DSecure" and not "Secure3D" that use
         // for valid class, method and variable names.
-        $Secure3D = Helper::structureGet($data, '3DSecure', null);
+        $Secure3D = Helper::dataGet($data, '3DSecure', null);
 
         if ($Secure3D instanceof Secure3DResponse) {
             // A 3DSecure object has already been put together.
@@ -68,17 +68,17 @@ class Transaction extends AbstractResponse
             // TODO: Exception.
         }
 
-        $this->transactionId = Helper::structureGet($data, 'transactionId', null);
-        $this->transactionType = Helper::structureGet($data, 'transactionType', null);
-        $this->status = Helper::structureGet($data, 'status', null);
-        $this->statusCode = Helper::structureGet($data, 'statusCode', null);
-        $this->statusDetail = Helper::structureGet($data, 'statusDetail', null);
-        $this->retrievalReference = Helper::structureGet($data, 'retrievalReference', null);
-        $this->bankResponseCode = Helper::structureGet($data, 'bankResponseCode', null);
-        $this->bankAuthorisationCode = Helper::structureGet($data, 'bankAuthorisationCode', null);
-        $this->Secure3D = $Secure3D;
-        $this->acsUrl = Helper::structureGet($data, 'acsUrl', null);
-        $this->paReq = Helper::structureGet($data, 'paReq', null);
+        $this->transactionId            = Helper::dataGet($data, 'transactionId', null);
+        $this->transactionType          = Helper::dataGet($data, 'transactionType', null);
+        $this->status                   = Helper::dataGet($data, 'status', null);
+        $this->statusCode               = Helper::dataGet($data, 'statusCode', null);
+        $this->statusDetail             = Helper::dataGet($data, 'statusDetail', null);
+        $this->retrievalReference       = Helper::dataGet($data, 'retrievalReference', null);
+        $this->bankResponseCode         = Helper::dataGet($data, 'bankResponseCode', null);
+        $this->bankAuthorisationCode    = Helper::dataGet($data, 'bankAuthorisationCode', null);
+        $this->Secure3D                 = $Secure3D;
+        $this->acsUrl                   = Helper::dataGet($data, 'acsUrl', null);
+        $this->paReq                    = Helper::dataGet($data, 'paReq', null);
 
         return $this;
     }

@@ -30,9 +30,9 @@ class SessionKey extends AbstractResponse
     {
         $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
 
-        $this->merchantSessionKey = Helper::structureGet($data, 'merchantSessionKey');
+        $this->merchantSessionKey = Helper::dataGet($data, 'merchantSessionKey');
 
-        $expiry = Helper::structureGet($data, 'expiry');
+        $expiry = Helper::dataGet($data, 'expiry');
 
         if (isset($expiry)) {
             $this->expiry = Helper::parseDateTime($expiry);

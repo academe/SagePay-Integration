@@ -107,16 +107,16 @@ class Error
             return $data;
         }
 
-        $code = Helper::structureGet($data, 'code',
-            Helper::structureGet($data, 'statusCode', $httpCode)
+        $code = Helper::dataGet($data, 'code',
+            Helper::dataGet($data, 'statusCode', $httpCode)
         );
 
-        $description = Helper::structureGet($data, 'description',
-            Helper::structureGet($data, 'statusDetail', null)
+        $description = Helper::dataGet($data, 'description',
+            Helper::dataGet($data, 'statusDetail', null)
         );
 
-        $property = Helper::structureGet($data, 'property', null);
-        $clientMessage = Helper::structureGet($data, 'clientMessage', null);
+        $property = Helper::dataGet($data, 'property', null);
+        $clientMessage = Helper::dataGet($data, 'clientMessage', null);
 
         return new static($code, $description, $property, $clientMessage, $httpCode);
     }

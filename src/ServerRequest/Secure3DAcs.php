@@ -17,7 +17,7 @@ class Secure3DAcs extends AbstractServerRequest
     protected $MD;
 
     /**
-     * @param $message ServerRequestInterface The 3DSecure resource callback from Sage Pay.
+     * @param ServerRequestInterface  $message The 3DSecure resource callback from Sage Pay.
      */
     public function __construct(ServerRequestInterface $message = null) {
         if (isset($message)) {
@@ -26,13 +26,13 @@ class Secure3DAcs extends AbstractServerRequest
     }
 
     /**
-     * @param $data array|object The 3DSecure resource callback from Sage Pay; $_POST will work here.
+     * @param array|object $data The 3DSecure resource callback from Sage Pay; $_POST will work here.
      * @return $this
      */
     protected function setData($data)
     {
-        $this->PaRes = Helper::structureGet($data, 'PaRes', null);
-        $this->MD = Helper::structureGet($data, 'MD', null);
+        $this->PaRes = Helper::dataGet($data, 'PaRes', null);
+        $this->MD = Helper::dataGet($data, 'MD', null);
         return $this;
     }
 

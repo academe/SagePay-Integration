@@ -36,9 +36,9 @@ class CardIdentifier extends AbstractResponse
     {
         $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
 
-        $this->cardIdentifier = Helper::structureGet($data, 'cardIdentifier', null);
-        $this->expiry = Helper::parseDateTime(Helper::structureGet($data, 'expiry', null));
-        $this->cardType = Helper::structureGet($data, 'cardType', null);
+        $this->cardIdentifier = Helper::dataGet($data, 'cardIdentifier', null);
+        $this->expiry = Helper::parseDateTime(Helper::dataGet($data, 'expiry', null));
+        $this->cardType = Helper::dataGet($data, 'cardType', null);
 
         return $this;
     }
