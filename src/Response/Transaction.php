@@ -255,6 +255,7 @@ class Transaction extends AbstractResponse
                 'paReq' => $this->paReq,
             ];
         } else {
+            // Assumed AbstractRequest::TRANSACTION_TYPE_REPEAT for now.
             return [
                 'transactionId' => $this->transactionId,
                 'transactionType' => $this->transactionType,
