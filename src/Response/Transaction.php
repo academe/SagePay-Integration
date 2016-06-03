@@ -11,6 +11,7 @@
 
 use Academe\SagePay\Psr7\Helper;
 use Psr\Http\Message\ResponseInterface;
+use Academe\SagePay\Psr7\Request\AbstractRequest;
 
 class Transaction extends AbstractResponse
 {
@@ -66,8 +67,7 @@ class Transaction extends AbstractResponse
             // Create a 3DSecure object from the array data.
             $Secure3D = Secure3DResponse::fromData($data);
         } elseif (is_null($Secure3D)) {
-            // No 3D Secure object; the 3D Secure part of the transactino is
-            // not yet complete.
+            // No 3D Secure object. Not all transaction types involve 3D Secure.
         } else {
             // Don't know how to handle this data.
             // TODO: Exception.
@@ -240,18 +240,30 @@ class Transaction extends AbstractResponse
      */
     public function jsonSerialize()
     {
-        return [
-            'transactionId' => $this->transactionId,
-            'transactionType' => $this->transactionType,
-            'status' => $this->status,
-            'statusCode' => $this->statusCode,
-            'statusDetail' => $this->statusDetail,
-            'retrievalReference' => $this->retrievalReference,
-            'bankResponseCode' => $this->bankResponseCode,
-            'bankAuthorisationCode' => $this->bankAuthorisationCode,
-            'Secure3D' => $this->Secure3D,
-            'acsUrl' => $this->acsUrl,
-            'paReq' => $this->paReq,
-        ];
+        if ($this->transactionType == AbstractRequest::TRANSACTION_TYPE_PAYMENT) {
+            return [
+                'transactionId' => $this->transactionId,
+                'transactionType' => $this->transactionType,
+                'status' => $this->status,
+                'statusCode' => $this->statusCode,
+                'statusDetail' => $this->statusDetail,
+                'retrievalReference' => $this->retrievalReference,
+                'bankResponseCode' => $this->bankResponseCode,
+                'bankAuthorisationCode' => $this->bankAuthorisationCode,
+                'Secure3D' => $this->Secure3D,
+                'acsUrl' => $this->acsUrl,
+                'paReq' => $this->paReq,
+            ];
+        } else {
+            return [
+                'transactionId' => $this->transactionId,
+                'transactionType' => $this->transactionType,
+                'status' => $this->status,
+                'statusCode' => $this->statusCode,
+                'statusDetail' => $this->statusDetail,
+                'retrievalReference' => $this->retrievalReference,
+                'bankAuthorisationCode' => $this->bankAuthorisationCode,
+            ];
+        }
     }
 }

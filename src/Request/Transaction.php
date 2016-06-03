@@ -1,7 +1,7 @@
 <?php namespace Academe\SagePay\Psr7\Request;
 
 /**
- * The transaction value object to send a transaction to SagePay.
+ * The transaction value object to send a transaction to Sage Pay.
  * See https://test.sagepay.com/documentation/#transactions
  */
 
@@ -11,7 +11,6 @@ use Academe\SagePay\Psr7\Model\Auth;
 use Academe\SagePay\Psr7\PaymentMethod\PaymentMethodInterface;
 use Academe\SagePay\Psr7\Money\AmountInterface;
 use Academe\SagePay\Psr7\Model\AddressInterface;
-use Academe\SagePay\Psr7\Model\ShippingDetails;
 use Academe\SagePay\Psr7\Model\PersonInterface;
 
 class Transaction extends AbstractRequest
@@ -56,8 +55,6 @@ class Transaction extends AbstractRequest
      * Valid values for enumerated input types.
      */
 
-    const TRANSACTION_TYPE_PAYMENT                  = 'Payment';
-
     const ENTRY_METHOD_ECOMMERCE                    = 'Ecommerce';
     const ENTRY_METHOD_MAILORDER                    = 'MailOrder';
     const ENTRY_METHOD_TELEPHONEORDER               = 'TelephoneOrder';
@@ -80,16 +77,16 @@ class Transaction extends AbstractRequest
      * Transaction constructor.
      * @param Endpoint $endpoint
      * @param Auth $auth
-     * @param $transactionType
+     * @param string $transactionType
      * @param PaymentMethodInterface $paymentMethod
-     * @param $vendorTxCode
+     * @param string $vendorTxCode
      * @param AmountInterface $amount
-     * @param $description
+     * @param string $description
      * @param AddressInterface $billingAddress
      * @param PersonInterface $customer
      * @param AddressInterface|null $shippingAddress
      * @param PersonInterface|null $shippingRecipient
-     * @param array $options
+     * @param array $options Optional transaction options
      */
     public function __construct(
         Endpoint $endpoint,
@@ -173,7 +170,7 @@ class Transaction extends AbstractRequest
      * @param $recurringIndicator
      * @return $this
      */
-    public function setRecurringIndicator($recurringIndicator)
+    protected function setRecurringIndicator($recurringIndicator)
     {
         // Get the value from the class constants.
         $value = $this->constantValue('RECURRING_INDICATOR', $recurringIndicator);
@@ -197,7 +194,7 @@ class Transaction extends AbstractRequest
     public function withRecurringIndicator($recurringIndicator)
     {
         $copy = clone $this;
-        return $copy->withRecurringIndicator($recurringIndicator);
+        return $copy->setRecurringIndicator($recurringIndicator);
     }
 
     /**

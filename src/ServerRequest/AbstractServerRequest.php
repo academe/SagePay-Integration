@@ -24,5 +24,5 @@ abstract class AbstractServerRequest extends AbstractRequest
     /**
      * @param $data
      */
-    protected function setData($data);
+    protected abstract function setData($data);
 }
