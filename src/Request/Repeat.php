@@ -84,7 +84,7 @@ class Repeat extends AbstractRequest
 
     /**
      * @param ShippingRecipient $shippingRecipient
-     * @return Transaction
+     * @return Repeat
      */
     public function withShippingRecipient(ShippingRecipient $shippingRecipient)
     {
@@ -105,7 +105,7 @@ class Repeat extends AbstractRequest
 
     /**
      * @param $description
-     * @return Transaction
+     * @return Repeat
      */
     public function withDescription($description)
     {
@@ -114,8 +114,7 @@ class Repeat extends AbstractRequest
     }
 
     /**
-     * @param $description
-     * @return Transaction
+     * @return string
      */
     public function getDescription()
     {
