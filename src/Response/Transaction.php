@@ -61,11 +61,11 @@ class Transaction extends AbstractResponse
         // for valid class, method and variable names.
         $Secure3D = Helper::dataGet($data, '3DSecure', null);
 
-        if ($Secure3D instanceof Secure3DResponse) {
+        if ($Secure3D instanceof Secure3D) {
             // A 3DSecure object has already been put together.
         } elseif (is_array($Secure3D)) {
             // Create a 3DSecure object from the array data.
-            $Secure3D = Secure3DResponse::fromData($data);
+            $Secure3D = Secure3D::fromData($data);
         } elseif (is_null($Secure3D)) {
             // No 3D Secure object. Not all transaction types involve 3D Secure.
         } else {

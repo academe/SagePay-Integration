@@ -7,6 +7,8 @@
 
 use Exception;
 use UnexpectedValueException;
+use Psr\Http\Message\MessageInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 use DateTime;
 use DateTimeZone;
@@ -89,5 +91,38 @@ abstract class Helper
         }
 
         return $datetime;
+    }
+
+    /**
+     * Parse the body of a PSR-7 message, into a PHP array.
+     *
+     * TODO: use the parsing facilities of the implementation, if available.
+     *
+     * @param $message MessageInterface
+     * @return array|mixed
+     */
+    public static function parseBody(MessageInterface $message)
+    {
+        // If a ServerRequest object, then parsing will be handled (and cached if necessary)
+        // by the implementation.
+
+        if ($message instanceof ServerRequestInterface) {
+            return $message->getParsedBody();
+        }
+
+        $data = [];
+
+        if ($message->hasHeader('Content-Type')) {
+            // Sage Pay returns responses generally with JSON, but the notify callback is Form URL
+            // encoded, so we need to parse both.
+
+            if ($message->getHeaderLine('Content-Type') === 'application/x-www-form-urlencoded') {
+                parse_str((string)$message->getBody(), $data);
+            } elseif ($message->getHeaderLine('Content-Type') === 'application/json') {
+                $data = json_decode($message->getBody(), true);
+            }
+        }
+
+        return $data;
     }
 }

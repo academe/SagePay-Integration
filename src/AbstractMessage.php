@@ -2,12 +2,13 @@
 
 namespace Academe\SagePay\Psr7;
 
-use ReflectionClass;
-use Psr\Http\Message\MessageInterface;
-
 /**
  * Shared (Request and Response) abstract message.
  */
+
+use ReflectionClass;
+use Psr\Http\Message\MessageInterface;
+use Academe\SagePay\Psr7\Helper;
 
 abstract class AbstractMessage
 {
@@ -63,19 +64,6 @@ abstract class AbstractMessage
      */
     public function parseBody(MessageInterface $message)
     {
-        $data = [];
-
-        if ($message->hasHeader('Content-Type')) {
-            // Sage Pay returns responses with JSON, but the notify callback is Form URL encoded,
-            // so we need to cater for both.
-
-            if ($message->getHeaderLine('Content-Type') === 'application/x-www-form-urlencoded') {
-                parse_str((string)$message->getBody(), $data);
-            } elseif ($message->getHeaderLine('Content-Type') === 'application/json') {
-                $data = json_decode($message->getBody());
-            }
-        }
-
-        return $data;
+        return Helper::parseBody($message);
     }
 }
