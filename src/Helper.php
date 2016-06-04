@@ -95,8 +95,9 @@ abstract class Helper
 
     /**
      * Parse the body of a PSR-7 message, into a PHP array.
-     *
-     * TODO: use the parsing facilities of the implementation, if available.
+     * TODO: We really need to find a package to do this. It is built into the
+     * Guzzle client as helper methods, but this is not specifically a client
+     * function.
      *
      * @param $message MessageInterface
      * @return array|mixed
@@ -119,7 +120,7 @@ abstract class Helper
             if ($message->getHeaderLine('Content-Type') === 'application/x-www-form-urlencoded') {
                 parse_str((string)$message->getBody(), $data);
             } elseif ($message->getHeaderLine('Content-Type') === 'application/json') {
-                $data = json_decode($message->getBody(), true);
+                $data = json_decode((string)$message->getBody(), true);
             }
         }
 

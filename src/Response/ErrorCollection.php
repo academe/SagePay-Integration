@@ -41,13 +41,13 @@ class ErrorCollection extends AbstractResponse implements \IteratorAggregate
         $errors = Helper::dataGet($data, 'errors', null);
 
         // If there was no "errors" wrapper, then assume what we have is a single error,
-        // provided there is a "code" element at a minimum.
-        if (!isset($errors) && !empty(Helper::dataGet($data, 'code', null))) {
-            $this->add(Error::fromData($data, $this->getHttpCode()));
+        // provided there is a "code" or "statusCode" element at a minimum.
+        if (! isset($errors) && ! empty(Helper::dataGet($data, 'code', Helper::dataGet($data, 'statusCode', null)))) {
+            $this->add(Error::fromData($data, $httpCode));
         } elseif (is_array($errors)) {
             foreach($errors as $error) {
                 // The $error may be an Error object or an array.
-                $this->add(Error::fromData($error, $this->getHttpCode()));
+                $this->add(Error::fromData($error, $httpCode));
             }
         }
 
@@ -56,6 +56,7 @@ class ErrorCollection extends AbstractResponse implements \IteratorAggregate
 
     /**
      * Add a new error to the collection.
+     * This collection is not a value object. Perhaps it should be: withError()?
      *
      * @param Error $item An Error instance to add
      */
