@@ -199,8 +199,10 @@ abstract class AbstractRequest extends AbstractMessage implements JsonSerializab
 
         // If the exception flag is set, then throw an exception if we do not
         // have a factory.
+        // Without the factory we cannot create PSR-7 Requests.
+
         if ($exception && empty($this->factory)) {
-            throw new Exception('No PSR-7 factory has been provided.');
+            throw new Exception('No PSR-7 Request factory has been provided.');
         }
 
         return $this->factory;
