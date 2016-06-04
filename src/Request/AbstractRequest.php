@@ -155,20 +155,20 @@ abstract class AbstractRequest extends AbstractMessage implements JsonSerializab
     }
 
     /**
-     * @param FactoryInterface $factory
+     * @param RequestFactoryInterface $factory
      * @return $this
      */
-    protected function setFactory(FactoryInterface $factory)
+    protected function setFactory(RequestFactoryInterface $factory)
     {
         $this->factory = $factory;
         return $this;
     }
 
     /**
-     * @param FactoryInterface $factory
+     * @param RequestFactoryInterface $factory
      * @return AbstractRequest
      */
-    protected function withFactory(FactoryInterface $factory)
+    protected function withFactory(RequestFactoryInterface $factory)
     {
         $clone = clone $this;
         return $clone->setAuth($factory);

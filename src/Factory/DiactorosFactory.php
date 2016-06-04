@@ -9,7 +9,7 @@ use Psr\Http\Message\UriInterface;
 use Zend\Diactoros\Request;
 use Zend\Diactoros\Stream;
 
-class DiactorosFactory implements FactoryInterface
+class DiactorosFactory implements RequestFactoryInterface
 {
     /**
      * Return a new GuzzleHttp\Psr7\Request object.

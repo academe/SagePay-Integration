@@ -9,7 +9,7 @@ use Psr\Http\Message\UriInterface;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Uri;
 
-class GuzzleFactory implements FactoryInterface
+class GuzzleFactory implements RequestFactoryInterface
 {
     /**
      * Return a new GuzzleHttp\Psr7\Request object.
@@ -44,6 +44,7 @@ class GuzzleFactory implements FactoryInterface
 
     /**
      * Create a PSR-7 UriInterface object.
+     * Experimental.
      * @param string $uri
      * @return Uri
      */
