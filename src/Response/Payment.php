@@ -234,31 +234,18 @@ class Payment extends AbstractResponse
      */
     public function jsonSerialize()
     {
-        if ($this->transactionType == AbstractRequest::TRANSACTION_TYPE_PAYMENT) {
-            return [
-                'transactionId' => $this->transactionId,
-                'transactionType' => $this->transactionType,
-                'status' => $this->status,
-                'statusCode' => $this->statusCode,
-                'statusDetail' => $this->statusDetail,
-                'retrievalReference' => $this->retrievalReference,
-                'bankResponseCode' => $this->bankResponseCode,
-                'bankAuthorisationCode' => $this->bankAuthorisationCode,
-                'Secure3D' => $this->Secure3D,
-                'acsUrl' => $this->acsUrl,
-                'paReq' => $this->paReq,
-            ];
-        } else {
-            // Assumed AbstractRequest::TRANSACTION_TYPE_REPEAT for now.
-            return [
-                'transactionId' => $this->transactionId,
-                'transactionType' => $this->transactionType,
-                'status' => $this->status,
-                'statusCode' => $this->statusCode,
-                'statusDetail' => $this->statusDetail,
-                'retrievalReference' => $this->retrievalReference,
-                'bankAuthorisationCode' => $this->bankAuthorisationCode,
-            ];
-        }
+        return [
+            'transactionId' => $this->transactionId,
+            'transactionType' => $this->transactionType,
+            'status' => $this->status,
+            'statusCode' => $this->statusCode,
+            'statusDetail' => $this->statusDetail,
+            'retrievalReference' => $this->retrievalReference,
+            'bankResponseCode' => $this->bankResponseCode,
+            'bankAuthorisationCode' => $this->bankAuthorisationCode,
+            'Secure3D' => $this->Secure3D,
+            'acsUrl' => $this->acsUrl,
+            'paReq' => $this->paReq,
+        ];
     }
 }

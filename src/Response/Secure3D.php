@@ -43,6 +43,8 @@ class Secure3D extends AbstractResponse
 
     /**
      * Set properties from an array or object of values.
+     * CHECKME: should this be 3DSecure.status?
+     *
      * @param $data
      * @param null|string $httpCode
      * @return $this
