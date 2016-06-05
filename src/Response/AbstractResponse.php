@@ -96,6 +96,8 @@ abstract class AbstractResponse extends AbstractMessage implements Http, RFC4918
 
     /**
      * Set the usual three status fields from body data.
+     * @param array $data The response message body data.
+     * @return null
      */
     protected function setStatuses($data)
     {
