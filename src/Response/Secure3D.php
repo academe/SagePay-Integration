@@ -57,12 +57,4 @@ class Secure3D extends AbstractResponse
         $this->status = Helper::dataGet($data, '3DSecure.status', null);
         return $this;
     }
-
-    /**
-     * @return string The status of the 3DSecure result
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
 }

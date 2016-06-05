@@ -33,6 +33,13 @@ abstract class AbstractResponse extends AbstractMessage implements Http, RFC4918
     protected $httpCode;
 
     /**
+     * The status, statusCode and statusReason are used in most response messages.
+     */
+    protected $status;
+    protected $statusCode;
+    protected $statusDetail;
+
+    /**
      * @return integer The HTTP status code for the response.
      */
     public function getHttpCode()
@@ -85,6 +92,49 @@ abstract class AbstractResponse extends AbstractMessage implements Http, RFC4918
         }
 
         return null;
+    }
+
+    /**
+     * Set the usual three status fields from body data.
+     */
+    protected function setStatuses($data)
+    {
+        $this->status       = Helper::dataGet($data, 'status', null);
+        $this->statusCode   = Helper::dataGet($data, 'statusCode', null);
+        $this->statusDetail = Helper::dataGet($data, 'statusDetail', null);
+    }
+
+    /**
+     * There is a status (e.g. Ok), a statusCode (e.g. 2007), and a statusDetail (e.g. Transaction authorised).
+     * Also there is a HTTP return code (e.g. 202). All are needed in different contexts.
+     * However, there is a hint that the "status" may be removed, relying on the HTTP return code instead.
+     * @return string The overall status string of the transaction.
+     */
+    public function getStatus()
+    {
+        // Enforce the correct capitalisation.
+
+        $statusValue = $this->constantValue('STATUS', $this->status);
+
+        return ! empty($statusValue) ? $statusValue : $this->status;
+    }
+
+    /**
+     * @return string The numeric code that represents the status detail.
+     */
+    public function getStatusCode()
+    {
+        return $this->statusCode;
+    }
+
+    /**
+     * This message in some range of codes can be presented to the end user.
+     * In other ranges of codes it should only ever be logged fot the site administrator.
+     * @return string The detailed status message.
+     */
+    public function getStatusDetail()
+    {
+        return $this->statusDetail;
     }
 
     /**
