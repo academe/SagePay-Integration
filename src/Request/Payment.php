@@ -27,7 +27,7 @@ class Payment extends AbstractRequest
     protected $billingAddress;
     protected $customer;
 
-    // Optional or overridable data (setters).
+    // Optional or overridable data.
     protected $entryMethod;
     protected $recurringIndicator;
     protected $giftAid = false;

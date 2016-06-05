@@ -14,6 +14,7 @@ use Psr\Http\Message\ResponseInterface;
 use Academe\SagePay\Psr7\Helper;
 use Academe\SagePay\Psr7\Response;
 use Academe\SagePay\Psr7\Request\AbstractRequest;
+use Academe\SagePay\Psr7\Response\AbstractResponse;
 
 class ResponseFactory
 {
@@ -56,6 +57,16 @@ class ResponseFactory
         // Session key
         if (Helper::dataGet($data, 'merchantSessionKey') && Helper::dataGet($data, 'expiry')) {
             return new Response\SessionKey($response);
+        }
+
+        // 3D Secure response.
+        if (Helper::dataGet($data, '3DSecure.status')) {
+            return new Response\Secure3D($response);
+        }
+
+        // A 3D Secure redirect is required.
+        if (Helper::dataGet($data, 'statusCode') == '2007' && Helper::dataGet($data, 'status') == AbstractResponse::STATUS_3DAUTH) {
+            return new Response\Secure3DRedirect($response);
         }
 
         return $data;

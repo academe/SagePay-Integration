@@ -43,7 +43,9 @@ class Secure3D extends AbstractResponse
 
     /**
      * Set properties from an array or object of values.
-     * CHECKME: should this be 3DSecure.status?
+     * This response will be returned either embedded into a Payment (if 3DSecure is not
+     * enabled, or a Payment is being fetched from storage) or on its own in response to
+     * sending the paRes to Sage Pay.
      *
      * @param $data
      * @param null|string $httpCode
@@ -52,7 +54,7 @@ class Secure3D extends AbstractResponse
     protected function setData($data, $httpCode = null)
     {
         $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
-        $this->status = Helper::dataGet($data, 'status', null);
+        $this->status = Helper::dataGet($data, '3DSecure.status', null);
         return $this;
     }
 
