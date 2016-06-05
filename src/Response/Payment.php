@@ -148,6 +148,18 @@ class Payment extends AbstractResponse
     }
 
     /**
+     * Determine whether the response data looks like this kind of message.
+     *
+     * @param array $data Response message body data.
+     * @return boolean True if the data matches this kind of response.
+     */
+    public static function isResponse(array $data)
+    {
+        return Helper::dataGet($data, 'transactionId')
+            && Helper::dataGet($data, 'transactionType') == AbstractRequest::TRANSACTION_TYPE_PAYMENT;
+    }
+
+    /**
      * Convenient serialisation for logging and debugging.
      * @return array
      */

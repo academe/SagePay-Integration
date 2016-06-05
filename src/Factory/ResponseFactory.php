@@ -45,7 +45,7 @@ class ResponseFactory
         }
 
         // A payment.
-        if (Helper::dataGet($data, 'transactionId') && Helper::dataGet($data, 'transactionType') == AbstractRequest::TRANSACTION_TYPE_PAYMENT) {
+        if (Response\Payment::isResponse($data)) {
             return new Response\Payment($response);
         }
 
