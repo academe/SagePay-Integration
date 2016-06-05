@@ -53,6 +53,11 @@ class ResponseFactory
             return new Response\Transaction($response);
         }
 
+        // Session key
+        if (Helper::dataGet($data, 'merchantSessionKey') && Helper::dataGet($data, 'expiry')) {
+            return new Response\SessionKey($response);
+        }
+
         return $data;
     }
 }
