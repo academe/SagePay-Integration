@@ -17,6 +17,17 @@ use Teapot\StatusCode\RFC\RFC4918;
 abstract class AbstractResponse extends AbstractMessage implements Http, RFC4918, JsonSerializable
 {
     /**
+     * Transaction status from Sage Pay.
+     */
+    const STATUS_OK         = 'Ok';
+    const STATUS_NOTAUTHED  = 'NotAuthed';
+    const STATUS_REJECTED   = 'Rejected';
+    const STATUS_3DAUTH     = '3DAuth';
+    const STATUS_MALFORMED  = 'Malformed';
+    const STATUS_INVALID    = 'Invalid';
+    const STATUS_ERROR      = 'Error';
+
+    /**
      * @var integer The HTTP response code.
      */
     protected $httpCode;

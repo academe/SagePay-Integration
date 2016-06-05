@@ -45,12 +45,12 @@ class ResponseFactory
 
         // A payment.
         if (Helper::dataGet($data, 'transactionId') && Helper::dataGet($data, 'transactionType') == AbstractRequest::TRANSACTION_TYPE_PAYMENT) {
-            return new Response\Transaction($response);
+            return new Response\Payment($response);
         }
 
         // A repeat payment.
         if (Helper::dataGet($data, 'transactionId') && Helper::dataGet($data, 'transactionType') == AbstractRequest::TRANSACTION_TYPE_REPEAT) {
-            return new Response\Transaction($response);
+            return new Response\Repeat($response);
         }
 
         // Session key
