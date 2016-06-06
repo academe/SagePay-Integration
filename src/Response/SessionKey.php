@@ -122,6 +122,15 @@ class SessionKey extends AbstractResponse
     }
 
     /**
+     * @inheritdoc
+     */
+    public static function isResponse(array $data)
+    {
+        return !empty(Helper::dataGet($data, 'merchantSessionKey'))
+            && !empty(Helper::dataGet($data, 'expiry'));
+    }
+
+    /**
      * Handy serialisation.
      */
     public function jsonSerialize()

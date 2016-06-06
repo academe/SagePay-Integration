@@ -167,4 +167,42 @@ abstract class AbstractResponse extends AbstractMessage implements Http, RFC4918
         $instance = new static();
         return $instance->setData($data, $httpCode);
     }
+
+    /**
+     * Determine whether the response data looks like this kind of message.
+     *
+     * @param array $data Response message body data.
+     * @return boolean True if the data matches this kind of response.
+     */
+    public static function isResponse(array $data)
+    {
+        return false;
+    }
+
+    /**
+     * Indicate whether the response is an error or not.
+     * @return boolean True if the response is an error collection.
+     */
+    public function isError()
+    {
+        return false;
+    }
+
+    /**
+     * Indicate whether the response is a 3D Secure redirect.
+     * @return boolean True if the response is a Secure3DRedirect.
+     */
+    public function isRedirect()
+    {
+        return false;
+    }
+
+    /**
+     * Indicate whether the authorisation or 3D Secure password was successful.
+     * @return boolean True if the response is a successful (in context) transaction result.
+     */
+    public function isSuccess()
+    {
+        return false;
+    }
 }

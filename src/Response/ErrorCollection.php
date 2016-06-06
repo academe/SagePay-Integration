@@ -27,6 +27,8 @@ class ErrorCollection extends AbstractResponse implements \IteratorAggregate
         if (isset($message)) {
             $data = $this->parseBody($message);
             $this->setData($data, $message->getStatusCode());
+
+            $this->setHttpCode($message->getStatusCode());
         }
     }
 
@@ -141,5 +143,23 @@ class ErrorCollection extends AbstractResponse implements \IteratorAggregate
     public function all()
     {
         return $this->items;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function isResponse(array $data)
+    {
+        return is_array(Helper::dataGet($data, 'errors'))
+            || Helper::dataGet($data, 'status') == 'Error'
+            || Helper::dataGet($data, 'status') == 'Invalid';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function isError()
+    {
+        return true;
     }
 }

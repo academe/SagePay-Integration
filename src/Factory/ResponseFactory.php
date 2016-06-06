@@ -20,27 +20,28 @@ class ResponseFactory
 {
     /**
      * Parse a PSR-7 Response message.
+     * TODO: handle 500+ errors.
      */
     public static function parse(ResponseInterface $response)
     {
+        // Decoding the body, as that is where all the details will be.
+        $data = Helper::parseBody($response);
+
         // Get the overall HTTP status.
         $http_code = $response->getStatusCode();
         $http_reason = $response->getReasonPhrase();
 
-        // Decoding the body, as that is where all the details will be.
-        $data = Helper::parseBody($response);
-
         // A HTTP error code.
         // Some errors may come from Sage Pay. Some may involve not being
         // able to contact Sage Pay at all.
-        if ($http_code >= 400 && $http_code < 500) {
-            // 4xx errors.
+        if ($http_code >= 400 || Response\ErrorCollection::isResponse($data)) {
+            // 4xx and 5xx errors.
             // Return an error collection.
             return new Response\ErrorCollection($response);
         }
 
         // A card identifier message.
-        if (Helper::dataGet($data, 'cardIdentifier')) {
+        if (Response\CardIdentifier::isResponse($data)) {
             return new Response\CardIdentifier($response);
         }
 
@@ -50,22 +51,22 @@ class ResponseFactory
         }
 
         // A repeat payment.
-        if (Helper::dataGet($data, 'transactionId') && Helper::dataGet($data, 'transactionType') == AbstractRequest::TRANSACTION_TYPE_REPEAT) {
+        if (Response\Repeat::isResponse($data)) {
             return new Response\Repeat($response);
         }
 
         // Session key
-        if (Helper::dataGet($data, 'merchantSessionKey') && Helper::dataGet($data, 'expiry')) {
+        if (Response\SessionKey::isResponse($data)) {
             return new Response\SessionKey($response);
         }
 
         // 3D Secure response.
-        if (Helper::dataGet($data, '3DSecure.status')) {
+        if (Response\Secure3D::isResponse($data)) {
             return new Response\Secure3D($response);
         }
 
         // A 3D Secure redirect is required.
-        if (Helper::dataGet($data, 'statusCode') == '2007' && Helper::dataGet($data, 'status') == AbstractResponse::STATUS_3DAUTH) {
+        if (Response\Secure3DRedirect::isResponse($data)) {
             return new Response\Secure3DRedirect($response);
         }
 

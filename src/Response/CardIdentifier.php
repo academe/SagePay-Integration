@@ -95,6 +95,14 @@ class CardIdentifier extends AbstractResponse
     }
 
     /**
+     * @inheritdoc
+     */
+    public static function isResponse(array $data)
+    {
+        return !empty(Helper::dataGet($data, 'cardIdentifier'));
+    }
+
+    /**
      * Reduce the object to an array so it can be serialised.
      * @return array
      */

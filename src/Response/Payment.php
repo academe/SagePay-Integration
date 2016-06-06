@@ -155,8 +155,16 @@ class Payment extends AbstractResponse
      */
     public static function isResponse(array $data)
     {
-        return Helper::dataGet($data, 'transactionId')
+        return !empty(Helper::dataGet($data, 'transactionId'))
             && Helper::dataGet($data, 'transactionType') == AbstractRequest::TRANSACTION_TYPE_PAYMENT;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function isSuccess()
+    {
+        return $this->getStatus() == static::STATUS_OK;
     }
 
     /**

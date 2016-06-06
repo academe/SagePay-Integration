@@ -92,6 +92,15 @@ class Repeat extends AbstractResponse
     }
 
     /**
+     * @inheritdoc
+     */
+    public static function isResponse(array $data)
+    {
+        return !empty(Helper::dataGet($data, 'transactionId'))
+            && Helper::dataGet($data, 'transactionType') == AbstractRequest::TRANSACTION_TYPE_REPEAT;
+    }
+
+    /**
      * Convenient serialisation for logging and debugging.
      * @return array
      */

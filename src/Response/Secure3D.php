@@ -19,7 +19,8 @@ class Secure3D extends AbstractResponse
     protected $status;
 
     /**
-     * List of statuses that the 3DSecure object can return
+     * List of statuses that the 3DSecure object can return.
+     * TODO: better less-generic prefix needed.
      */
     const STATUS_AUTHENTICATED = 'Authenticated';
     const STATUS_FORCE = 'Force';
@@ -56,5 +57,22 @@ class Secure3D extends AbstractResponse
         $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
         $this->status = Helper::dataGet($data, '3DSecure.status', null);
         return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function isResponse(array $data)
+    {
+        return !empty(Helper::dataGet($data, '3DSecure.status'));
+    }
+
+    /**
+     * @inheritdoc
+     * CHECKME: any other statuses considered sucessful?
+     */
+    public function isSuccess()
+    {
+        return $this->getStatus() == static::STATUS_AUTHENTICATED;
     }
 }
