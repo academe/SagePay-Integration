@@ -122,13 +122,23 @@ class Endpoint
     }
 
     /**
-     * Get the URL of sagepay.js - the card token generator for the front end.
+     * Get the URL for sagepay.js - the card token generator for the front end.
      *
      * @return string The URL to the JavaScript front end resource on the Sage Pay gateway
      */
     public function getJavascriptUrl()
     {
         return $this->getUrl(['js', 'sagepay.js']);
+    }
+
+    /**
+     * Get the URL for sagepay-dropin.js - the drop-in form handler for the front end.
+     *
+     * @return string The URL to the JavaScript front end resource on the Sage Pay gateway
+     */
+    public function getDropinJavascriptUrl()
+    {
+        return $this->getUrl(['js', 'sagepay-dropin.js']);
     }
 
     /**
