@@ -1,7 +1,7 @@
-# Sage Pay Integration PSR-7 Messages
+# Sage Pay Integration PSR-7 Message REST API Library
 
-This package provides the data models and business logic for the *Sage Pay Integration* payment gateway
-(sometimes called the `Pi` API).
+This package provides the data models and business logic for the [Sage Pay Integration](https://test.sagepay.com/documentation/) payment gateway
+(sometimes called the `Pi` or `REST` API).
 It does not provide the transport mechanism (at thisstage), so you can use what you like for that,
 for example Guzzle, curl or a PSR-7 library.
 
