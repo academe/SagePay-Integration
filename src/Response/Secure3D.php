@@ -13,12 +13,6 @@ use Psr\Http\Message\ResponseInterface;
 class Secure3D extends AbstractResponse
 {
     /**
-     * The acsUrl and paReq should NEVER be stored in the database.
-     * @var
-     */
-    protected $status;
-
-    /**
      * List of statuses that the 3DSecure object can return.
      * TODO: better less-generic prefix needed.
      */

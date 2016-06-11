@@ -38,6 +38,7 @@ class Repeat extends AbstractResponse
      * @param $data
      * @param $httpCode
      * @return $this
+     * TODO: paymentMethod is returned with this response.
      */
     protected function setData($data, $httpCode)
     {

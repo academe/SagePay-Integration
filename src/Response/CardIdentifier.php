@@ -63,6 +63,7 @@ class CardIdentifier extends AbstractResponse
     }
 
     /**
+     * The expiry timestamp of the card identifier resource, not the expiry date of the card.
      * @return mixed
      */
     public function getExpiry()

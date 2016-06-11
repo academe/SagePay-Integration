@@ -1,7 +1,7 @@
 <?php namespace Academe\SagePay\Psr7\Request;
 
 /**
- * Request the result of a transaction, stored on Sage Pay.
+ * Request the result of a transaction, stored on Sage Pay servers.
  * See "Retrieve and Transaction" https://test.sagepay.com/documentation/#transactions
  */
 

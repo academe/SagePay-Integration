@@ -21,6 +21,12 @@ class ResponseFactory
     /**
      * Parse a PSR-7 Response message.
      * TODO: handle 500+ errors.
+     * TODO: as a response can contain multiple messages combined into one (e.g. a payment method,
+     * a payment result and a 3D Secure result) then a method would be helpful to list all the
+     * responses that have been detected, then parse can take a parameter to limit its parsing
+     * to just one of those messages if needed. However, parsing of some messages (e.g. Payment)
+     * will recursively parse out other messages it contains anyway. It is almost like they
+     * shoul be namespaced, since they are all overlapping.
      */
     public static function parse(ResponseInterface $response)
     {
@@ -61,8 +67,19 @@ class ResponseFactory
         }
 
         // 3D Secure response.
+        // This is a 3D Secure response *on its own*. They also appear
+        // embedded in a Payment, and so need to be pulled out separately
+        // from there.
         if (Response\Secure3D::isResponse($data)) {
             return new Response\Secure3D($response);
+        }
+
+        // PaymentMethod response.
+        // This is a PaymentMethod response *on its own*. They also appear
+        // embedded in a Payment, and so need to be pulled out separately
+        // from there.
+        if (Response\PaymentMethod::isResponse($data)) {
+            return new Response\PaymentMethod($response);
         }
 
         // A 3D Secure redirect is required.
