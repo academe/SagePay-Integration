@@ -45,7 +45,7 @@ class Secure3D extends AbstractResponse
      */
     public function getResult()
     {
-        return $this->status3D;
+        return $this->result;
     }
 
     /**
