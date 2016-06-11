@@ -29,13 +29,10 @@ class CardIdentifier extends AbstractResponse
 
     /**
      * @param array|object $data The parsed data sent or returned by Saeg Pay.
-     * @param $httpCode
      * @return $this
      */
-    protected function setData($data, $httpCode)
+    protected function setData($data)
     {
-        $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
-
         $this->cardIdentifier = Helper::dataGet($data, 'cardIdentifier', null);
         $this->expiry = Helper::parseDateTime(Helper::dataGet($data, 'expiry', null));
         $this->cardType = Helper::dataGet($data, 'cardType', null);
@@ -110,10 +107,10 @@ class CardIdentifier extends AbstractResponse
     public function jsonSerialize()
     {
         return [
+            'httpCode' => $this->getHttpCode(),
             'cardIdentifier' => $this->cardIdentifier,
             'expiry' => $this->expiry->format(Helper::SAGEPAY_DATE_FORMAT),
             'cardType' => $this->cardType,
-            'httpCode' => $this->httpCode,
         ];
     }
 }

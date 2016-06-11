@@ -22,35 +22,25 @@ class Repeat extends AbstractResponse
     protected $bankResponseCode;
     protected $bankAuthorisationCode;
 
-    /**
-     * @param ResponseInterface $message
-     * @internal param array|object|ResponseInterface $data
-     */
-    public function __construct(ResponseInterface $message = null)
-    {
-        if (isset($message)) {
-            $data = $this->parseBody($message);
-            $this->setData($data, $message->getStatusCode());
-        }
-    }
+    protected $paymentMethod;
 
     /**
      * @param $data
-     * @param $httpCode
      * @return $this
      * TODO: paymentMethod is returned with this response.
      */
-    protected function setData($data, $httpCode)
+    protected function setData($data)
     {
-        $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
-
         $this->transactionId            = Helper::dataGet($data, 'transactionId', null);
         $this->transactionType          = Helper::dataGet($data, 'transactionType', null);
 
-        $this->setStatuses($data);
-
         $this->retrievalReference       = Helper::dataGet($data, 'retrievalReference', null);
         $this->bankAuthorisationCode    = Helper::dataGet($data, 'bankAuthorisationCode', null);
+
+        if (PaymentMethod::isResponse($data)) {
+            // Create a PaymentMethod object from the array data.
+            $this->paymentMethod = PaymentMethod::fromData($data, $this->getHttpCode());
+        }
 
         return $this;
     }
@@ -93,6 +83,14 @@ class Repeat extends AbstractResponse
     }
 
     /**
+     * @return PaymentMethod|null The payment method object, if available.
+     */
+    public function getPaymentMethod()
+    {
+        return $this->paymentMethod;
+    }
+
+    /**
      * @inheritdoc
      */
     public static function isResponse(array $data)
@@ -107,14 +105,18 @@ class Repeat extends AbstractResponse
      */
     public function jsonSerialize()
     {
-        return [
-            'transactionId' => $this->transactionId,
-            'transactionType' => $this->transactionType,
-            'status' => $this->status,
-            'statusCode' => $this->statusCode,
-            'statusDetail' => $this->statusDetail,
-            'retrievalReference' => $this->retrievalReference,
-            'bankAuthorisationCode' => $this->bankAuthorisationCode,
-        ];
+        $return = parent::jsonSerialize();
+
+        $return['transactionId'] = $this->transactionId;
+        $return['transactionType'] = $this->transactionType;
+
+        $return['retrievalReference'] = $this->retrievalReference;
+        $return['bankAuthorisationCode'] = $this->bankAuthorisationCode;
+
+        if ($paymentMethod = $this->getPaymentMethod()) {
+            $return['paymentMethod'] = $paymentMethod;
+        }
+
+        return $return;
     }
 }

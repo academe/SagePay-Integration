@@ -29,28 +29,13 @@ class PaymentMethod extends AbstractResponse
     protected $expiryDate;
 
     /**
-     * @param ResponseInterface $message
-     * @internal param array|object $data The PaymentMethod resource from Sage Pay
-     */
-    public function __construct(ResponseInterface $message = null)
-    {
-        if (isset($message)) {
-            $data = $this->parseBody($message);
-            $this->setData($data, $message->getStatusCode());
-        }
-    }
-
-    /**
      * Collect values from the supplied data.
      *
      * @param $data
-     * @param null|string $httpCode
      * @return $this
      */
-    protected function setData($data, $httpCode = null)
+    protected function setData($data)
     {
-        $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
-
         if (Helper::dataGet($data, 'paymentMethod.card', null)) {
             $this->type = 'card';
 
@@ -135,5 +120,24 @@ class PaymentMethod extends AbstractResponse
     public static function isResponse(array $data)
     {
         return !empty(Helper::dataGet($data, 'paymentMethod'));
+    }
+
+    /**
+     * Convenient serialisation for logging and debugging.
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        $return = parent::jsonSerialize();
+
+        $return['paymentType'] = $this->getPaymentType();
+
+        if ($this->getPaymentType() === 'card') {
+            $return['cardType'] = $this->getCardType();
+            $return['lastFourDigits'] = $this->getLastFourDigits();
+            $return['expiryDate'] = $this->getExpiryDate();
+        }
+
+        return $return;
     }
 }

@@ -15,26 +15,11 @@ class SessionKey extends AbstractResponse
     protected $expiry;
 
     /**
-     * $data array|object|string|ResponseInterface
-     * @param ResponseInterface $message
-     */
-    public function __construct(ResponseInterface $message = null)
-    {
-        if (isset($message)) {
-            $data = $this->parseBody($message);
-            $this->setData($data, $message->getStatusCode());
-        }
-    }
-
-    /**
      * @param $data
-     * @param $httpCode
      * @return $this
      */
-    protected function setData($data, $httpCode)
+    protected function setData($data)
     {
-        $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
-
         $this->merchantSessionKey = Helper::dataGet($data, 'merchantSessionKey');
 
         $expiry = Helper::dataGet($data, 'expiry');
@@ -131,12 +116,14 @@ class SessionKey extends AbstractResponse
     }
 
     /**
-     * Handy serialisation.
+     * Reduce the object to an array so it can be serialised.
+     * @return array
      */
     public function jsonSerialize()
     {
         return [
-            'merchantSessionKey' => $this->merchantSessionKey,
+            'httpCode' => $this->getHttpCode(),
+            'merchantSessionKey' => $this->getMerchantSessionKey(),
             'expiry' => $this->expiry->format(Helper::SAGEPAY_DATE_FORMAT),
         ];
     }

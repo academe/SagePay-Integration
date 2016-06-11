@@ -25,37 +25,22 @@ class Payment extends AbstractResponse
     protected $paymentMethod;
 
     /**
-     * @param ResponseInterface $message
-     * @internal param array|object|ResponseInterface $data
-     */
-    public function __construct(ResponseInterface $message = null)
-    {
-        if (isset($message)) {
-            $data = $this->parseBody($message);
-            $this->setData($data, $message->getStatusCode());
-        }
-    }
-
-    /**
      * @param $data
-     * @param $httpCode
      * @return $this
      */
-    protected function setData($data, $httpCode)
+    protected function setData($data)
     {
         // Check we are not trying to shoehorn in a 3D Secure Redirect
         if (Secure3DRedirect::isResponse($data)) {
             throw new UnexpectedValueException('3DSecure redirect response detected; use Response\Secure3DRedirect class');
         }
 
-        $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
-
         // Note the resource is called "3DSecure" and not "Secure3D" as used
         // for valid class, method and variable names.
 
         if (Secure3D::isResponse($data)) {
             // Create a 3DSecure object from the array data.
-            $this->secure3D = Secure3D::fromData($data, $httpCode);
+            $this->secure3D = Secure3D::fromData($data, $this->getHttpCode());
         } else {
             // Just take whatever was given, if anything.
             $this->secure3D = Helper::dataGet($data, '3DSecure', null);
@@ -63,17 +48,15 @@ class Payment extends AbstractResponse
 
         if (PaymentMethod::isResponse($data)) {
             // Create a PaymentMethod object from the array data.
-            $this->paymentMethod = PaymentMethod::fromData($data, $httpCode);
+            $this->paymentMethod = PaymentMethod::fromData($data, $this->getHttpCode());
         }
 
-        $this->transactionId            = Helper::dataGet($data, 'transactionId', null);
-        $this->transactionType          = Helper::dataGet($data, 'transactionType', null);
+        $this->transactionId = Helper::dataGet($data, 'transactionId', null);
+        $this->transactionType = Helper::dataGet($data, 'transactionType', null);
 
-        $this->setStatuses($data);
-
-        $this->retrievalReference       = Helper::dataGet($data, 'retrievalReference', null);
-        $this->bankResponseCode         = Helper::dataGet($data, 'bankResponseCode', null);
-        $this->bankAuthorisationCode    = Helper::dataGet($data, 'bankAuthorisationCode', null);
+        $this->retrievalReference = Helper::dataGet($data, 'retrievalReference', null);
+        $this->bankResponseCode = Helper::dataGet($data, 'bankResponseCode', null);
+        $this->bankAuthorisationCode = Helper::dataGet($data, 'bankAuthorisationCode', null);
 
         return $this;
     }
@@ -180,16 +163,19 @@ class Payment extends AbstractResponse
      */
     public function jsonSerialize()
     {
-        return [
-            'transactionId' => $this->transactionId,
-            'transactionType' => $this->transactionType,
-            'status' => $this->status,
-            'statusCode' => $this->statusCode,
-            'statusDetail' => $this->statusDetail,
-            'retrievalReference' => $this->retrievalReference,
-            'bankResponseCode' => $this->bankResponseCode,
-            'bankAuthorisationCode' => $this->bankAuthorisationCode,
-            'secure3D' => $this->secure3D,
-        ];
+        $return = parent::jsonSerialize();
+
+        $return['transactionId'] = $this->transactionId;
+        $return['transactionType'] = $this->transactionType;
+        $return['retrievalReference'] = $this->retrievalReference;
+        $return['bankResponseCode'] = $this->bankResponseCode;
+        $return['bankAuthorisationCode'] = $this->bankAuthorisationCode;
+        $return['secure3D'] = $this->secure3D;
+
+        if ($paymentMethod = $this->getPaymentMethod()) {
+            $return['paymentMethod'] = $paymentMethod;
+        }
+
+        return $return;
     }
 }

@@ -14,43 +14,38 @@ class Secure3D extends AbstractResponse
 {
     /**
      * List of statuses that the 3DSecure object can return.
-     * TODO: better less-generic prefix needed.
      */
-    const STATUS_AUTHENTICATED = 'Authenticated';
-    const STATUS_FORCE = 'Force';
-    const STATUS_NOTCHECKED = 'NotChecked';
-    const STATUS_NOTAUTHENTICATED = 'NotAuthenticated';
-    const STATUS_ERROR = 'Error';
-    const STATUS_CARDNOTENROLLED = 'CardNotEnrolled';
-    const STATUS_ISSUERNOTENROLLED = 'IssuerNotEnrolled';
+    const RESULT3D_AUTHENTICATED = 'Authenticated';
+    const RESULT3D_FORCE = 'Force';
+    const RESULT3D_NOTCHECKED = 'NotChecked';
+    const RESULT3D_NOTAUTHENTICATED = 'NotAuthenticated';
+    const RESULT3D_ERROR = 'Error';
+    const RESULT3D_CARDNOTENROLLED = 'CardNotEnrolled';
+    const RESULT3D_ISSUERNOTENROLLED = 'IssuerNotEnrolled';
 
     /**
-     * @param ResponseInterface $message
-     * @internal param array|object $data The 3DSecure resource from Sage Pay
+     * The 3D Secure status, which annoyingly has the same name as the overall
+     * transaction status in the message data, so we will call it "result" to
+     * same some confusion.
      */
-    public function __construct(ResponseInterface $message = null)
+    protected $result;
+
+    /**
+     * @param $data
+     * @return $this
+     */
+    protected function setData($data)
     {
-        if (isset($message)) {
-            $data = $this->parseBody($message);
-            $this->setData($data, $message->getStatusCode());
-        }
+        $this->result = Helper::dataGet($data, '3DSecure.status', null);
+        return $this;
     }
 
     /**
-     * Set properties from an array or object of values.
-     * This response will be returned either embedded into a Payment (if 3DSecure is not
-     * enabled, or a Payment is being fetched from storage) or on its own in response to
-     * sending the paRes to Sage Pay.
-     *
-     * @param $data
-     * @param null|string $httpCode
-     * @return $this
+     * The 3D Secure result.
      */
-    protected function setData($data, $httpCode = null)
+    public function getResult()
     {
-        $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
-        $this->status = Helper::dataGet($data, '3DSecure.status', null);
-        return $this;
+        return $this->status3D;
     }
 
     /**
@@ -67,6 +62,19 @@ class Secure3D extends AbstractResponse
      */
     public function isSuccess()
     {
-        return $this->getStatus() == static::STATUS_AUTHENTICATED;
+        return $this->getStatus() == static::RESULT3D_AUTHENTICATED;
+    }
+
+    /**
+     * Convenient serialisation for logging and debugging.
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        $return = parent::jsonSerialize();
+
+        $return['result'] = $this->getResult();
+
+        return $return;
     }
 }

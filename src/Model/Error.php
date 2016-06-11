@@ -17,18 +17,19 @@
  * as they are not targetted as specific fields.
  */
 
+use JsonSerializable;
 use Academe\SagePay\Psr7\Helper;
 
-class Error
+class Error implements JsonSerializable
 {
     /**
      * @var
      */
+    protected $httpCode;
     protected $code;
     protected $description;
     protected $property;
     protected $clientMessage;
-    protected $httpCode;
 
     /**
      * @param string|int $code The error code supplied by the remote API
@@ -39,11 +40,11 @@ class Error
      */
     public function __construct($code, $description, $property = null, $clientMessage = null, $httpCode = null)
     {
+        $this->httpCode = $httpCode;
         $this->code = $code;
         $this->description = $description;
         $this->property = $property;
         $this->clientMessage = $clientMessage;
-        $this->httpCode = $httpCode;
     }
 
     /**
@@ -148,5 +149,22 @@ class Error
         $clientMessage = Helper::dataGet($data, 'clientMessage', null);
 
         return new static($code, $description, $property, $clientMessage, $httpCode);
+    }
+
+    /**
+     * Reduce the object to an array so it can be serialised.
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        $return = [
+            'httpCode' => $this->getHttpCode(),
+            'code' => $this->getCode(),
+            'description' => $this->getDescription(),
+            'property' => $this->getProperty(),
+            'clientMessage' => $this->getClientMessage(),
+        ];
+
+        return $return;
     }
 }

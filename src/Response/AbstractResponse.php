@@ -40,6 +40,24 @@ abstract class AbstractResponse extends AbstractMessage implements Http, RFC4918
     protected $statusDetail;
 
     /**
+     * This constructor and fromData() are the two instantation points of this class,
+     * and are the only two places where the httpStatus is set, and the Sage Pay statuses
+     * are set.
+     *
+     * @param ResponseInterface $message
+     * @internal param array|object|ResponseInterface $data
+     */
+    public function __construct(ResponseInterface $message = null)
+    {
+        if (isset($message)) {
+            $this->setHttpCode($message->getStatusCode());
+            $data = $this->parseBody($message);
+            $this->setData($data);
+            $this->setStatuses($data);
+        }
+    }
+
+    /**
      * @return integer The HTTP status code for the response.
      */
     public function getHttpCode()
@@ -48,14 +66,13 @@ abstract class AbstractResponse extends AbstractMessage implements Http, RFC4918
     }
 
     /**
-     * @param integer $code The HTTP status code for the response.
+     * Set the httpCode only if not null.
+     * @param integer|null $code The HTTP status code for the response
      */
     protected function setHttpCode($code)
     {
         if (isset($code)) {
             $this->httpCode = (int) $code;
-        } else {
-            $this->httpCode = null;
         }
     }
 
@@ -69,29 +86,6 @@ abstract class AbstractResponse extends AbstractMessage implements Http, RFC4918
         $clone = clone $this;
         $clone->setHttpCode($code);
         return $clone;
-    }
-
-    /**
-     * Extract the http response code from the supplied data or the code provied.
-     * @param $httpCode
-     * @param null $data
-     * @return int|null The HTTP code as an integer.
-     */
-    protected function deriveHttpCode($httpCode, $data = null)
-    {
-        if (isset($httpCode)) {
-            return (int)$httpCode;
-        }
-
-        if (isset($data)) {
-            $code = Helper::dataGet($data, 'httpCode');
-
-            if (isset($code)) {
-                return (int)$code;
-            }
-        }
-
-        return null;
     }
 
     /**
@@ -140,17 +134,18 @@ abstract class AbstractResponse extends AbstractMessage implements Http, RFC4918
     }
 
     /**
-     * Handy serialisation.
-     * Will be overridden in most responses, then this default can be removed from here.
+     * Set properties from an array or object of values.
+     * This response will be returned either embedded into a Payment (if 3DSecure is not
+     * enabled, or a Payment is being fetched from storage) or on its own in response to
+     * sending the paRes to Sage Pay.
+     *
+     * @param $data
+     * @return $this
      */
-    public function jsonSerialize()
-    {
-        return [];
-    }
+    protected abstract function setData($data);
 
     /**
-     * Return an instantiation from the data returned by Sage Pay.
-     * TODO: make setData() an abstract method.
+     * Return an instantiation from the body data returned by Sage Pay.
      *
      * @param string|array|object $data
      * @param null $httpCode
@@ -165,7 +160,12 @@ abstract class AbstractResponse extends AbstractMessage implements Http, RFC4918
         }
 
         $instance = new static();
-        return $instance->setData($data, $httpCode);
+
+        $instance->setHttpCode($httpCode);
+        $instance->setData($data);
+        $instance->setStatuses($data);
+
+        return $instance;
     }
 
     /**
@@ -204,5 +204,23 @@ abstract class AbstractResponse extends AbstractMessage implements Http, RFC4918
     public function isSuccess()
     {
         return false;
+    }
+
+    /**
+     * Convenient serialisation for logging and debugging.
+     * Each response message would extend this where appropriate.
+     *
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        $return = [
+            'httpCode' => $this->getHttpCode(),
+            'status' => $this->getStatus(),
+            'statusCode' => $this->getStatusCode(),
+            'statusDetail' => $this->getStatusDetail(),
+        ];
+
+        return $return;
     }
 }

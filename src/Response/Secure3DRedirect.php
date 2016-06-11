@@ -22,32 +22,14 @@ class Secure3DRedirect extends AbstractResponse
     protected $paReq;
 
     /**
-     * @param ResponseInterface $message
-     * @internal param array|object|ResponseInterface $data
-     */
-    public function __construct(ResponseInterface $message = null)
-    {
-        if (isset($message)) {
-            $data = $this->parseBody($message);
-            $this->setData($data, $message->getStatusCode());
-        }
-    }
-
-    /**
      * @param $data
-     * @param $httpCode
      * @return $this
      */
-    protected function setData($data, $httpCode)
+    protected function setData($data)
     {
-        $this->setHttpCode($this->deriveHttpCode($httpCode, $data));
-
-        $this->transactionId            = Helper::dataGet($data, 'transactionId', null);
-
-        $this->setStatuses($data);
-
-        $this->acsUrl                   = Helper::dataGet($data, 'acsUrl', null);
-        $this->paReq                    = Helper::dataGet($data, 'paReq', null);
+        $this->transactionId = Helper::dataGet($data, 'transactionId', null);
+        $this->acsUrl = Helper::dataGet($data, 'acsUrl', null);
+        $this->paReq = Helper::dataGet($data, 'paReq', null);
 
         return $this;
     }
@@ -121,14 +103,13 @@ class Secure3DRedirect extends AbstractResponse
      */
     public function jsonSerialize()
     {
-        return [
-            'transactionId' => $this->transactionId,
-            'status' => $this->status,
-            'statusCode' => $this->statusCode,
-            'statusDetail' => $this->statusDetail,
-            'acsUrl' => $this->acsUrl,
-            'paReq' => $this->paReq,
-        ];
+        $return = parent::jsonSerialize();
+
+        $return['transactionId'] = $this->transactionId;
+        $return['acsUrl'] = $this->acsUrl;
+        $return['paReq'] = $this->paReq;
+
+        return $return;
     }
 
     /**

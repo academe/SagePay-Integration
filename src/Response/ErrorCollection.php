@@ -19,37 +19,23 @@ class ErrorCollection extends AbstractResponse implements \IteratorAggregate
     protected $items = array();
 
     /**
-     * @param ResponseInterface $message
-     * @internal param array $items Initial array of Error instances
-     */
-    public function __construct(ResponseInterface $message = null)
-    {
-        if (isset($message)) {
-            $data = $this->parseBody($message);
-            $this->setData($data, $message->getStatusCode());
-
-            $this->setHttpCode($message->getStatusCode());
-        }
-    }
-
-    /**
      * @param $data
-     * @param $httpCode
      * @return $this
      */
-    protected function setData($data, $httpCode)
+    protected function setData($data)
     {
         // A list of errors will be provided in a wrapping "errors" element.
         $errors = Helper::dataGet($data, 'errors', null);
 
         // If there was no "errors" wrapper, then assume what we have is a single error,
         // provided there is a "code" or "statusCode" element at a minimum.
+
         if (! isset($errors) && ! empty(Helper::dataGet($data, 'code', Helper::dataGet($data, 'statusCode', null)))) {
-            $this->add(Error::fromData($data, $httpCode));
+            $this->add(Error::fromData($data, $this->getHttpCode()));
         } elseif (is_array($errors)) {
             foreach($errors as $error) {
                 // The $error may be an Error object or an array.
-                $this->add(Error::fromData($error, $httpCode));
+                $this->add(Error::fromData($error, $this->getHttpCode()));
             }
         }
 
@@ -161,5 +147,19 @@ class ErrorCollection extends AbstractResponse implements \IteratorAggregate
     public function isError()
     {
         return true;
+    }
+
+    /**
+     * Reduce the object to an array so it can be serialised.
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        $return = [
+            'httpCode' => $this->getHttpCode(),
+            'errors' => $this->all(),
+        ];
+
+        return $return;
     }
 }
