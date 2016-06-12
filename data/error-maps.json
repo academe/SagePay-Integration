@@ -1,0 +1,746 @@
+[
+    {
+        "Code":3015,
+        "Type":"INVALID",
+        "Message":"The BillingAddress value is too long.",
+        "Explanation":"The BillingAddress field which you have provided is longer than what is allowed. This field can contain up to 200 characters.",
+        "Solution":"You will need to check your code to ensure that you server doesnt send more than 200 characters each time.",
+        "Property":"billingAddress.address1"
+    },
+    {
+        "Code":3028,
+        "Type":"INVALID",
+        "Message":"The BillingAddress is too long.",
+        "Explanation":"The BillingAddress field, if provided, can only contain a maximum of up to 200 characters. If you are providing a value which has more that 200 characters then you will receive this system message.",
+        "Solution":"You will need to ensure that your code is not sending more than 200 characters within this field and that no invalid characters are being sent.",
+        "Property":"billingAddress.address1"
+    },
+    {
+        "Code":3089,
+        "Type":"MALFORMED",
+        "Message":"The BillingAddress is required.",
+        "Explanation":"If you have AVS checking turned on within your Sage Pay account, or have provided a BillingPostCode, you must also provide a BillingAddress field. You will need to ensure that your code is sending the customers cardholder address to where the card is registered in the BillingAddress field.",
+        "Solution":"You will need to check your code to ensure that you are providing us with a Billing Address field confirming the customers cardholder address to where the card is registered. This will be required if you have AVS turned on within your Sage Pay account.",
+        "Property":"billingAddress.address1"
+    },
+    {
+        "Code":3091,
+        "Type":null,
+        "Message":"The BillingAddress and BillingPostCode are required.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"billingAddress.address1"
+    },
+    {
+        "Code":3111,
+        "Type":null,
+        "Message":"The BillingAddress1 field is required.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"billingAddress.address1"
+    },
+    {
+        "Code":3112,
+        "Type":null,
+        "Message":"The BillingAddress1 value is Too long.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"billingAddress.address1"
+    },
+    {
+        "Code":3153,
+        "Type":null,
+        "Message":"The Card AddressLine1 is required.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"billingAddress.address1"
+    },
+    {
+        "Code":3154,
+        "Type":null,
+        "Message":"The Card AddressLine1 value is too long.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"billingAddress.address1"
+    },
+    {
+        "Code":5020,
+        "Type":"MALFORMED",
+        "Message":"The Card Address is required.",
+        "Explanation":"You must enter the address to which the card being used is registered in the card address box provided on the payment page.",
+        "Solution":"You will need to ensure that the address to which the card being used is registered is entered within the edit box on the payment page. If no card address is provided you will be presented with this error message.",
+        "Property":"billingAddress.address1"
+    },
+    {
+        "Code":5021,
+        "Type":"INVALID",
+        "Message":"The Card Address is too long.",
+        "Explanation":"You will not be able to enter more than 200 characters in the card address box on the payment pages. If the address is longer than 200 characters, you will receive this system message.",
+        "Solution":"You will need to check your code to ensure that you have not entered more than 200 characters within this field on the payment pages. If the card address consists of more than 200 characters please just entered the first 200 characters in order to continue.",
+        "Property":"billingAddress.address1"
+    },
+    {
+        "Code":5042,
+        "Type":null,
+        "Message":"The Billing Address1 contains invalid characters.",
+        "Explanation":null,
+        "Solution":"You will need to ensure that your code is not sending invalid characters.",
+        "Property":"billingAddress.address1"
+    },
+    {
+        "Code":5050,
+        "Type":null,
+        "Message":"The Billing Address contains invalid characters.",
+        "Explanation":null,
+        "Solution":"You will need to ensure that your code is not sending invalid characters.",
+        "Property":"billingAddress.address1"
+    },
+    {
+        "Code":3113,
+        "Type":null,
+        "Message":"The BillingAddress2 value is Too long.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"billingAddress.address2"
+    },
+    {
+        "Code":3155,
+        "Type":null,
+        "Message":"The Card AddressLine2 value is too long.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"billingAddress.address2"
+    },
+    {
+        "Code":5043,
+        "Type":null,
+        "Message":"The Billing Address2 contains invalid characters.",
+        "Explanation":null,
+        "Solution":"You will need to ensure that your code is not sending invalid characters.",
+        "Property":"billingAddress.address2"
+    },
+    {
+        "Code":3114,
+        "Type":null,
+        "Message":"The BillingCity field is required.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"billingAddress.city"
+    },
+    {
+        "Code":3115,
+        "Type":null,
+        "Message":"The BillingCity value is Too long.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"billingAddress.city"
+    },
+    {
+        "Code":3156,
+        "Type":null,
+        "Message":"The Card City field is required.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"billingAddress.city"
+    },
+    {
+        "Code":3157,
+        "Type":null,
+        "Message":"The Card City value is too long.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"billingAddress.city"
+    },
+    {
+        "Code":5044,
+        "Type":null,
+        "Message":"The Billing City contains invalid characters.",
+        "Explanation":null,
+        "Solution":"You will need to ensure that your code is not sending invalid characters.",
+        "Property":"billingAddress.city"
+    },
+    {
+        "Code":3117,
+        "Type":null,
+        "Message":"The BillingCountry field is required.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"billingAddress.country"
+    },
+    {
+        "Code":3141,
+        "Type":null,
+        "Message":"The BillingCountry value is invalid.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"billingAddress.country"
+    },
+    {
+        "Code":3016,
+        "Type":"INVALID",
+        "Message":"The BillingPostCode value is too long.",
+        "Explanation":"The BillingPostCode field which you have provided is longer than what is allowed. This field can contain up to 10 characters.",
+        "Solution":"You will need to check your code to ensure that your server doesnt send more that 10 characters within this field.",
+        "Property":"billingAddress.postalCode"
+    },
+    {
+        "Code":3027,
+        "Type":"INVALID",
+        "Message":"The BillingPostCode is too long.",
+        "Explanation":"The BillingPostCode field, if provided, can only contain a maximum of up to 10 characters. If you are providing a value which has more that 10 characters then you will receive this system message.",
+        "Solution":"You will need to ensure that your code is not sending more than 10 characters within this field and that no invalid characters are being sent.",
+        "Property":"billingAddress.postalCode"
+    },
+    {
+        "Code":3090,
+        "Type":null,
+        "Message":"The BillingPostCode is required.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"billingAddress.postalCode"
+    },
+    {
+        "Code":5022,
+        "Type":"MALFORMED",
+        "Message":"The Post Code value is required.",
+        "Explanation":"You must enter the post code to which the card being used is registered in the post code box provided on the payment page in order to continue.",
+        "Solution":"You must ensure that a post code value has been entered within the edit box that has been provided on the payment page. The post code value must be that to where the card being used is registered in order for the transaction to continue.",
+        "Property":"billingAddress.postalCode"
+    },
+    {
+        "Code":5023,
+        "Type":"INVALID",
+        "Message":"The Post Code value is too long.",
+        "Explanation":"You will only be able to enter up to 10 characters in the card post code box on the payment pages. If your post code is longer than 10 characters then please just enter the first 10 characters in order to continue.",
+        "Solution":"You will need to check your code to ensure that your server is not sending more than 10 characters within this field.",
+        "Property":"billingAddress.postalCode"
+    },
+    {
+        "Code":5055,
+        "Type":null,
+        "Message":"A Postcode field contains invalid characters.",
+        "Explanation":null,
+        "Solution":"You will need to ensure that your code is not sending invalid characters.",
+        "Property":"billingAddress.postalCode"
+    },
+    {
+        "Code":3130,
+        "Type":"INVALID",
+        "Message":"The BillingState value is too long.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"billingAddress.state"
+    },
+    {
+        "Code":3138,
+        "Type":"INVALID",
+        "Message":"The BillingState format is invalid.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"billingAddress.state"
+    },
+    {
+        "Code":3147,
+        "Type":"MALFORMED",
+        "Message":"The BillingState field is required.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"billingAddress.state"
+    },
+    {
+        "Code":1007,
+        "Type":422,
+        "Message":"The card number has failed our validity checks and is invalid",
+        "Explanation":null,
+        "Solution":null,
+        "Property":"cardDetails.cardNumber"
+    },
+    {
+        "Code":1008,
+        "Type":422,
+        "Message":"The card is not supported",
+        "Explanation":null,
+        "Solution":null,
+        "Property":"cardDetails.cardNumber"
+    },
+    {
+        "Code":3048,
+        "Type":"INVALID",
+        "Message":"The CardNumber length is invalid.",
+        "Explanation":"This system message is only generated if you have integrated using the Direct method where you are collecting the card details to send across to Sage Pay. If you have received this system message it it likely that you have not provided us with a valid card number within the CardNumber field.",
+        "Solution":"You will only ever be required to provide us with the large numbers situated on the front of the customers card and you will need to ensure that there are no spaces or hyphens being used as separator characters when providing us with this value.",
+        "Property":"cardDetails.cardNumber"
+    },
+    {
+        "Code":3051,
+        "Type":"MALFORMED",
+        "Message":"The CardNumber field is required.",
+        "Explanation":"When sending your transaction registration POST to Sage Pay using the Direct solution you will always need to send a card number as you will be hosting your own payment page. You will receive this error message if we are not provided with the CardNumber field when you have POSTed your transaction registration.",
+        "Solution":"This is a mandatory field an you will need to ensure that you are proviinge us with the large numbers situated on the front of the customers card and you will need to ensure that there are no spaces or hyphens being used as separator characters when providing us with this value.",
+        "Property":"cardDetails.cardNumber"
+    },
+    {
+        "Code":3062,
+        "Type":"INVALID",
+        "Message":"The CardNumber field should only contain numbers. No spaces, hyphens or other characters or separators.",
+        "Explanation":"You will receive this system message when the card number details have been entered incorrectly.",
+        "Solution":"You will need to ensure that you are sending numerics only within this field with no spaces between any of the numbers. You will need to send the long card number only which is situated on the front of the customers card.",
+        "Property":"cardDetails.cardNumber"
+    },
+    {
+        "Code":5026,
+        "Type":"INVALID",
+        "Message":"The Card Number is not numeric.",
+        "Explanation":"The CardNumber field provided does not contain a valid card number and may contain characters other than numbers such as letters.",
+        "Solution":"You will need to check your code to confirm that you are sending numbers only and only the large numbers presented on the front of the card with no separator characters (such as spaces or hyphens). Also, check your code to ensure that you are only sending numeric values within this field and that no letters or invalid characters are contained. You will also need to send only the large card numbers that are being displayed on the front of the customers card within this field.",
+        "Property":"cardDetails.cardNumber"
+    },
+    {
+        "Code":2226,
+        "Type":null,
+        "Message":" cannot be before this month.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"cardDetails.expiryDate"
+    },
+    {
+        "Code":3050,
+        "Type":"INVALID",
+        "Message":"The ExpiryDate format is invalid.",
+        "Explanation":"This system message would only be generated if you have integrated using the Direct method where you are colleting the customers card details to send across to Sage Pay. If you have received this system message, it is likely that you are incorrectly supplied the Expiry date.",
+        "Solution":"The card ExpiryDate value should always be presented in a MMYY format (a two-digit month followed by a two-digit year) and this should never include any separators such as a forward slash (/) or a hyphen (-). The MM and YY values should also be valid month and year numerics, for example the MM values should only ever be between 00 and 12 and the YY values should only ever be between 00 and 99. If a card ExpiryDate value of 1509 was passed this would generate this error code.",
+        "Property":"cardDetails.expiryDate"
+    },
+    {
+        "Code":3052,
+        "Type":"MALFORMED",
+        "Message":"The ExpiryDate field is required.",
+        "Explanation":"You will receive this error message if you did not send an ExpiryDate field containing this value in your transaction registration POST.",
+        "Solution":"The card ExpiryDate value should always be presented in a MMYY format (a two-digit month followed by a two-digit year) and this should never include any separators such as a forward slash (/) or a hyphen (-). The MM and YY values should also be valid month and year numerics, for example the MM values should only ever be between 00 and 12 and the YY values should only ever be between 00 and 99. If a card ExpiryDate value of 1509 was passed this would generate this error code.",
+        "Property":"cardDetails.expiryDate"
+    },
+    {
+        "Code":5014,
+        "Type":"MALFORMED",
+        "Message":"The card expiry date is required.",
+        "Explanation":"The expiry date of the credit or debit card must be entered in the expiry date box provided on the payment screens in order to continue with the transaction.",
+        "Solution":"You must ensure that you are entering the expiry date of the card within the correct format in the expiry date box section provided on the payment screens. This will need to be provided in order for the transaction to be able to continue.",
+        "Property":"cardDetails.expiryDate"
+    },
+    {
+        "Code":5028,
+        "Type":"INVALID",
+        "Message":"The Card Expiry Date is invalid.",
+        "Explanation":"The CardExpiry date that has been entered is not a valid month and year combination.",
+        "Solution":"You will need to check your code to ensure that you are providing a valid month and year format with no spaces or separator characters, eg 0712 and not as 07/12 should be sent for an expiry date of July 2012. Please also check your entry before retrying ensuring that the month is entered before the year and that it is entered exactly as it is presented on the card with no separator characters (such as spaces or hyphens).",
+        "Property":"cardDetails.expiryDate"
+    },
+    {
+        "Code":5017,
+        "Type":"MALFORMED",
+        "Message":"The Security Code is required.",
+        "Explanation":"You will need to enter the CV2 or card security code on the payment pages in order to continue. If no security code (CV2/CVV) has been provided, you will receive this system message.",
+        "Solution":"You will need to check your code to ensure that the CV2 value provided consists of either three or four digits only depending on the card type selected. The CV2 value can be found of the back of the signature strip for most card types and will consist of three digits whereas an American Express card type will consist of four digits and this will be situated on the front of the card.",
+        "Property":"cardDetails.securityCode"
+    },
+    {
+        "Code":5018,
+        "Type":"INVALID",
+        "Message":"The Security Code length is invalid.",
+        "Explanation":"The CV2 code that has been entered is invalid and must consist of either three or four digits depending on the card type selected.",
+        "Solution":"You will need to check your code to ensure that the CV2 value provided consists of either three or four digits only depending on the card type selected. The CV2 value can be found of the back of the signature strip for most card types and will consist of three digits whereas an American Express card type will consist of four digits and this will be situated on the front of the card.",
+        "Property":"cardDetails.securityCode"
+    },
+    {
+        "Code":5019,
+        "Type":"INVALID",
+        "Message":"The Security Code is not a number.",
+        "Explanation":"You have entered an incorrect value for the card security code which is invalid. Any values provided which is not numeric will generate this system message.",
+        "Solution":"You will need to check your code to ensure that you are entering numeric values only and that no letters are being passed over. As detailed above the card security code will consist of either three or four digits only depending on the card type selected.",
+        "Property":"cardDetails.securityCode"
+    },
+    {
+        "Code":2097,
+        "Type":null,
+        "Message":"The email address provided was not recognised by PayPal.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"customerEmail"
+    },
+    {
+        "Code":3022,
+        "Type":"INVALID",
+        "Message":"The CustomerEMail is too long.",
+        "Explanation":"The CustomerEMail field, if provided, can only contain up to a maximum of 255 characters. It is likely that you are submitting several email addresses which is therefore generating this system message.",
+        "Solution":"You will need to ensure that you do not submit more than the maximum of 255 characters within this field.",
+        "Property":"customerEmail"
+    },
+    {
+        "Code":3043,
+        "Type":"INVALID",
+        "Message":"The eMailMessage field is too long.",
+        "Explanation":"The eMailMessage field can contain a maximum of 7,500 characters. The value which is being sent accross in this field is more than this.",
+        "Solution":"You will need to check your code to ensure that you are not send more than this. It may also be worth checking to make sure that there are no spaces being passed (as this will be considered as a character) and also that the next value within the protocol is being separated by an ampersand (&) within your transaction registration.",
+        "Property":"customerEmail"
+    },
+    {
+        "Code":3078,
+        "Type":"INVALID",
+        "Message":"The CustomerEMail format is invalid.",
+        "Explanation":"The CustomerEMail field, if supplied, must contain a valid e-mail address which is less than 255 characters long. Check the content of the field you passed to ensure the e-mail address is valid.",
+        "Solution":"You will need to check your code to ensure that your server is sending a valid e-mail address which does not contain more than 255 characters in length. You will also need to check the content of this field to ensure that it is valid.",
+        "Property":"customerEmail"
+    },
+    {
+        "Code":3042,
+        "Type":"INVALID",
+        "Message":"The CustomerName field is too long.",
+        "Explanation":"The CustomerName field can contain a maximum of 100 characters and you will need to check your code to ensure that you are not sending more than this.",
+        "Solution":"You will need to check your code to ensure that you are not sending more than the maximum value of 100 characters.",
+        "Property":"customerFirstName"
+    },
+    {
+        "Code":3077,
+        "Type":null,
+        "Message":"The CustomerName is required.",
+        "Explanation":null,
+        "Solution":null,
+        "Property":"customerFirstName"
+    },
+    {
+        "Code":3109,
+        "Type":null,
+        "Message":"The BillingFirstnames field is required.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"customerFirstName"
+    },
+    {
+        "Code":3110,
+        "Type":null,
+        "Message":"The BillingFirstnames value is Too long.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"customerFirstName"
+    },
+    {
+        "Code":3149,
+        "Type":null,
+        "Message":"The Card Firstnames is required.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"customerFirstName"
+    },
+    {
+        "Code":3150,
+        "Type":null,
+        "Message":"The Card Firstnames value is too long.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"customerFirstName"
+    },
+    {
+        "Code":5012,
+        "Type":"MALFORMED",
+        "Message":"The CardHolder name is required.",
+        "Explanation":"You will need to enter the name of the credit or debit card holder in the Card Holder box provided on the payment page.",
+        "Solution":"You will need to ensure that you have entered the name of the credit or debit card holder within the edit box that has been provided on the payment page. If no value is entered here you will be presented with this error message.",
+        "Property":"customerFirstName"
+    },
+    {
+        "Code":5041,
+        "Type":null,
+        "Message":"The Billing Firstname contains invalid characters.",
+        "Explanation":null,
+        "Solution":"You will need to ensure that your code is not sending invalid characters.",
+        "Property":"customerFirstName"
+    },
+    {
+        "Code":5052,
+        "Type":null,
+        "Message":"The Customer Name contains invalid characters.",
+        "Explanation":null,
+        "Solution":"You will need to ensure that your code is not sending invalid characters.",
+        "Property":"customerFirstName"
+    },
+    {
+        "Code":5054,
+        "Type":null,
+        "Message":"The Cardholder Name contains invalid characters.",
+        "Explanation":null,
+        "Solution":"You will need to ensure that your code is not sending invalid characters.",
+        "Property":"customerFirstName"
+    },
+    {
+        "Code":3107,
+        "Type":null,
+        "Message":"The BillingSurname field is required.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"customerLastName"
+    },
+    {
+        "Code":3108,
+        "Type":null,
+        "Message":"The BillingSurname value is too long.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"customerLastName"
+    },
+    {
+        "Code":3151,
+        "Type":null,
+        "Message":"The Card Surname is required.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"customerLastName"
+    },
+    {
+        "Code":3152,
+        "Type":null,
+        "Message":"The Card Surname value is too long.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"customerLastName"
+    },
+    {
+        "Code":5040,
+        "Type":null,
+        "Message":"The Billing Surname contains invalid characters.",
+        "Explanation":null,
+        "Solution":"You will need to ensure that your code is not sending invalid characters.",
+        "Property":"customerLastName"
+    },
+    {
+        "Code":3131,
+        "Type":null,
+        "Message":"The BillingPhone value is too long.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"customerPhone"
+    },
+    {
+        "Code":5045,
+        "Type":null,
+        "Message":"The Billing Phone contains invalid characters.",
+        "Explanation":null,
+        "Solution":"You will need to ensure that your code is not sending invalid characters.",
+        "Property":"customerPhone"
+    },
+    {
+        "Code":5051,
+        "Type":"INVALID",
+        "Message":"The Contact Number contains invalid characters.",
+        "Explanation":null,
+        "Solution":"You will need to ensure that your code is not sending invalid characters.",
+        "Property":"customerPhone"
+    },
+    {
+        "Code":3120,
+        "Type":null,
+        "Message":"The DeliveryFirstnames field is required.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"shippingDetails.recipientFirstName"
+    },
+    {
+        "Code":3121,
+        "Type":null,
+        "Message":"The DeliveryFirstnames value is Too long.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"shippingDetails.recipientFirstName"
+    },
+    {
+        "Code":5047,
+        "Type":null,
+        "Message":"The Delivery Firstname contains invalid characters.",
+        "Explanation":null,
+        "Solution":"You will need to ensure that your code is not sending invalid characters.",
+        "Property":"shippingDetails.recipientFirstName"
+    },
+    {
+        "Code":3118,
+        "Type":null,
+        "Message":"The DeliverySurname field is required.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"shippingDetails.recipientLastName"
+    },
+    {
+        "Code":3119,
+        "Type":null,
+        "Message":"The DeliverySurname value is Too long.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"shippingDetails.recipientLastName"
+    },
+    {
+        "Code":5046,
+        "Type":null,
+        "Message":"The Delivery Surname contains invalid characters.",
+        "Explanation":null,
+        "Solution":"You will need to ensure that your code is not sending invalid characters.",
+        "Property":"shippingDetails.recipientLastName"
+    },
+    {
+        "Code":3026,
+        "Type":"INVALID",
+        "Message":"The DeliveryAddress is too long.",
+        "Explanation":"The DeliveryAddress field, if provided, can only contain a maximum of up to 200 characters. If you are providing a value which has more that 200 characters then you will receive this system message.",
+        "Solution":"You will need to ensure that your code is not sending more than 200 characters within this field and that no invalid characters are being sent.",
+        "Property":"shippingDetails.shippingAddress1"
+    },
+    {
+        "Code":3092,
+        "Type":null,
+        "Message":"The DeliveryAddress and DeliveryPostcode are required.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"shippingDetails.shippingAddress1"
+    },
+    {
+        "Code":3093,
+        "Type":null,
+        "Message":"The DeliveryAddress is required.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"shippingDetails.shippingAddress1"
+    },
+    {
+        "Code":3122,
+        "Type":null,
+        "Message":"The DeliveryAddress1 field is required.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"shippingDetails.shippingAddress1"
+    },
+    {
+        "Code":3123,
+        "Type":null,
+        "Message":"The DeliveryAddress1 value is too long.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"shippingDetails.shippingAddress1"
+    },
+    {
+        "Code":5037,
+        "Type":null,
+        "Message":"The Delivery Address contains invalid characters.",
+        "Explanation":null,
+        "Solution":"You will need to ensure that your code is not sending invalid characters.",
+        "Property":"shippingDetails.shippingAddress1"
+    },
+    {
+        "Code":5048,
+        "Type":null,
+        "Message":"The Delivery Address1 contains invalid characters.",
+        "Explanation":null,
+        "Solution":"You will need to ensure that your code is not sending invalid characters.",
+        "Property":"shippingDetails.shippingAddress1"
+    },
+    {
+        "Code":3124,
+        "Type":null,
+        "Message":"The DeliveryAddress2 value is too long.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"shippingDetails.shippingAddress2"
+    },
+    {
+        "Code":3125,
+        "Type":null,
+        "Message":"The DeliveryAddress2 value is too long.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"shippingDetails.shippingAddress2"
+    },
+    {
+        "Code":5049,
+        "Type":null,
+        "Message":"The Delivery Address2 contains invalid characters.",
+        "Explanation":null,
+        "Solution":"You will need to ensure that your code is not sending invalid characters.",
+        "Property":"shippingDetails.shippingAddress2"
+    },
+    {
+        "Code":3126,
+        "Type":null,
+        "Message":"The DeliveryCity value is too long.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"shippingDetails.shippingCity"
+    },
+    {
+        "Code":5039,
+        "Type":null,
+        "Message":"The Delivery City contains invalid characters.",
+        "Explanation":null,
+        "Solution":"You will need to ensure that your code is not sending invalid characters.",
+        "Property":"shippingDetails.shippingCity"
+    },
+    {
+        "Code":3128,
+        "Type":null,
+        "Message":"The DeliveryCountry field is required.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"shippingDetails.shippingCountry"
+    },
+    {
+        "Code":3129,
+        "Type":null,
+        "Message":"The DeliveryCountry value is too long.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"shippingDetails.shippingCountry"
+    },
+    {
+        "Code":3140,
+        "Type":null,
+        "Message":"The DeliveryCountry value is invalid.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"shippingDetails.shippingCountry"
+    },
+    {
+        "Code":3025,
+        "Type":"INVALID",
+        "Message":"The DeliveryPostCode is too long.",
+        "Explanation":"The DeliveryPostCode field, if provided, can only contain a maximum of up to 10 characters. If you are providing a value which has more that 10 characters then you will receive this system message.",
+        "Solution":"You will need to ensure that your code is not sending more than 10 characters within this field and that no invalid characters are being sent.",
+        "Property":"shippingDetails.shippingPostalCode"
+    },
+    {
+        "Code":3094,
+        "Type":null,
+        "Message":"The DeliveryPostcode is required.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"shippingDetails.shippingPostalCode"
+    },
+    {
+        "Code":3132,
+        "Type":null,
+        "Message":"The DeliveryState value is too long.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"shippingDetails.shippingState"
+    },
+    {
+        "Code":3139,
+        "Type":null,
+        "Message":"The DeliveryState format is invalid.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"shippingDetails.shippingState"
+    },
+    {
+        "Code":3148,
+        "Type":null,
+        "Message":"The DeliveryState field is required.",
+        "Explanation":null,
+        "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
+        "Property":"shippingDetails.shippingState"
+    }
+]

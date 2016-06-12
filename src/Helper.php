@@ -126,4 +126,30 @@ abstract class Helper
 
         return $data;
     }
+
+    /**
+     * Returns a map of error codes to property names.
+     * Used to translate an error code returned by the underlying Sage Pay
+     * Direct API to property names in the new REST data structions.
+     *
+     * @returns array {code, property, message}
+     */
+    public static function readErrorPropertyMap()
+    {
+        $source = __DIR__ . '/../data/error-maps.json';
+
+        $json = file_get_contents($source);
+
+        $map = [];
+
+        foreach(json_decode($json) as $message) {
+            $map[$message->Code] = [
+                'code' => $message->Code,
+                'property' => $message->Property,
+                'message' => $message->Message,
+            ];
+        }
+
+        return $map;
+    }
 }
