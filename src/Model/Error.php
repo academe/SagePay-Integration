@@ -10,10 +10,10 @@
  *  1007    The card number has failed our validity checks and is invalid
  *  1008    The card is not supported
  *  1009    Contains invalid value
- * The 1XXX numbers are the SagePay erro codes. These will each include a property
+ * The 1XXX numbers are the SagePay error codes. These will often include a property
  * name as they are targetted at specific fields that fail validation.
  *
- * Other ~400 return codes will return just one error in the body, without a property
+ * Other return codes will return just one error in the body, without a property
  * as they are not targetted as specific fields.
  */
 
@@ -36,7 +36,7 @@ class Error implements JsonSerializable
      * @param string $description The textual detail of the error
      * @param string|null $property The property name (field name) of the property the error applies to
      * @param string|null $clientMessage
-     * @param string|null $httpCode
+     * @param integer|null $httpCode
      */
     public function __construct($code, $description, $property = null, $clientMessage = null, $httpCode = null)
     {
@@ -45,10 +45,29 @@ class Error implements JsonSerializable
         $this->description = $description;
         $this->property = $property;
         $this->clientMessage = $clientMessage;
+
+        // Do we have an error code, but no property name (the name of the field that generated the error)?
+
+        if (empty($this->property) && !empty($this->code)) {
+            // Try to derive the property name.
+
+            $error_map = Helper::readErrorPropertyMap();
+
+            // Found one; capture the property name.
+            // Capture the "clientMessage" too if there is one.
+
+            if (array_key_exists($this->code, $error_map)) {
+                $this->property = $error_map[$this->code]['property'];
+
+                if (empty($this->clientMessage) && isset($error_map[$this->code]['clientMessage'])) {
+                    $this->clientMessage = $error_map[$this->code]['clientMessage'];
+                }
+            }
+        }
     }
 
     /**
-     * @return int|string The error code supplied by the remote API
+     * @return string The error code supplied by the remote API
      */
     public function getCode()
     {
@@ -80,7 +99,7 @@ class Error implements JsonSerializable
     }
 
     /**
-     * @return int|string The HTTP code associated with the error, if available
+     * @return int|string|null The HTTP code associated with the error, if available
      */
     public function getHttpCode()
     {
