@@ -345,9 +345,8 @@ if (ServerRequest\Secure3DAcs::isRequest($psr7_ServerRequest->getBody()))
 ~~~
 
 ~~~php
-$secure3d_server_request = ServerRequest\Secure3DAcs::fromData($_POST);
-if ($secure3d_server_request->isValid()) {
-    // Yeah, we got a 3d Secure server request coming at us. Process it here.
+if (ServerRequest\Secure3DAcs::isRequest($_POST)) {
+    $secure3d_server_request = ServerRequest\Secure3DAcs::fromData($_POST);
     ...
 }
 ~~~
