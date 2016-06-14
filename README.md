@@ -337,9 +337,9 @@ $psr7_ServerRequest = \Zend\Diactoros\ServerRequestFactory::fromGlobals();
 // or guzzlehttp/psr7 from v1.3
 $psr7_ServerRequest = \GuzzleHttp\Psr7\ServerRequest::fromGlobals();
 
-$secure3d_server_request = new ServerRequest\Secure3DAcs($psr7_ServerRequest);
-if ($secure3d_server_request->isValid()) {
+if (ServerRequest\Secure3DAcs::isRequest($psr7_ServerRequest->getBody()))
     // Yeah, we got a 3d Secure server request coming at us. Process it here.
+    $secure3d_server_request = new ServerRequest\Secure3DAcs($psr7_ServerRequest);
     ...
 }
 ~~~
