@@ -39,6 +39,27 @@ Note that this example code deals only with using the gateway from the back-end.
 There is a JavaScript front-end too, with hooks to deal with expired
 session keys and card tokens.
 
+### Installation
+
+The default development branch is `PSR-7`.
+
+Get the development branch through composer:
+
+    composer.phar require academe/sagepaymsg:dev-PSR-7
+
+or the latest release:
+
+    composer.phar require academe/sagepaymsg
+
+Until this library has been released to packagist, include the VCS in `composer.json`:
+
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/academe/SagePay-Integration.git"
+        }
+    ]
+
 ### Get a Session Key
 
 The `SessionKey` message has had PSR-7 support added, and can be used like this:
