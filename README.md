@@ -336,6 +336,7 @@ use Academe\SagePay\Psr7\ServerRequest;
 $psr7_ServerRequest = \Zend\Diactoros\ServerRequestFactory::fromGlobals();
 // or guzzlehttp/psr7 from v1.3
 $psr7_ServerRequest = \GuzzleHttp\Psr7\ServerRequest::fromGlobals();
+// or if using a framework that supplies a PSR-7 server request, just use that.
 
 if (ServerRequest\Secure3DAcs::isRequest($psr7_ServerRequest->getBody()))
     // Yeah, we got a 3d Secure server request coming at us. Process it here.
@@ -344,7 +345,11 @@ if (ServerRequest\Secure3DAcs::isRequest($psr7_ServerRequest->getBody()))
 }
 ~~~
 
+or
+
 ~~~php
+use Academe\SagePay\Psr7\ServerRequest;
+
 if (ServerRequest\Secure3DAcs::isRequest($_POST)) {
     $secure3d_server_request = ServerRequest\Secure3DAcs::fromData($_POST);
     ...
