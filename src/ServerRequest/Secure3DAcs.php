@@ -74,4 +74,15 @@ class Secure3DAcs extends AbstractServerRequest
         // the bank's 3D Secure password entry.
         return ! empty($this->getPaRes());
     }
+
+    /**
+     * Determine whether this message is active, i.e. has been sent to the application.
+     * $data will be $request->getBody() for most implementations.
+     *
+     * @param array|object $data The ServerRequest body data.
+     */
+    public static function isRequest($data)
+    {
+        return ! empty(Helper::dataGet($data, 'PaRes'));
+    }
 }

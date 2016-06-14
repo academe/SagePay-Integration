@@ -91,7 +91,7 @@ class Secure3DRedirect extends AbstractResponse
     /**
      * @inheritdoc
      */
-    public static function isResponse(array $data)
+    public static function isResponse($data)
     {
         return Helper::dataGet($data, 'statusCode') == '2007'
             && Helper::dataGet($data, 'status') == AbstractResponse::STATUS_3DAUTH;

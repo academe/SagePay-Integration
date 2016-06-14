@@ -134,7 +134,7 @@ class ErrorCollection extends AbstractResponse implements \IteratorAggregate
     /**
      * @inheritdoc
      */
-    public static function isResponse(array $data)
+    public static function isResponse($data)
     {
         return is_array(Helper::dataGet($data, 'errors'))
             || Helper::dataGet($data, 'status') == 'Error'

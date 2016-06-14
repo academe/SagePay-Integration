@@ -51,7 +51,7 @@ class Secure3D extends AbstractResponse
     /**
      * @inheritdoc
      */
-    public static function isResponse(array $data)
+    public static function isResponse($data)
     {
         return !empty(Helper::dataGet($data, '3DSecure.status'));
     }
