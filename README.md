@@ -82,7 +82,7 @@ $auth = new Moadel\Auth('vendor-name', 'your-key', 'your-password');
 
 // Also the endpoint, which is now a separate class.
 // This one is the test API endpoint.
-$endpoint = new Model\Endpoint(Model\Auth::MODE_TEST);
+$endpoint = new Model\Endpoint(Model\Endpoint::MODE_TEST);
 
 // Request object to construct the session key message.
 $key_request = new Request\SessionKey($endpoint, $auth);
