@@ -6,7 +6,8 @@
         "Explanation":"The BillingAddress field which you have provided is longer than what is allowed. This field can contain up to 200 characters.",
         "Solution":"You will need to check your code to ensure that you server doesnt send more than 200 characters each time.",
         "Property":"billingAddress.address1",
-        "ClientMessage":"The billing address is too long."
+        "ClientMessage":"The billing address is too long.",
+        "ErrorType": "max"
     },
     {
         "Code":3028,
@@ -15,7 +16,8 @@
         "Explanation":"The BillingAddress field, if provided, can only contain a maximum of up to 200 characters. If you are providing a value which has more that 200 characters then you will receive this system message.",
         "Solution":"You will need to ensure that your code is not sending more than 200 characters within this field and that no invalid characters are being sent.",
         "Property":"billingAddress.address1",
-        "ClientMessage":"The billing address is too long."
+        "ClientMessage":"The billing address is too long.",
+        "ErrorType": "max"
     },
     {
         "Code":3089,
@@ -24,7 +26,8 @@
         "Explanation":"If you have AVS checking turned on within your Sage Pay account, or have provided a BillingPostCode, you must also provide a BillingAddress field. You will need to ensure that your code is sending the customers cardholder address to where the card is registered in the BillingAddress field.",
         "Solution":"You will need to check your code to ensure that you are providing us with a Billing Address field confirming the customers cardholder address to where the card is registered. This will be required if you have AVS turned on within your Sage Pay account.",
         "Property":"billingAddress.address1",
-        "ClientMessage":"The billing address is required."
+        "ClientMessage":"The billing address is required.",
+        "ErrorType": "required"
     },
     {
         "Code":3091,
@@ -33,7 +36,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"billingAddress.address1",
-        "ClientMessage":"The billing address and billing postcode are required."
+        "ClientMessage":"The billing address and billing postcode are required.",
+        "ErrorType": "required"
     },
     {
         "Code":3111,
@@ -42,7 +46,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"billingAddress.address1",
-        "ClientMessage":"The billing address is required."
+        "ClientMessage":"The billing address is required.",
+        "ErrorType": "required"
     },
     {
         "Code":3112,
@@ -51,7 +56,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"billingAddress.address1",
-        "ClientMessage":"The billing address is too long."
+        "ClientMessage":"The billing address is too long.",
+        "ErrorType": "max"
     },
     {
         "Code":3153,
@@ -60,7 +66,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"billingAddress.address1",
-        "ClientMessage":"The card address is required."
+        "ClientMessage":"The card address is required.",
+        "ErrorType": "required"
     },
     {
         "Code":3154,
@@ -69,7 +76,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"billingAddress.address1",
-        "ClientMessage":"The card address is too long."
+        "ClientMessage":"The card address is too long.",
+        "ErrorType": "max"
     },
     {
         "Code":5020,
@@ -78,7 +86,8 @@
         "Explanation":"You must enter the address to which the card being used is registered in the card address box provided on the payment page.",
         "Solution":"You will need to ensure that the address to which the card being used is registered is entered within the edit box on the payment page. If no card address is provided you will be presented with this error message.",
         "Property":"billingAddress.address1",
-        "ClientMessage":"The card address is required."
+        "ClientMessage":"The card address is required.",
+        "ErrorType": "required"
     },
     {
         "Code":5021,
@@ -87,7 +96,8 @@
         "Explanation":"You will not be able to enter more than 200 characters in the card address box on the payment pages. If the address is longer than 200 characters, you will receive this system message.",
         "Solution":"You will need to check your code to ensure that you have not entered more than 200 characters within this field on the payment pages. If the card address consists of more than 200 characters please just entered the first 200 characters in order to continue.",
         "Property":"billingAddress.address1",
-        "ClientMessage":"The card address is too long."
+        "ClientMessage":"The card address is too long.",
+        "ErrorType": "max"
     },
     {
         "Code":5042,
@@ -96,7 +106,8 @@
         "Explanation":null,
         "Solution":"You will need to ensure that your code is not sending invalid characters.",
         "Property":"billingAddress.address1",
-        "ClientMessage":"The billing address contains invalid characters."
+        "ClientMessage":"The billing address contains invalid characters.",
+        "ErrorType": "invalid"
     },
     {
         "Code":5050,
@@ -105,7 +116,8 @@
         "Explanation":null,
         "Solution":"You will need to ensure that your code is not sending invalid characters.",
         "Property":"billingAddress.address1",
-        "ClientMessage":"The billing address contains invalid characters."
+        "ClientMessage":"The billing address contains invalid characters.",
+        "ErrorType": "invalid"
     },
     {
         "Code":3113,
@@ -114,7 +126,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"billingAddress.address2",
-        "ClientMessage":"The billing address 2 is too long."
+        "ClientMessage":"The billing address 2 is too long.",
+        "ErrorType": "max"
     },
     {
         "Code":3155,
@@ -123,7 +136,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"billingAddress.address2",
-        "ClientMessage":"The card address 2 is too long."
+        "ClientMessage":"The card address 2 is too long.",
+        "ErrorType": "max"
     },
     {
         "Code":5043,
@@ -132,7 +146,8 @@
         "Explanation":null,
         "Solution":"You will need to ensure that your code is not sending invalid characters.",
         "Property":"billingAddress.address2",
-        "ClientMessage":"The billing address 2 contains invalid characters."
+        "ClientMessage":"The billing address 2 contains invalid characters.",
+        "ErrorType": "invalid"
     },
     {
         "Code":3114,
@@ -141,7 +156,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"billingAddress.city",
-        "ClientMessage":"The billing city is required."
+        "ClientMessage":"The billing city is required.",
+        "ErrorType": "required"
     },
     {
         "Code":3115,
@@ -150,7 +166,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"billingAddress.city",
-        "ClientMessage":"The billing city is too long."
+        "ClientMessage":"The billing city is too long.",
+        "ErrorType": "max"
     },
     {
         "Code":3156,
@@ -159,7 +176,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"billingAddress.city",
-        "ClientMessage":"The card city is required."
+        "ClientMessage":"The card city is required.",
+        "ErrorType": "required"
     },
     {
         "Code":3157,
@@ -168,7 +186,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"billingAddress.city",
-        "ClientMessage":"The card city is too long."
+        "ClientMessage":"The card city is too long.",
+        "ErrorType": "max"
     },
     {
         "Code":5044,
@@ -177,7 +196,8 @@
         "Explanation":null,
         "Solution":"You will need to ensure that your code is not sending invalid characters.",
         "Property":"billingAddress.city",
-        "ClientMessage":"The billing city contains invalid characters."
+        "ClientMessage":"The billing city contains invalid characters.",
+        "ErrorType": "invalid"
     },
     {
         "Code":3117,
@@ -186,7 +206,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"billingAddress.country",
-        "ClientMessage":"The billing country is required."
+        "ClientMessage":"The billing country is required.",
+        "ErrorType": "required"
     },
     {
         "Code":3141,
@@ -195,7 +216,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"billingAddress.country",
-        "ClientMessage":"The billing country is invalid."
+        "ClientMessage":"The billing country is invalid.",
+        "ErrorType": "invalid"
     },
     {
         "Code":3016,
@@ -204,7 +226,8 @@
         "Explanation":"The BillingPostCode field which you have provided is longer than what is allowed. This field can contain up to 10 characters.",
         "Solution":"You will need to check your code to ensure that your server doesnt send more that 10 characters within this field.",
         "Property":"billingAddress.postalCode",
-        "ClientMessage":"The billing postcode is too long."
+        "ClientMessage":"The billing postcode is too long.",
+        "ErrorType": "max"
     },
     {
         "Code":3027,
@@ -213,7 +236,8 @@
         "Explanation":"The BillingPostCode field, if provided, can only contain a maximum of up to 10 characters. If you are providing a value which has more that 10 characters then you will receive this system message.",
         "Solution":"You will need to ensure that your code is not sending more than 10 characters within this field and that no invalid characters are being sent.",
         "Property":"billingAddress.postalCode",
-        "ClientMessage":"The billing postcode is too long."
+        "ClientMessage":"The billing postcode is too long.",
+        "ErrorType": "max"
     },
     {
         "Code":3090,
@@ -222,7 +246,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"billingAddress.postalCode",
-        "ClientMessage":"The billing postcode is required."
+        "ClientMessage":"The billing postcode is required.",
+        "ErrorType": "required"
     },
     {
         "Code":5022,
@@ -231,7 +256,8 @@
         "Explanation":"You must enter the post code to which the card being used is registered in the post code box provided on the payment page in order to continue.",
         "Solution":"You must ensure that a post code value has been entered within the edit box that has been provided on the payment page. The post code value must be that to where the card being used is registered in order for the transaction to continue.",
         "Property":"billingAddress.postalCode",
-        "ClientMessage":"The postcode is required."
+        "ClientMessage":"The postcode is required.",
+        "ErrorType": "required"
     },
     {
         "Code":5023,
@@ -240,7 +266,8 @@
         "Explanation":"You will only be able to enter up to 10 characters in the card post code box on the payment pages. If your post code is longer than 10 characters then please just enter the first 10 characters in order to continue.",
         "Solution":"You will need to check your code to ensure that your server is not sending more than 10 characters within this field.",
         "Property":"billingAddress.postalCode",
-        "ClientMessage":"The postcode is too long."
+        "ClientMessage":"The postcode is too long.",
+        "ErrorType": "max"
     },
     {
         "Code":5055,
@@ -249,7 +276,8 @@
         "Explanation":null,
         "Solution":"You will need to ensure that your code is not sending invalid characters.",
         "Property":"billingAddress.postalCode",
-        "ClientMessage":"A Postcode field contains invalid characters."
+        "ClientMessage":"A Postcode field contains invalid characters.",
+        "ErrorType": "invalid"
     },
     {
         "Code":3130,
@@ -258,7 +286,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"billingAddress.state",
-        "ClientMessage":"The billing state is too long."
+        "ClientMessage":"The billing state is too long.",
+        "ErrorType": "max"
     },
     {
         "Code":3138,
@@ -267,7 +296,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"billingAddress.state",
-        "ClientMessage":"The billing state format is invalid."
+        "ClientMessage":"The billing state format is invalid.",
+        "ErrorType": "invalid"
     },
     {
         "Code":3147,
@@ -276,7 +306,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"billingAddress.state",
-        "ClientMessage":"The billing state is required."
+        "ClientMessage":"The billing state is required.",
+        "ErrorType": "required"
     },
     {
         "Code":1007,
@@ -285,7 +316,8 @@
         "Explanation":null,
         "Solution":null,
         "Property":"cardDetails.cardNumber",
-        "ClientMessage":"The card number has failed our validity checks and is invalid."
+        "ClientMessage":"The card number has failed our validity checks and is invalid.",
+        "ErrorType": "invalid"
     },
     {
         "Code":1008,
@@ -294,7 +326,8 @@
         "Explanation":null,
         "Solution":null,
         "Property":"cardDetails.cardNumber",
-        "ClientMessage":"The card is not supported."
+        "ClientMessage":"The card is not supported.",
+        "ErrorType": "unsupported"
     },
     {
         "Code":3048,
@@ -303,7 +336,8 @@
         "Explanation":"This system message is only generated if you have integrated using the Direct method where you are collecting the card details to send across to Sage Pay. If you have received this system message it it likely that you have not provided us with a valid card number within the CardNumber field.",
         "Solution":"You will only ever be required to provide us with the large numbers situated on the front of the customers card and you will need to ensure that there are no spaces or hyphens being used as separator characters when providing us with this value.",
         "Property":"cardDetails.cardNumber",
-        "ClientMessage":"The card number length is invalid."
+        "ClientMessage":"The card number length is invalid.",
+        "ErrorType": "length"
     },
     {
         "Code":3051,
@@ -312,7 +346,8 @@
         "Explanation":"When sending your transaction registration POST to Sage Pay using the Direct solution you will always need to send a card number as you will be hosting your own payment page. You will receive this error message if we are not provided with the CardNumber field when you have POSTed your transaction registration.",
         "Solution":"This is a mandatory field an you will need to ensure that you are proviinge us with the large numbers situated on the front of the customers card and you will need to ensure that there are no spaces or hyphens being used as separator characters when providing us with this value.",
         "Property":"cardDetails.cardNumber",
-        "ClientMessage":"The card number is required."
+        "ClientMessage":"The card number is required.",
+        "ErrorType": "required"
     },
     {
         "Code":3062,
@@ -321,7 +356,8 @@
         "Explanation":"You will receive this system message when the card number details have been entered incorrectly.",
         "Solution":"You will need to ensure that you are sending numerics only within this field with no spaces between any of the numbers. You will need to send the long card number only which is situated on the front of the customers card.",
         "Property":"cardDetails.cardNumber",
-        "ClientMessage":"The card number shouldis not numeric."
+        "ClientMessage":"The card number is not numeric.",
+        "ErrorType": "invalid"
     },
     {
         "Code":5026,
@@ -330,7 +366,8 @@
         "Explanation":"The CardNumber field provided does not contain a valid card number and may contain characters other than numbers such as letters.",
         "Solution":"You will need to check your code to confirm that you are sending numbers only and only the large numbers presented on the front of the card with no separator characters (such as spaces or hyphens). Also, check your code to ensure that you are only sending numeric values within this field and that no letters or invalid characters are contained. You will also need to send only the large card numbers that are being displayed on the front of the customers card within this field.",
         "Property":"cardDetails.cardNumber",
-        "ClientMessage":"The card number shouldis not numeric."
+        "ClientMessage":"The card number is not numeric.",
+        "ErrorType": "invalid"
     },
     {
         "Code":2226,
@@ -339,7 +376,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"cardDetails.expiryDate",
-        "ClientMessage":"Expiry date cannot be before this month."
+        "ClientMessage":"Expiry date cannot be before this month.",
+        "ErrorType": "date"
     },
     {
         "Code":3050,
@@ -348,7 +386,8 @@
         "Explanation":"This system message would only be generated if you have integrated using the Direct method where you are colleting the customers card details to send across to Sage Pay. If you have received this system message, it is likely that you are incorrectly supplied the Expiry date.",
         "Solution":"The card ExpiryDate value should always be presented in a MMYY format (a two-digit month followed by a two-digit year) and this should never include any separators such as a forward slash (/) or a hyphen (-). The MM and YY values should also be valid month and year numerics, for example the MM values should only ever be between 00 and 12 and the YY values should only ever be between 00 and 99. If a card ExpiryDate value of 1509 was passed this would generate this error code.",
         "Property":"cardDetails.expiryDate",
-        "ClientMessage":"The expiry date format is invalid."
+        "ClientMessage":"The expiry date format is invalid.",
+        "ErrorType": "invalid"
     },
     {
         "Code":3052,
@@ -357,7 +396,8 @@
         "Explanation":"You will receive this error message if you did not send an ExpiryDate field containing this value in your transaction registration POST.",
         "Solution":"The card ExpiryDate value should always be presented in a MMYY format (a two-digit month followed by a two-digit year) and this should never include any separators such as a forward slash (/) or a hyphen (-). The MM and YY values should also be valid month and year numerics, for example the MM values should only ever be between 00 and 12 and the YY values should only ever be between 00 and 99. If a card ExpiryDate value of 1509 was passed this would generate this error code.",
         "Property":"cardDetails.expiryDate",
-        "ClientMessage":"The expiry date is required."
+        "ClientMessage":"The expiry date is required.",
+        "ErrorType": "required"
     },
     {
         "Code":5014,
@@ -366,7 +406,8 @@
         "Explanation":"The expiry date of the credit or debit card must be entered in the expiry date box provided on the payment screens in order to continue with the transaction.",
         "Solution":"You must ensure that you are entering the expiry date of the card within the correct format in the expiry date box section provided on the payment screens. This will need to be provided in order for the transaction to be able to continue.",
         "Property":"cardDetails.expiryDate",
-        "ClientMessage":"The expiry date is required."
+        "ClientMessage":"The expiry date is required.",
+        "ErrorType": "required"
     },
     {
         "Code":5028,
@@ -375,7 +416,8 @@
         "Explanation":"The CardExpiry date that has been entered is not a valid month and year combination.",
         "Solution":"You will need to check your code to ensure that you are providing a valid month and year format with no spaces or separator characters, eg 0712 and not as 07/12 should be sent for an expiry date of July 2012. Please also check your entry before retrying ensuring that the month is entered before the year and that it is entered exactly as it is presented on the card with no separator characters (such as spaces or hyphens).",
         "Property":"cardDetails.expiryDate",
-        "ClientMessage":"The expiry date is invalid."
+        "ClientMessage":"The expiry date is invalid.",
+        "ErrorType": "invalid"
     },
     {
         "Code":5017,
@@ -384,7 +426,8 @@
         "Explanation":"You will need to enter the CV2 or card security code on the payment pages in order to continue. If no security code (CV2/CVV) has been provided, you will receive this system message.",
         "Solution":"You will need to check your code to ensure that the CV2 value provided consists of either three or four digits only depending on the card type selected. The CV2 value can be found of the back of the signature strip for most card types and will consist of three digits whereas an American Express card type will consist of four digits and this will be situated on the front of the card.",
         "Property":"cardDetails.securityCode",
-        "ClientMessage":"The security code is required."
+        "ClientMessage":"The security code is required.",
+        "ErrorType": "required"
     },
     {
         "Code":5018,
@@ -393,7 +436,8 @@
         "Explanation":"The CV2 code that has been entered is invalid and must consist of either three or four digits depending on the card type selected.",
         "Solution":"You will need to check your code to ensure that the CV2 value provided consists of either three or four digits only depending on the card type selected. The CV2 value can be found of the back of the signature strip for most card types and will consist of three digits whereas an American Express card type will consist of four digits and this will be situated on the front of the card.",
         "Property":"cardDetails.securityCode",
-        "ClientMessage":"The security code length is invalid."
+        "ClientMessage":"The security code length is invalid.",
+        "ErrorType": "length"
     },
     {
         "Code":5019,
@@ -402,7 +446,8 @@
         "Explanation":"You have entered an incorrect value for the card security code which is invalid. Any values provided which is not numeric will generate this system message.",
         "Solution":"You will need to check your code to ensure that you are entering numeric values only and that no letters are being passed over. As detailed above the card security code will consist of either three or four digits only depending on the card type selected.",
         "Property":"cardDetails.securityCode",
-        "ClientMessage":"The security code length is not a number."
+        "ClientMessage":"The security code length is not a number.",
+        "ErrorType": "invalid"
     },
     {
         "Code":2097,
@@ -411,7 +456,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"customerEmail",
-        "ClientMessage":"The email address provided was not recognised by PayPal."
+        "ClientMessage":"The email address provided was not recognised by PayPal.",
+        "ErrorType": "email"
     },
     {
         "Code":3022,
@@ -420,7 +466,8 @@
         "Explanation":"The CustomerEMail field, if provided, can only contain up to a maximum of 255 characters. It is likely that you are submitting several email addresses which is therefore generating this system message.",
         "Solution":"You will need to ensure that you do not submit more than the maximum of 255 characters within this field.",
         "Property":"customerEmail",
-        "ClientMessage":"The customer email is too long."
+        "ClientMessage":"The customer email is too long.",
+        "ErrorType": "max"
     },
     {
         "Code":3043,
@@ -429,7 +476,8 @@
         "Explanation":"The eMailMessage field can contain a maximum of 7,500 characters. The value which is being sent accross in this field is more than this.",
         "Solution":"You will need to check your code to ensure that you are not send more than this. It may also be worth checking to make sure that there are no spaces being passed (as this will be considered as a character) and also that the next value within the protocol is being separated by an ampersand (&) within your transaction registration.",
         "Property":"customerEmail",
-        "ClientMessage":"The email is too long."
+        "ClientMessage":"The email is too long.",
+        "ErrorType": "max"
     },
     {
         "Code":3078,
@@ -438,7 +486,8 @@
         "Explanation":"The CustomerEMail field, if supplied, must contain a valid e-mail address which is less than 255 characters long. Check the content of the field you passed to ensure the e-mail address is valid.",
         "Solution":"You will need to check your code to ensure that your server is sending a valid e-mail address which does not contain more than 255 characters in length. You will also need to check the content of this field to ensure that it is valid.",
         "Property":"customerEmail",
-        "ClientMessage":"The customer email is invalid."
+        "ClientMessage":"The customer email is invalid.",
+        "ErrorType": "email"
     },
     {
         "Code":3042,
@@ -447,7 +496,8 @@
         "Explanation":"The CustomerName field can contain a maximum of 100 characters and you will need to check your code to ensure that you are not sending more than this.",
         "Solution":"You will need to check your code to ensure that you are not sending more than the maximum value of 100 characters.",
         "Property":"customerFirstName",
-        "ClientMessage":"The customer name is too long."
+        "ClientMessage":"The customer name is too long.",
+        "ErrorType": "max"
     },
     {
         "Code":3077,
@@ -456,7 +506,8 @@
         "Explanation":null,
         "Solution":null,
         "Property":"customerFirstName",
-        "ClientMessage":"The customer name is required."
+        "ClientMessage":"The customer name is required.",
+        "ErrorType": "required"
     },
     {
         "Code":3109,
@@ -465,7 +516,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"customerFirstName",
-        "ClientMessage":"The billing first names are required."
+        "ClientMessage":"The billing first names are required.",
+        "ErrorType": "required"
     },
     {
         "Code":3110,
@@ -474,7 +526,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"customerFirstName",
-        "ClientMessage":"The billing first names are too long."
+        "ClientMessage":"The billing first names are too long.",
+        "ErrorType": "max"
     },
     {
         "Code":3149,
@@ -483,7 +536,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"customerFirstName",
-        "ClientMessage":"The card first names are required."
+        "ClientMessage":"The card first names are required.",
+        "ErrorType": "required"
     },
     {
         "Code":3150,
@@ -492,7 +546,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"customerFirstName",
-        "ClientMessage":"The card first names are too long."
+        "ClientMessage":"The card first names are too long.",
+        "ErrorType": "max"
     },
     {
         "Code":5012,
@@ -501,7 +556,8 @@
         "Explanation":"You will need to enter the name of the credit or debit card holder in the Card Holder box provided on the payment page.",
         "Solution":"You will need to ensure that you have entered the name of the credit or debit card holder within the edit box that has been provided on the payment page. If no value is entered here you will be presented with this error message.",
         "Property":"customerFirstName",
-        "ClientMessage":"The card holde name is required."
+        "ClientMessage":"The card holde name is required.",
+        "ErrorType": "required"
     },
     {
         "Code":5041,
@@ -510,7 +566,8 @@
         "Explanation":null,
         "Solution":"You will need to ensure that your code is not sending invalid characters.",
         "Property":"customerFirstName",
-        "ClientMessage":"The billing firstname contains invalid characters."
+        "ClientMessage":"The billing firstname contains invalid characters.",
+        "ErrorType": "invalid"
     },
     {
         "Code":5052,
@@ -519,7 +576,8 @@
         "Explanation":null,
         "Solution":"You will need to ensure that your code is not sending invalid characters.",
         "Property":"customerFirstName",
-        "ClientMessage":"The customer name contains invalid characters."
+        "ClientMessage":"The customer name contains invalid characters.",
+        "ErrorType": "invalid"
     },
     {
         "Code":5054,
@@ -528,7 +586,8 @@
         "Explanation":null,
         "Solution":"You will need to ensure that your code is not sending invalid characters.",
         "Property":"customerFirstName",
-        "ClientMessage":"The card holder name contains invalid characters."
+        "ClientMessage":"The card holder name contains invalid characters.",
+        "ErrorType": "invalid"
     },
     {
         "Code":3107,
@@ -537,7 +596,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"customerLastName",
-        "ClientMessage":"The bill surname is required."
+        "ClientMessage":"The bill surname is required.",
+        "ErrorType": "required"
     },
     {
         "Code":3108,
@@ -546,7 +606,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"customerLastName",
-        "ClientMessage":"The bill surname is too long."
+        "ClientMessage":"The bill surname is too long.",
+        "ErrorType": "max"
     },
     {
         "Code":3151,
@@ -555,7 +616,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"customerLastName",
-        "ClientMessage":"The card surname is required."
+        "ClientMessage":"The card surname is required.",
+        "ErrorType": "required"
     },
     {
         "Code":3152,
@@ -564,7 +626,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"customerLastName",
-        "ClientMessage":"The card surname is too long."
+        "ClientMessage":"The card surname is too long.",
+        "ErrorType": "max"
     },
     {
         "Code":5040,
@@ -573,7 +636,8 @@
         "Explanation":null,
         "Solution":"You will need to ensure that your code is not sending invalid characters.",
         "Property":"customerLastName",
-        "ClientMessage":"The billing surname contains invalid characters."
+        "ClientMessage":"The billing surname contains invalid characters.",
+        "ErrorType": "invalid"
     },
     {
         "Code":3131,
@@ -582,7 +646,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"customerPhone",
-        "ClientMessage":"The billing phone is too long."
+        "ClientMessage":"The billing phone is too long.",
+        "ErrorType": "max"
     },
     {
         "Code":5045,
@@ -591,7 +656,8 @@
         "Explanation":null,
         "Solution":"You will need to ensure that your code is not sending invalid characters.",
         "Property":"customerPhone",
-        "ClientMessage":"The billing phone contains invalid characters."
+        "ClientMessage":"The billing phone contains invalid characters.",
+        "ErrorType": "invalid"
     },
     {
         "Code":5051,
@@ -600,7 +666,8 @@
         "Explanation":null,
         "Solution":"You will need to ensure that your code is not sending invalid characters.",
         "Property":"customerPhone",
-        "ClientMessage":"The contact number contains invalid characters."
+        "ClientMessage":"The contact number contains invalid characters.",
+        "ErrorType": "invalid"
     },
     {
         "Code":3120,
@@ -609,7 +676,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"shippingDetails.recipientFirstName",
-        "ClientMessage":"The delivery first names are required."
+        "ClientMessage":"The delivery first names are required.",
+        "ErrorType": "required"
     },
     {
         "Code":3121,
@@ -618,7 +686,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"shippingDetails.recipientFirstName",
-        "ClientMessage":"The delivery first names are too long."
+        "ClientMessage":"The delivery first names are too long.",
+        "ErrorType": "max"
     },
     {
         "Code":5047,
@@ -627,7 +696,8 @@
         "Explanation":null,
         "Solution":"You will need to ensure that your code is not sending invalid characters.",
         "Property":"shippingDetails.recipientFirstName",
-        "ClientMessage":"The delivery first name contains invalid characters."
+        "ClientMessage":"The delivery first name contains invalid characters.",
+        "ErrorType": "invalid"
     },
     {
         "Code":3118,
@@ -636,7 +706,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"shippingDetails.recipientLastName",
-        "ClientMessage":"The delivery surname is required."
+        "ClientMessage":"The delivery surname is required.",
+        "ErrorType": "required"
     },
     {
         "Code":3119,
@@ -645,7 +716,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"shippingDetails.recipientLastName",
-        "ClientMessage":"The delivery surname is too long."
+        "ClientMessage":"The delivery surname is too long.",
+        "ErrorType": "max"
     },
     {
         "Code":5046,
@@ -654,7 +726,8 @@
         "Explanation":null,
         "Solution":"You will need to ensure that your code is not sending invalid characters.",
         "Property":"shippingDetails.recipientLastName",
-        "ClientMessage":"The delivery surname contains invalid characters."
+        "ClientMessage":"The delivery surname contains invalid characters.",
+        "ErrorType": "invalid"
     },
     {
         "Code":3026,
@@ -663,7 +736,8 @@
         "Explanation":"The DeliveryAddress field, if provided, can only contain a maximum of up to 200 characters. If you are providing a value which has more that 200 characters then you will receive this system message.",
         "Solution":"You will need to ensure that your code is not sending more than 200 characters within this field and that no invalid characters are being sent.",
         "Property":"shippingDetails.shippingAddress1",
-        "ClientMessage":"The delivery address is too long."
+        "ClientMessage":"The delivery address is too long.",
+        "ErrorType": "max"
     },
     {
         "Code":3092,
@@ -672,7 +746,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"shippingDetails.shippingAddress1",
-        "ClientMessage":"The delivery address and postcode are required."
+        "ClientMessage":"The delivery address and postcode are required.",
+        "ErrorType": "required"
     },
     {
         "Code":3093,
@@ -681,7 +756,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"shippingDetails.shippingAddress1",
-        "ClientMessage":"The delivery address is required."
+        "ClientMessage":"The delivery address is required.",
+        "ErrorType": "required"
     },
     {
         "Code":3122,
@@ -690,7 +766,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"shippingDetails.shippingAddress1",
-        "ClientMessage":"The delivery address is required."
+        "ClientMessage":"The delivery address is required.",
+        "ErrorType": "required"
     },
     {
         "Code":3123,
@@ -699,7 +776,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"shippingDetails.shippingAddress1",
-        "ClientMessage":"The delivery address is too long."
+        "ClientMessage":"The delivery address is too long.",
+        "ErrorType": "max"
     },
     {
         "Code":5037,
@@ -708,7 +786,8 @@
         "Explanation":null,
         "Solution":"You will need to ensure that your code is not sending invalid characters.",
         "Property":"shippingDetails.shippingAddress1",
-        "ClientMessage":"The delivery address contains invalid characters."
+        "ClientMessage":"The delivery address contains invalid characters.",
+        "ErrorType": "invalid"
     },
     {
         "Code":5048,
@@ -717,7 +796,8 @@
         "Explanation":null,
         "Solution":"You will need to ensure that your code is not sending invalid characters.",
         "Property":"shippingDetails.shippingAddress1",
-        "ClientMessage":"The delivery address contains invalid characters."
+        "ClientMessage":"The delivery address contains invalid characters.",
+        "ErrorType": "invalid"
     },
     {
         "Code":3124,
@@ -726,7 +806,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"shippingDetails.shippingAddress2",
-        "ClientMessage":"The delivery address 2 is too long."
+        "ClientMessage":"The delivery address 2 is too long.",
+        "ErrorType": "max"
     },
     {
         "Code":3125,
@@ -735,7 +816,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"shippingDetails.shippingAddress2",
-        "ClientMessage":"The delivery address 2 is too long."
+        "ClientMessage":"The delivery address 2 is too long.",
+        "ErrorType": "max"
     },
     {
         "Code":5049,
@@ -744,7 +826,8 @@
         "Explanation":null,
         "Solution":"You will need to ensure that your code is not sending invalid characters.",
         "Property":"shippingDetails.shippingAddress2",
-        "ClientMessage":"The delivery address 2 contains invalid characters."
+        "ClientMessage":"The delivery address 2 contains invalid characters.",
+        "ErrorType": "invalid"
     },
     {
         "Code":3126,
@@ -753,7 +836,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"shippingDetails.shippingCity",
-        "ClientMessage":"The delivery city is too long."
+        "ClientMessage":"The delivery city is too long.",
+        "ErrorType": "max"
     },
     {
         "Code":5039,
@@ -762,7 +846,8 @@
         "Explanation":null,
         "Solution":"You will need to ensure that your code is not sending invalid characters.",
         "Property":"shippingDetails.shippingCity",
-        "ClientMessage":"The delivery city contains invalid characters."
+        "ClientMessage":"The delivery city contains invalid characters.",
+        "ErrorType": "invalid"
     },
     {
         "Code":3128,
@@ -771,7 +856,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"shippingDetails.shippingCountry",
-        "ClientMessage":"The delivery country is required."
+        "ClientMessage":"The delivery country is required.",
+        "ErrorType": "required"
     },
     {
         "Code":3129,
@@ -780,7 +866,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"shippingDetails.shippingCountry",
-        "ClientMessage":"The delivery country is too long."
+        "ClientMessage":"The delivery country is too long.",
+        "ErrorType": "max"
     },
     {
         "Code":3140,
@@ -789,7 +876,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"shippingDetails.shippingCountry",
-        "ClientMessage":"The delivery country is invalid."
+        "ClientMessage":"The delivery country is invalid.",
+        "ErrorType": "invalid"
     },
     {
         "Code":3025,
@@ -798,7 +886,8 @@
         "Explanation":"The DeliveryPostCode field, if provided, can only contain a maximum of up to 10 characters. If you are providing a value which has more that 10 characters then you will receive this system message.",
         "Solution":"You will need to ensure that your code is not sending more than 10 characters within this field and that no invalid characters are being sent.",
         "Property":"shippingDetails.shippingPostalCode",
-        "ClientMessage":"The delivery postcode is too long."
+        "ClientMessage":"The delivery postcode is too long.",
+        "ErrorType": "max"
     },
     {
         "Code":3094,
@@ -807,7 +896,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"shippingDetails.shippingPostalCode",
-        "ClientMessage":"The delivery postcode is required."
+        "ClientMessage":"The delivery postcode is required.",
+        "ErrorType": "required"
     },
     {
         "Code":3132,
@@ -816,7 +906,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"shippingDetails.shippingState",
-        "ClientMessage":"The delivery state is too long."
+        "ClientMessage":"The delivery state is too long.",
+        "ErrorType": "max"
     },
     {
         "Code":3139,
@@ -825,7 +916,8 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"shippingDetails.shippingState",
-        "ClientMessage":"The delivery state format is invalid."
+        "ClientMessage":"The delivery state format is invalid.",
+        "ErrorType": "invalid"
     },
     {
         "Code":3148,
@@ -834,6 +926,7 @@
         "Explanation":null,
         "Solution":"There is a problem with the details that have been supplied. Please check and retry.",
         "Property":"shippingDetails.shippingState",
-        "ClientMessage":"The delivery state is required."
+        "ClientMessage":"The delivery state is required.",
+        "ErrorType": "required"
     }
 ]
