@@ -1,5 +1,8 @@
 # Sage Pay Integration PSR-7 Message REST API Library
 
+The build is failing while I totally fail to configure phpunit for Travis:
+[![Build Status](https://travis-ci.org/academe/SagePay-Integration.svg?branch=PSR-7)](https://travis-ci.org/academe/SagePay-Integration)
+
 This package provides the data models and business logic for the [Sage Pay Integration](https://test.sagepay.com/documentation/) payment gateway
 (sometimes called the `Pi` or `REST` API).
 It does not provide the transport mechanism (at thisstage), so you can use what you like for that,
