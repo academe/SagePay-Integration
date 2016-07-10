@@ -19,7 +19,7 @@ abstract class AbstractMessage
      */
     public static function constantList($prefix = null)
     {
-        $reflection = new ReflectionClass(__CLASS__);
+        $reflection = new ReflectionClass(get_called_class());
         $constants = $reflection->getConstants();
 
         if (isset($prefix)) {

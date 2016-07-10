@@ -32,7 +32,7 @@ class Address implements AddressInterface
      * @param string $country The country ISO 3166-2 two-letter code
      * @param string $state The last two letters of the ISO 3166-2:US state code
      */
-    public function __construct($address1, $address2, $city, $postalCode, $country, $state)
+    public function __construct($address1, $address2, $city, $postalCode, $country, $state = null)
     {
         // These fields are always mandatory.
         foreach(array('address1', 'city', 'country') as $field_name) {
