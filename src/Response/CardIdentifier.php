@@ -33,8 +33,10 @@ class CardIdentifier extends AbstractResponse
      */
     protected function setData($data)
     {
-        $this->cardIdentifier = Helper::dataGet($data, 'cardIdentifier', null);
-        $this->expiry = Helper::parseDateTime(Helper::dataGet($data, 'expiry', null));
+        $this->cardIdentifier = Helper::dataGet($data, 'cardIdentifier', Helper::dataGet($data, 'card-identifier', null));
+        if ($expiry = Helper::dataGet($data, 'expiry', null)) {
+            $this->expiry = Helper::parseDateTime($expiry);
+        }
         $this->cardType = Helper::dataGet($data, 'cardType', null);
 
         return $this;
@@ -48,7 +50,8 @@ class CardIdentifier extends AbstractResponse
     public static function fromData($data, $httpCode = null)
     {
         $message = new static();
-        return $message->setData($data, $httpCode);
+        $message->setHttpCode($httpCode);
+        return $message->setData($data);
     }
 
     /**
@@ -86,6 +89,8 @@ class CardIdentifier extends AbstractResponse
         // Note that this does not do a remote check with the Sage Pay
         // API. We can only find out if it is really still valid by
         // attempting to use it.
+        // Note that the dropin form does not provide and expiry time,
+        // so will always appear to be expired.
 
         $time_now = new DateTime();
 
@@ -93,11 +98,13 @@ class CardIdentifier extends AbstractResponse
     }
 
     /**
+     * cardIdentifier is from a direct API call and card-identifier is from the drop-in form.
      * @inheritdoc
      */
     public static function isResponse($data)
     {
-        return !empty(Helper::dataGet($data, 'cardIdentifier'));
+        return !empty(Helper::dataGet($data, 'cardIdentifier'))
+            || !empty(Helper::dataGet($data, 'card-identifier'));
     }
 
     /**

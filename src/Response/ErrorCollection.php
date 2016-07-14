@@ -30,7 +30,10 @@ class ErrorCollection extends AbstractResponse implements \IteratorAggregate
         // If there was no "errors" wrapper, then assume what we have is a single error,
         // provided there is a "code" or "statusCode" element at a minimum.
 
-        if (! isset($errors) && ! empty(Helper::dataGet($data, 'code', Helper::dataGet($data, 'statusCode', null)))) {
+        if (
+            ! isset($errors)
+            && ! empty(Helper::dataGet($data, 'code', Helper::dataGet($data, 'statusCode', Helper::dataGet($data, 'card-identifier-error-code', null))))
+        ) {
             $this->add(Error::fromData($data, $this->getHttpCode()));
         } elseif (is_array($errors)) {
             foreach($errors as $error) {
@@ -138,7 +141,8 @@ class ErrorCollection extends AbstractResponse implements \IteratorAggregate
     {
         return is_array(Helper::dataGet($data, 'errors'))
             || Helper::dataGet($data, 'status') == 'Error'
-            || Helper::dataGet($data, 'status') == 'Invalid';
+            || Helper::dataGet($data, 'status') == 'Invalid'
+            || Helper::dataGet($data, 'card-identifier-error-code', '') != '';
     }
 
     /**

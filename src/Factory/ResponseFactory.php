@@ -28,14 +28,20 @@ class ResponseFactory
      * will recursively parse out other messages it contains anyway. It is almost like they
      * shoul be namespaced, since they are all overlapping.
      */
-    public static function parse(ResponseInterface $response)
+    public static function parse($response)
     {
-        // Decoding the body, as that is where all the details will be.
-        $data = Helper::parseBody($response);
+        if ($response instanceof ResponseInterface) {
+            // Decoding the body, as that is where all the details will be.
+            $data = Helper::parseBody($response);
 
-        // Get the overall HTTP status.
-        $http_code = $response->getStatusCode();
-        $http_reason = $response->getReasonPhrase();
+            // Get the overall HTTP status.
+            $http_code = $response->getStatusCode();
+            $http_reason = $response->getReasonPhrase();
+        } else {
+            $data = $response;
+            $http_code = 200;
+            $http_reason = null;
+        }
 
         // A HTTP error code.
         // Some errors may come from Sage Pay. Some may involve not being
@@ -43,12 +49,20 @@ class ResponseFactory
         if ($http_code >= 400 || Response\ErrorCollection::isResponse($data)) {
             // 4xx and 5xx errors.
             // Return an error collection.
-            return new Response\ErrorCollection($response);
+            if ($response instanceof ResponseInterface) {
+                return new Response\ErrorCollection($response);
+            } else {
+                return Response\ErrorCollection::fromData($data, $http_code);
+            }
         }
 
         // A card identifier message.
         if (Response\CardIdentifier::isResponse($data)) {
-            return new Response\CardIdentifier($response);
+            if ($response instanceof ResponseInterface) {
+                return new Response\CardIdentifier($response);
+            } else {
+                return Response\CardIdentifier::fromData($data, $http_code);
+            }
         }
 
         // A payment.

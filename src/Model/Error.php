@@ -132,12 +132,19 @@ class Error implements JsonSerializable
         // https://github.com/academe/SagePay/blob/master/src/Academe/SagePay/Metadata/error-codes.tsv
 
         $code = Helper::dataGet($data, 'code',
-            Helper::dataGet($data, 'statusCode', $httpCode)
+            Helper::dataGet($data, 'statusCode',
+                Helper::dataGet($data, 'card-identifier-error-code', $httpCode)
+            )
         );
 
         $description = Helper::dataGet($data, 'description',
-            Helper::dataGet($data, 'statusDetail', null)
+            Helper::dataGet($data, 'statusDetail',
+                Helper::dataGet($data, 'card-identifier-error-message', null)
+            )
         );
+
+        // The dropin form will pass the remote HTTP code in through this parameter.
+        $httpCode = Helper::dataGet($data, 'card-identifier-http-code', $httpCode);
 
         // If the error refers to form validation problems, then $property will point
         // to the field in error and $clientMessage will provide a message suitable
