@@ -265,4 +265,12 @@ class Countries
     {
         return isset(static::$countries[$code]);
     }
+
+    /**
+     * @return array
+     */
+    public static function getAll()
+    {
+        return static::$countries;
+    }
 }

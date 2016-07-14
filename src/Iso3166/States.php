@@ -82,4 +82,17 @@ class States
     {
         return isset(static::$states[$country][$code]);
     }
+
+    /**
+     * @param string $country_code Optional country to return states for.
+     * @return array
+     */
+    public static function getAll($country_code = null)
+    {
+        if (isset($country_code)) {
+            return isset(static::$states[$country_code]) ? static::$states[$country_code] : [];
+        }
+
+        return static::$states;
+    }
 }
