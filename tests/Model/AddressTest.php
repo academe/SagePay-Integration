@@ -2,9 +2,9 @@
 
 namespace Academe\SagePay\Psr7\Model;
 
-use PHPUnit\Framework\TestCase;
+//use PHPUnit\Framework\TestCase;
 
-class AddressTest extends TestCase
+class AddressTest extends PHPUnit_Framework_TestCase
 {
     protected $simpleGB = [
         'address1' => 'Address1',
