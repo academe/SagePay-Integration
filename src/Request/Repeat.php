@@ -15,7 +15,7 @@ use Academe\SagePay\Psr7\Model\PersonInterface;
 class Repeat extends AbstractRequest
 {
     // Supports the URL "api/v1/transactions/<transactionId>"
-    protected $resource_path = ['transactions', '{transactionId}'];
+    protected $resource_path = ['transactions'];
 
     // Minimum mandatory data (constructor).
     protected $transactionId;
@@ -158,6 +158,7 @@ class Repeat extends AbstractRequest
         // The mandatory fields.
         $result = [
             'transactionType' => static::TRANSACTION_TYPE_REPEAT,
+            'referenceTransactionId' => $this->getTransactionId(),
             'vendorTxCode' => $this->vendorTxCode,
             'amount' => $this->amount->getAmount(),
             'currency' => $this->amount->getCurrencyCode(),
