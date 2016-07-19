@@ -44,8 +44,8 @@ class CardIdentifier extends AbstractResponse
 
     /**
      * @param array|object|string $data
-     * @param null $httpCode
-     * @return mixed
+     * @param null|string $httpCode
+     * @return self
      */
     public static function fromData($data, $httpCode = null)
     {

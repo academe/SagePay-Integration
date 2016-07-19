@@ -124,8 +124,25 @@ class SessionKey extends AbstractResponse
         return [
             'httpCode' => $this->getHttpCode(),
             'merchantSessionKey' => $this->getMerchantSessionKey(),
-            'expiry' => $this->expiry->format(Helper::SAGEPAY_DATE_FORMAT),
+            'expiry' => $this->expiry && $this->expiry->format(Helper::SAGEPAY_DATE_FORMAT),
         ];
+    }
+
+    /**
+     * Create a new instance from stored data.
+     * @param array|object|string $data
+     * @param null|string $httpCode
+     * @return self
+     */
+    public static fromData($data, $httpCode = null)
+    {
+        if (is_string($data)) {
+            $data = json_decode($data);
+        }
+
+        $message = new static();
+        $message->setHttpCode($httpCode);
+        return $message->setData($data);
     }
 
     /**
