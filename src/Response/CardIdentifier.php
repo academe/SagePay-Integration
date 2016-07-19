@@ -120,7 +120,7 @@ class CardIdentifier extends AbstractResponse
         return [
             'httpCode' => $this->getHttpCode(),
             'cardIdentifier' => $this->cardIdentifier,
-            'expiry' => $this->expiry && $this->expiry->format(Helper::SAGEPAY_DATE_FORMAT),
+            'expiry' => $this->expiry ? $this->expiry->format(Helper::SAGEPAY_DATE_FORMAT) : null,
             'cardType' => $this->cardType,
         ];
     }

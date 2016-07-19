@@ -124,7 +124,7 @@ class SessionKey extends AbstractResponse
         return [
             'httpCode' => $this->getHttpCode(),
             'merchantSessionKey' => $this->getMerchantSessionKey(),
-            'expiry' => $this->expiry && $this->expiry->format(Helper::SAGEPAY_DATE_FORMAT),
+            'expiry' => $this->expiry ? $this->expiry->format(Helper::SAGEPAY_DATE_FORMAT) : null,
         ];
     }
 
