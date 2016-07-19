@@ -11,13 +11,16 @@ use Academe\SagePay\Psr7\Request\AbstractRequest;
 
 class Secure3DRedirect extends AbstractResponse
 {
+    /**
+     * The Sage Pay generated transaction ID.
+     * @var
+     */
     protected $transactionId;
 
     /**
      * The acsUrl and paReq should NEVER be stored in the database.
      * @var
      */
-    protected $Secure3D;
     protected $acsUrl;
     protected $paReq;
 

@@ -25,11 +25,11 @@ class Error implements JsonSerializable
     /**
      * @var
      */
-    protected $httpCode;
     protected $code;
     protected $description;
     protected $property;
     protected $clientMessage;
+    protected $httpCode;
 
     /**
      * @param string|int $code The error code supplied by the remote API
@@ -40,11 +40,11 @@ class Error implements JsonSerializable
      */
     public function __construct($code, $description, $property = null, $clientMessage = null, $httpCode = null)
     {
-        $this->httpCode = $httpCode;
         $this->code = $code;
         $this->description = $description;
         $this->property = $property;
         $this->clientMessage = $clientMessage;
+        $this->httpCode = $httpCode;
 
         // Do we have an error code, but no property name (the name of the field that generated the error)?
 
@@ -128,7 +128,9 @@ class Error implements JsonSerializable
         }
 
         // Some errors have a "code" and some have a "statusCode". They amount to
-        // the same thing. See list of codes here:
+        // the same thing.
+        // Also card-identifier-error-code when using the drop-in form.
+        // See list of codes here:
         // https://github.com/academe/SagePay/blob/master/src/Academe/SagePay/Metadata/error-codes.tsv
 
         $code = Helper::dataGet($data, 'code',
@@ -137,6 +139,7 @@ class Error implements JsonSerializable
             )
         );
 
+        // card-identifier-error-message is when using the drop-in form.
         $description = Helper::dataGet($data, 'description',
             Helper::dataGet($data, 'statusDetail',
                 Helper::dataGet($data, 'card-identifier-error-message', null)
@@ -184,11 +187,11 @@ class Error implements JsonSerializable
     public function jsonSerialize()
     {
         $return = [
-            'httpCode' => $this->getHttpCode(),
             'code' => $this->getCode(),
             'description' => $this->getDescription(),
             'property' => $this->getProperty(),
             'clientMessage' => $this->getClientMessage(),
+            'httpCode' => $this->getHttpCode(),
         ];
 
         return $return;

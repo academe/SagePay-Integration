@@ -276,7 +276,7 @@
         "Explanation":null,
         "Solution":"You will need to ensure that your code is not sending invalid characters.",
         "Property":"billingAddress.postalCode",
-        "ClientMessage":"A Postcode field contains invalid characters.",
+        "ClientMessage":"A postcode field contains invalid characters.",
         "ErrorType": "invalid"
     },
     {

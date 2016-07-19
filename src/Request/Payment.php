@@ -365,6 +365,8 @@ class Payment extends AbstractRequest
     public function jsonSerialize()
     {
         // The mandatory fields.
+        // The amount must be cast to an int. Sending an integer as a string will result in
+        // a complaint from the remote gateway.
         $result = [
             'transactionType' => static::TRANSACTION_TYPE_PAYMENT,
             'paymentMethod' => $this->paymentMethod,

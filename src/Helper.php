@@ -147,7 +147,7 @@ abstract class Helper
                 'code' => $message->Code,
                 'property' => $message->Property,
                 'message' => $message->Message,
-                'clientMessage' => isset($message->ClientMessage) ? isset($message->ClientMessage) : null,
+                'clientMessage' => isset($message->ClientMessage) ? $message->ClientMessage : null,
             ];
         }
 
