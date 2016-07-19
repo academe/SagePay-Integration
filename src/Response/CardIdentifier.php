@@ -49,6 +49,10 @@ class CardIdentifier extends AbstractResponse
      */
     public static function fromData($data, $httpCode = null)
     {
+        if (is_string($data)) {
+            $data = json_decode($data);
+        }
+
         $message = new static();
         $message->setHttpCode($httpCode);
         return $message->setData($data);
