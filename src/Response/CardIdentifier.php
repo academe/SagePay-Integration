@@ -108,7 +108,7 @@ class CardIdentifier extends AbstractResponse
     }
 
     /**
-     * Reduce the object to an array so it can be serialised.
+     * Reduce the object to an array so it can be serialised and stored between pages.
      * @return array
      */
     public function jsonSerialize()
@@ -116,7 +116,7 @@ class CardIdentifier extends AbstractResponse
         return [
             'httpCode' => $this->getHttpCode(),
             'cardIdentifier' => $this->cardIdentifier,
-            'expiry' => $this->expiry->format(Helper::SAGEPAY_DATE_FORMAT),
+            'expiry' => $this->expiry && $this->expiry->format(Helper::SAGEPAY_DATE_FORMAT),
             'cardType' => $this->cardType,
         ];
     }
