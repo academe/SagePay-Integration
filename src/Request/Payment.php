@@ -369,7 +369,7 @@ class Payment extends AbstractRequest
             'transactionType' => static::TRANSACTION_TYPE_PAYMENT,
             'paymentMethod' => $this->paymentMethod,
             'vendorTxCode' => $this->vendorTxCode,
-            'amount' => $this->amount->getAmount(),
+            'amount' => (int)$this->amount->getAmount(),
             'currency' => $this->amount->getCurrencyCode(),
             'description' => $this->description,
             'billingAddress' => $this->billingAddress,
