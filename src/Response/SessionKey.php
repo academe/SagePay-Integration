@@ -134,7 +134,7 @@ class SessionKey extends AbstractResponse
      * @param null|string $httpCode
      * @return self
      */
-    public static fromData($data, $httpCode = null)
+    public static function fromData($data, $httpCode = null)
     {
         if (is_string($data)) {
             $data = json_decode($data);
