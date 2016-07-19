@@ -12,6 +12,7 @@
 
 use Academe\SagePay\Psr7\Response\CardIdentifier;
 use Academe\SagePay\Psr7\Response\SessionKey;
+use Academe\SagePay\Psr7\Helper;
 
 class Card implements PaymentMethodInterface
 {
@@ -27,6 +28,25 @@ class Card implements PaymentMethodInterface
     {
         $this->cardIdentifier = $cardIdentifier;
         $this->sessionKey = $sessionKey;
+    }
+
+    /**
+     * Construct an instance from stored data (e.g. JSON serialised object).
+     */
+    public static function fromData($data)
+    {
+        if (is_string($data)) {
+            $data = json_decode($data);
+        }
+
+        if ($card = Helper::dataGet($data, 'card')) {
+            $data = $card;
+        }
+
+        return new static(
+            SessionKey::fromData(['merchantSessionKey' => Helper::dataGet($data, 'merchantSessionKey')]),
+            CardIdentifier::fromData(['cardIdentifier' => Helper::dataGet($data, 'cardIdentifier')])
+        );
     }
 
     /**
