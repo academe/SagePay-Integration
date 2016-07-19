@@ -110,8 +110,12 @@ class Payment extends AbstractRequest
         $this->amount = $amount;
         $this->billingAddress = $billingAddress->withFieldPrefix('');
         $this->customer = $customer->withFieldPrefix($this->customerFieldsPrefix);
-        $this->shippingAddress = $shippingAddress->withFieldPrefix($this->shippingAddressFieldPrefix);
-        $this->shippingRecipient = $shippingRecipient->withFieldPrefix($this->shippingNameFieldPrefix);
+        if (isset($shippingAddress)) {
+            $this->shippingAddress = $shippingAddress->withFieldPrefix($this->shippingAddressFieldPrefix);
+        }
+        if (isset($shippingRecipient)) {
+            $this->shippingRecipient = $shippingRecipient->withFieldPrefix($this->shippingNameFieldPrefix);
+        }
 
         $this->setOptions($options);
     }
