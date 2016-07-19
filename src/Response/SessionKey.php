@@ -129,23 +129,6 @@ class SessionKey extends AbstractResponse
     }
 
     /**
-     * Create a new instance from stored data.
-     * @param array|object|string $data
-     * @param null|string $httpCode
-     * @return self
-     */
-    public static function fromData($data, $httpCode = null)
-    {
-        if (is_string($data)) {
-            $data = json_decode($data);
-        }
-
-        $message = new static();
-        $message->setHttpCode($httpCode);
-        return $message->setData($data);
-    }
-
-    /**
      * Return the authorisation HTTP headers for the session key.
      */
     public function getAuthHeaders()
