@@ -85,7 +85,12 @@ class ResponseFactory
         // embedded in a Payment, and so need to be pulled out separately
         // from there.
         if (Response\Secure3D::isResponse($data)) {
-            return new Response\Secure3D($response);
+            if ($response instanceof ResponseInterface) {
+                return new Response\Secure3D($response);
+            } else {
+                return Response\Secure3D::fromData($data, $http_code);
+            }
+
         }
 
         // PaymentMethod response.
