@@ -15,20 +15,18 @@ class Secure3D extends AbstractResponse
     /**
      * List of statuses that the 3DSecure object can return.
      */
-    const RESULT3D_AUTHENTICATED = 'Authenticated';
-    const RESULT3D_FORCE = 'Force';
-    const RESULT3D_NOTCHECKED = 'NotChecked';
-    const RESULT3D_NOTAUTHENTICATED = 'NotAuthenticated';
-    const RESULT3D_ERROR = 'Error';
-    const RESULT3D_CARDNOTENROLLED = 'CardNotEnrolled';
-    const RESULT3D_ISSUERNOTENROLLED = 'IssuerNotEnrolled';
+    const STATUS3D_AUTHENTICATED = 'Authenticated';
+    const STATUS3D_FORCE = 'Force';
+    const STATUS3D_NOTCHECKED = 'NotChecked';
+    const STATUS3D_NOTAUTHENTICATED = 'NotAuthenticated';
+    const STATUS3D_ERROR = 'Error';
+    const STATUS3D_CARDNOTENROLLED = 'CardNotEnrolled';
+    const STATUS3D_ISSUERNOTENROLLED = 'IssuerNotEnrolled';
 
     /**
-     * The 3D Secure status, which annoyingly has the same name as the overall
-     * transaction status in the message data, so we will call it "result" to
-     * same some confusion.
+     * The 3D Secure status.
      */
-    protected $result;
+    protected $status;
 
     /**
      * @param $data
@@ -36,16 +34,16 @@ class Secure3D extends AbstractResponse
      */
     protected function setData($data)
     {
-        $this->result = Helper::dataGet($data, '3DSecure.status', null);
+        $this->status = Helper::dataGet($data, '3DSecure.status', null);
         return $this;
     }
 
     /**
-     * The 3D Secure result.
+     * The 3D Secure status.
      */
-    public function getResult()
+    public function getStatus()
     {
-        return $this->result;
+        return $this->status;
     }
 
     /**
@@ -62,7 +60,7 @@ class Secure3D extends AbstractResponse
      */
     public function isSuccess()
     {
-        return $this->getStatus() == static::RESULT3D_AUTHENTICATED;
+        return $this->getStatus() == static::STATUS3D_AUTHENTICATED;
     }
 
     /**
@@ -73,7 +71,7 @@ class Secure3D extends AbstractResponse
     {
         $return = parent::jsonSerialize();
 
-        $return['result'] = $this->getResult();
+        $return['3DSecure'] = ['status' => $this->getStatus()];
 
         return $return;
     }
