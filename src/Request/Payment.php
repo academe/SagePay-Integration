@@ -29,7 +29,6 @@ class Payment extends AbstractRequest
 
     // Optional or overridable data.
     protected $entryMethod;
-    protected $recurringIndicator;
     protected $giftAid = false;
     protected $applyAvsCvcCheck;
     protected $apply3DSecure;
@@ -59,9 +58,6 @@ class Payment extends AbstractRequest
     const ENTRY_METHOD_ECOMMERCE                    = 'Ecommerce';
     const ENTRY_METHOD_MAILORDER                    = 'MailOrder';
     const ENTRY_METHOD_TELEPHONEORDER               = 'TelephoneOrder';
-
-    const RECURRING_INDICATOR_RECURRING             = 'Recurring';
-    const RECURRING_INDICATOR_INSTALMENT            = 'Instalment';
 
     const APPLY_AVS_CVC_CHECK_USEMSPSETTING         = 'UseMSPSetting';
     const APPLY_AVS_CVC_CHECK_FORCE                 = 'Force';
@@ -157,45 +153,6 @@ class Payment extends AbstractRequest
     public static function getEntryMethods()
     {
         return static::constantList('ENTRY_METHOD');
-    }
-
-    /**
-     * @param $recurringIndicator
-     * @return $this
-     */
-    protected function setRecurringIndicator($recurringIndicator)
-    {
-        // Get the value from the class constants.
-        $value = $this->constantValue('RECURRING_INDICATOR', $recurringIndicator);
-
-        if ( ! $value) {
-            throw new UnexpectedValueException(sprintf(
-                'Unknown recurringIndicator "%s"; require one of %s',
-                (string)$recurringIndicator,
-                implode(', ', static::getRecurringIndicators())
-            ));
-        }
-
-        $this->recurringIndicator = $value;
-        return $this;
-    }
-
-    /**
-     * @param $recurringIndicator
-     * @return mixed
-     */
-    public function withRecurringIndicator($recurringIndicator)
-    {
-        $copy = clone $this;
-        return $copy->setRecurringIndicator($recurringIndicator);
-    }
-
-    /**
-     * @return array
-     */
-    public static function getRecurringIndicators()
-    {
-        return static::constantList('RECURRING_INDICATOR');
     }
 
     /**
@@ -402,10 +359,6 @@ class Payment extends AbstractRequest
 
         if ( ! empty($this->entryMethod)) {
             $result['entryMethod'] = $this->entryMethod;
-        }
-
-        if ( ! empty($this->recurringIndicator)) {
-            $result['recurringIndicator'] = $this->recurringIndicator;
         }
 
         if ( ! empty($this->giftAid)) {

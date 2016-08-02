@@ -18,7 +18,7 @@ class Secure3DRedirect extends AbstractResponse
     protected $transactionId;
 
     /**
-     * The acsUrl and paReq should NEVER be stored in the database.
+     * The acsUrl and paReq should not be stored in the database.
      * @var
      */
     protected $acsUrl;
