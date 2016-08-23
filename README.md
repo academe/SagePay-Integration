@@ -208,14 +208,6 @@ $payment = new Request\Payment(
 
 );
 
-// Want to set as a recurring payment, e.g. a subscription?
-// Future payments can be taken with the `Request\Repeat` message referencing the
-// `transactionId` of this `Response\Payment`.
-$payment = $payment->withRecurringIndicator(Request\Payment::RECURRING_INDICATOR_RECURRING);
-
-// Alternatively it counld be added as an option when first creating the payment:
-[... 'RecurringIndicator' => Request\Payment::RECURRING_INDICATOR_RECURRING, ...]
-
 // Send it to Sage Pay.
 $psr7_response = $client->send($payment->message());
 

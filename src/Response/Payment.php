@@ -31,7 +31,7 @@ class Payment extends AbstractResponse
     protected function setData($data)
     {
         // Check we are not trying to shoehorn in a 3D Secure Redirect
-        if (Secure3DRedirect::isResponse($data)) {
+        if (isset($data['3DSecure']) && Secure3DRedirect::isResponse($data['3DSecure'])) {
             throw new UnexpectedValueException('3DSecure redirect response detected; use Response\Secure3DRedirect class');
         }
 

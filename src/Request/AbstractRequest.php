@@ -20,8 +20,12 @@ use Academe\SagePay\Psr7\Factory\DiactorosFactory;
 abstract class AbstractRequest extends AbstractMessage implements JsonSerializable
 {
     // Transaction types.
-    const TRANSACTION_TYPE_PAYMENT = 'Payment';
-    const TRANSACTION_TYPE_REPEAT = 'Repeat';
+    const TRANSACTION_TYPE_PAYMENT  = 'Payment';
+    const TRANSACTION_TYPE_REPEAT   = 'Repeat';
+    const TRANSACTION_TYPE_REFUND   = 'Refund';
+
+    // Instruction types.
+    const INSTRUCTION_TYPE_VOID     = 'void';
 
     protected $endpoint;
     protected $auth;

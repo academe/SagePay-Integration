@@ -15,13 +15,13 @@ class Secure3D extends AbstractResponse
     /**
      * List of statuses that the 3DSecure object can return.
      */
-    const STATUS3D_AUTHENTICATED = 'Authenticated';
-    const STATUS3D_FORCE = 'Force';
-    const STATUS3D_NOTCHECKED = 'NotChecked';
-    const STATUS3D_NOTAUTHENTICATED = 'NotAuthenticated';
-    const STATUS3D_ERROR = 'Error';
-    const STATUS3D_CARDNOTENROLLED = 'CardNotEnrolled';
-    const STATUS3D_ISSUERNOTENROLLED = 'IssuerNotEnrolled';
+    const STATUS3D_AUTHENTICATED        = 'Authenticated';
+    const STATUS3D_FORCE                = 'Force';
+    const STATUS3D_NOTCHECKED           = 'NotChecked';
+    const STATUS3D_NOTAUTHENTICATED     = 'NotAuthenticated';
+    const STATUS3D_ERROR                = 'Error';
+    const STATUS3D_CARDNOTENROLLED      = 'CardNotEnrolled';
+    const STATUS3D_ISSUERNOTENROLLED    = 'IssuerNotEnrolled';
 
     /**
      * The 3D Secure status.
@@ -51,7 +51,7 @@ class Secure3D extends AbstractResponse
      */
     public static function isResponse($data)
     {
-        return !empty(Helper::dataGet($data, '3DSecure.status'));
+        return !empty(Helper::dataGet($data, 'status'));
     }
 
     /**
@@ -71,7 +71,7 @@ class Secure3D extends AbstractResponse
     {
         $return = parent::jsonSerialize();
 
-        $return['3DSecure'] = ['status' => $this->getStatus()];
+        $return['status'] = $this->getStatus();
 
         return $return;
     }
