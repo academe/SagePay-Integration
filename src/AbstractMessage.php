@@ -62,7 +62,7 @@ abstract class AbstractMessage
      * @param $message MessageInterface
      * @return array|mixed
      */
-    public function parseBody(MessageInterface $message)
+    public static function parseBody(MessageInterface $message)
     {
         return Helper::parseBody($message);
     }

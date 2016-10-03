@@ -5,6 +5,7 @@ namespace Academe\SagePay\Psr7\Money;
 /**
  * Defines a currency.
  * Only supports currencies that SagePay supports.
+ * TODO: create a CurrencyInterface for this.
  */
 
 use UnexpectedValueException;

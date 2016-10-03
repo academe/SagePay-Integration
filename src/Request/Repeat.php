@@ -56,8 +56,8 @@ class Repeat extends AbstractRequest
         $vendorTxCode,
         AmountInterface $amount,
         $description,
-        AddressInterface $shippingAddress = null,
-        PersonInterface $shippingRecipient = null
+        Model\AddressInterface $shippingAddress = null,
+        Model\PersonInterface $shippingRecipient = null
     ) {
         $this->setEndpoint($endpoint);
         $this->setAuth($auth);

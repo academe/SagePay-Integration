@@ -16,12 +16,14 @@ class Secure3D extends AbstractResponse
      * List of statuses that the 3DSecure object can return.
      */
     const STATUS3D_AUTHENTICATED        = 'Authenticated';
-    const STATUS3D_FORCE                = 'Force';
     const STATUS3D_NOTCHECKED           = 'NotChecked';
     const STATUS3D_NOTAUTHENTICATED     = 'NotAuthenticated';
     const STATUS3D_ERROR                = 'Error';
     const STATUS3D_CARDNOTENROLLED      = 'CardNotEnrolled';
     const STATUS3D_ISSUERNOTENROLLED    = 'IssuerNotEnrolled';
+    const STATUS3D_MALFORMEDORINVALID   = 'MalformedOrInvalid';
+    const STATUS3D_ATTEMPTONLY          = 'AttemptOnly';
+    const STATUS3D_INCOMPLETE           = 'Incomplete';
 
     /**
      * The 3D Secure status.
@@ -34,7 +36,7 @@ class Secure3D extends AbstractResponse
      */
     protected function setData($data)
     {
-        $this->status = Helper::dataGet($data, '3DSecure.status', null);
+        $this->status = Helper::dataGet($data, 'status', null);
         return $this;
     }
 
@@ -48,15 +50,7 @@ class Secure3D extends AbstractResponse
 
     /**
      * @inheritdoc
-     */
-    public static function isResponse($data)
-    {
-        return !empty(Helper::dataGet($data, 'status'));
-    }
-
-    /**
-     * @inheritdoc
-     * CHECKME: any other statuses considered sucessful?
+     * CHECKME: any other statuses considered sucessfull?
      */
     public function isSuccess()
     {
@@ -69,7 +63,8 @@ class Secure3D extends AbstractResponse
      */
     public function jsonSerialize()
     {
-        $return = parent::jsonSerialize();
+        //$return = parent::jsonSerialize();
+        $return = [];
 
         $return['status'] = $this->getStatus();
 

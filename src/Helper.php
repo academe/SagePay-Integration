@@ -73,14 +73,15 @@ abstract class Helper
         try {
             if (is_string($date)) {
                 // Supplied timestamp string should be ISO 8601 format.
-                // Use a default UTC timezone for any relative dates that SagePay
-                // may give us. Hopefully that won't be the case.
+                // Use a default UTC timezone for any relative dates without a timezone that
+                // Sage Pay may send. From the "02-09-2016 v1" API all dates will use
+                // ISO 8601 format, e.g. "2016-09-26T15:34:37.761000+01:00"
 
                 $datetime = new DateTime($date, new DateTimeZone('UTC'));
             } elseif ($date instanceof DateTime) {
                 $datetime = $date;
             } elseif (is_int($date)) {
-                // Teat as a unix timestamp.
+                // Treat as a unix timestamp.
                 $datetime = new DateTime();
                 $datetime->setTimestamp($date);
             } else {

@@ -9,7 +9,6 @@
 use Psr\Http\Message\ResponseInterface;
 use ArrayIterator;
 use Academe\SagePay\Psr7\Helper;
-use Academe\SagePay\Psr7\Model\Error;
 
 class ErrorCollection extends AbstractResponse implements \IteratorAggregate
 {
@@ -22,27 +21,38 @@ class ErrorCollection extends AbstractResponse implements \IteratorAggregate
      * @param $data
      * @return $this
      */
-    protected function setData($data)
+    protected function setData($data, $httpCode = null)
     {
+        if ($httpCode) {
+            $this->setHttpCode($httpCode);
+        }
+
         // A list of errors will be provided in a wrapping "errors" element.
         $errors = Helper::dataGet($data, 'errors', null);
 
-        // If there was no "errors" wrapper, then assume what we have is a single error,
-        // provided there is a "code" or "statusCode" element at a minimum.
-
-        if (
-            ! isset($errors)
-            && ! empty(Helper::dataGet($data, 'code', Helper::dataGet($data, 'statusCode', Helper::dataGet($data, 'card-identifier-error-code', null))))
-        ) {
-            $this->add(Error::fromData($data, $this->getHttpCode()));
-        } elseif (is_array($errors)) {
+        if (is_array($errors)) {
             foreach($errors as $error) {
                 // The $error may be an Error object or an array.
-                $this->add(Error::fromData($error, $this->getHttpCode()));
+                $this->add(Model\Error::fromData($error, $this->getHttpCode()));
             }
+        } else {
+            // No list of errors, so take the data as a single error.
+            $this->add(Model\Error::fromData($data, $this->getHttpCode()));
         }
 
         return $this;
+    }
+
+    /**
+     * Simplified version of what is in the AbstractResponse since we don't need to
+     * check if there are any errors returns; we are here because this *is* an error
+     * being parsed.
+     *
+     * @inheritdoc
+     */
+    public static function fromHttpResponse(ResponseInterface $response)
+    {
+        return new static($response);
     }
 
     /**
@@ -51,7 +61,7 @@ class ErrorCollection extends AbstractResponse implements \IteratorAggregate
      *
      * @param Error $item An Error instance to add
      */
-    public function add(Error $item)
+    public function add(Model\Error $item)
     {
         $this->items[] = $item;
     }
@@ -140,7 +150,7 @@ class ErrorCollection extends AbstractResponse implements \IteratorAggregate
     public static function isResponse($data)
     {
         return is_array(Helper::dataGet($data, 'errors'))
-            || Helper::dataGet($data, 'status') == 'Error'
+            || Helper::dataGet($data, 'status') == 'Error' // FIXME: This will potentially catch a valid 3DSecure message.
             || Helper::dataGet($data, 'status') == 'Invalid'
             || Helper::dataGet($data, 'card-identifier-error-code', '') != '';
     }

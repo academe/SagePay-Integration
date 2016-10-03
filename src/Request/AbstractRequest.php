@@ -214,17 +214,33 @@ abstract class AbstractRequest extends AbstractMessage implements JsonSerializab
 
     /**
      * Return as a PSR-7 request message.
-     * @return \GuzzleHttp\Psr7\Request|\Zend\Diactoros\Request
+     * @return \Psr\Http\Message\RequestInterface
      * @throws Exception
      */
-    public function message()
+    public function createHttpRequest()
     {
+        // If the data is protected from accidental serialisation, then
+        // pull it out through the protected method.
+        if (method_exists($this, 'jsonSerializePeek')) {
+            $body = json_encode($this->jsonSerializePeek());
+        } else {
+            $body = json_encode($this);
+        }
+
         return $this->getFactory(true)->JsonRequest(
             $this->getMethod(),
             $this->getUrl(),
             $this->getHeaders(),
-            method_exists($this, 'jsonSerializePeek') ? json_encode($this->jsonSerializePeek()) : json_encode($this)
+            $body
         );
+    }
+
+    /**
+     * @deprecated Use more appropriately named createHttpRequest()
+     */
+    public function message()
+    {
+        return $this->createHttpRequest();
     }
 
     /**

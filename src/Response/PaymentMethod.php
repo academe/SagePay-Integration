@@ -18,6 +18,7 @@ class PaymentMethod extends AbstractResponse
     /**
      * The payment method type.
      * Supports: just "card" at this time.
+     * TODO: So should this be an abstract, with Model\Card as an instance?
      */
     protected $type;
 
@@ -36,12 +37,14 @@ class PaymentMethod extends AbstractResponse
      */
     protected function setData($data)
     {
-        if (Helper::dataGet($data, 'paymentMethod.card', null)) {
+        // FIXME: put these card details into a PaymentMethod Card response object.
+        // FIXME: make the paymentMethod wrapper optional.
+        if (Helper::dataGet($data, 'card', null)) {
             $this->type = 'card';
 
-            $this->cardType = Helper::dataGet($data, 'paymentMethod.card.cardType', null);
-            $this->lastFourDigits = Helper::dataGet($data, 'paymentMethod.card.lastFourDigits', null);
-            $this->expiryDate = Helper::dataGet($data, 'paymentMethod.card.expiryDate', null);
+            $this->cardType = Helper::dataGet($data, 'card.cardType', null);
+            $this->lastFourDigits = Helper::dataGet($data, 'card.lastFourDigits', null);
+            $this->expiryDate = Helper::dataGet($data, 'card.expiryDate', null);
         }
 
         return $this;
@@ -115,20 +118,13 @@ class PaymentMethod extends AbstractResponse
     }
 
     /**
-     * @inheritdoc
-     */
-    public static function isResponse($data)
-    {
-        return !empty(Helper::dataGet($data, 'paymentMethod'));
-    }
-
-    /**
      * Convenient serialisation for logging and debugging.
      * @return array
      */
     public function jsonSerialize()
     {
-        $return = parent::jsonSerialize();
+        //$return = parent::jsonSerialize();
+        $return = [];
 
         $return['paymentType'] = $this->getPaymentType();
 

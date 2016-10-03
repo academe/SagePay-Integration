@@ -12,8 +12,6 @@ use Academe\SagePay\Psr7\Model\Endpoint;
 use Academe\SagePay\Psr7\Model\Auth;
 use Academe\SagePay\Psr7\PaymentMethod\PaymentMethodInterface;
 use Academe\SagePay\Psr7\Money\AmountInterface;
-use Academe\SagePay\Psr7\Model\AddressInterface;
-use Academe\SagePay\Psr7\Model\PersonInterface;
 
 class Payment extends AbstractRequest
 {
@@ -87,14 +85,14 @@ class Payment extends AbstractRequest
     public function __construct(
         Endpoint $endpoint,
         Auth $auth,
-        PaymentMethodInterface $paymentMethod,
+        Model\PaymentMethodInterface $paymentMethod,
         $vendorTxCode,
         AmountInterface $amount,
         $description,
-        AddressInterface $billingAddress,
-        PersonInterface $customer,
-        AddressInterface $shippingAddress = null,
-        PersonInterface $shippingRecipient = null,
+        Model\AddressInterface $billingAddress,
+        Model\PersonInterface $customer,
+        Model\AddressInterface $shippingAddress = null,
+        Model\PersonInterface $shippingRecipient = null,
         array $options = []
     ) {
         $this->setEndpoint($endpoint);

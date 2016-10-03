@@ -13,7 +13,7 @@ use Academe\SagePay\Psr7\Helper;
 use Psr\Http\Message\ResponseInterface;
 use Academe\SagePay\Psr7\Request\AbstractRequest;
 
-class Repeat extends AbstractResponse
+class Repeat extends AbstractTransaction
 {
     protected $transactionId;
     protected $transactionType;
@@ -37,9 +37,10 @@ class Repeat extends AbstractResponse
         $this->retrievalReference       = Helper::dataGet($data, 'retrievalReference', null);
         $this->bankAuthorisationCode    = Helper::dataGet($data, 'bankAuthorisationCode', null);
 
-        if (PaymentMethod::isResponse($data)) {
+        $paymentMethod = Helper::dataGet($data, 'paymentMethod');
+        if ($paymentMethod) {
             // Create a PaymentMethod object from the array data.
-            $this->paymentMethod = PaymentMethod::fromData($data, $this->getHttpCode());
+            $this->paymentMethod = PaymentMethod::fromData($paymentMethod, $this->getHttpCode());
         }
 
         return $this;
@@ -88,15 +89,6 @@ class Repeat extends AbstractResponse
     public function getPaymentMethod()
     {
         return $this->paymentMethod;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public static function isResponse($data)
-    {
-        return !empty(Helper::dataGet($data, 'transactionId'))
-            && Helper::dataGet($data, 'transactionType') == AbstractRequest::TRANSACTION_TYPE_REPEAT;
     }
 
     /**

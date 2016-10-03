@@ -107,24 +107,14 @@ class SessionKey extends AbstractResponse
     }
 
     /**
-     * @inheritdoc
-     */
-    public static function isResponse($data)
-    {
-        return !empty(Helper::dataGet($data, 'merchantSessionKey'))
-            && !empty(Helper::dataGet($data, 'expiry'));
-    }
-
-    /**
      * Reduce the object to an array so it can be serialised.
      * @return array
      */
     public function jsonSerialize()
     {
         return [
-            'httpCode' => $this->getHttpCode(),
             'merchantSessionKey' => $this->getMerchantSessionKey(),
-            'expiry' => $this->expiry ? $this->expiry->format(Helper::SAGEPAY_DATE_FORMAT) : null,
+            'expiry' => $this->getExpiry() ? $this->getExpiry()->format(Helper::SAGEPAY_DATE_FORMAT) : null,
         ];
     }
 

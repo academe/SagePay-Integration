@@ -12,7 +12,7 @@ use Psr\Http\Message\ResponseInterface;
 use Academe\SagePay\Psr7\Request\AbstractRequest;
 use UnexpectedValueException;
 
-class Payment extends AbstractResponse
+class Payment extends AbstractTransaction
 {
     protected $transactionId;
     protected $transactionType;
@@ -30,25 +30,19 @@ class Payment extends AbstractResponse
      */
     protected function setData($data)
     {
-        // Check we are not trying to shoehorn in a 3D Secure Redirect
-        if (isset($data['3DSecure']) && Secure3DRedirect::isResponse($data['3DSecure'])) {
-            throw new UnexpectedValueException('3DSecure redirect response detected; use Response\Secure3DRedirect class');
-        }
-
         // Note the resource is called "3DSecure" and not "Secure3D" as used
         // for valid class, method and variable names.
 
-        if (Secure3D::isResponse($data)) {
+        $secure3D = Helper::dataGet($data, '3DSecure');
+        if ($secure3D) {
             // Create a 3DSecure object from the array data.
-            $this->secure3D = Secure3D::fromData($data, $this->getHttpCode());
-        } else {
-            // Just take whatever was given, if anything.
-            $this->secure3D = Helper::dataGet($data, '3DSecure', null);
+            $this->secure3D = Secure3D::fromData(Helper::dataGet($secure3D, '3DSecure'));
         }
 
-        if (PaymentMethod::isResponse($data)) {
+        $paymentMethod = Helper::dataGet($data, 'paymentMethod');
+        if ($paymentMethod) {
             // Create a PaymentMethod object from the array data.
-            $this->paymentMethod = PaymentMethod::fromData($data, $this->getHttpCode());
+            $this->paymentMethod = PaymentMethod::fromData($paymentMethod, $this->getHttpCode());
         }
 
         $this->transactionId = Helper::dataGet($data, 'transactionId', null);
@@ -135,18 +129,6 @@ class Payment extends AbstractResponse
     public function getPaymentMethod()
     {
         return $this->paymentMethod;
-    }
-
-    /**
-     * Determine whether the response data looks like this kind of message.
-     *
-     * @param array $data Response message body data.
-     * @return boolean True if the data matches this kind of response.
-     */
-    public static function isResponse($data)
-    {
-        return !empty(Helper::dataGet($data, 'transactionId'))
-            && Helper::dataGet($data, 'transactionType') == AbstractRequest::TRANSACTION_TYPE_PAYMENT;
     }
 
     /**

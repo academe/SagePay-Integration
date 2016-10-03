@@ -1,4 +1,6 @@
-<?php namespace Academe\SagePay\Psr7\Model;
+<?php
+
+namespace Academe\SagePay\Psr7\Response\Model;
 
 /**
  * Value object to hold an error, returned by SagePay when posting a transaction.
@@ -23,40 +25,51 @@ use Academe\SagePay\Psr7\Helper;
 class Error implements JsonSerializable
 {
     /**
-     * @var
+     * @var The http response code.
+     */
+    protected $httpCode;
+
+    /**
+     * @var The basic error code and description, if available.
      */
     protected $code;
     protected $description;
+
+    /**
+     * @var The property name and client-safe explanation, if available.
+     */
     protected $property;
     protected $clientMessage;
-    protected $httpCode;
 
     /**
      * @param string|int $code The error code supplied by the remote API
      * @param string $description The textual detail of the error
-     * @param string|null $property The property name (field name) of the property the error applies to
+     * @param string|null $property The name of the property the error applies to
      * @param string|null $clientMessage
      * @param integer|null $httpCode
      */
-    public function __construct($code, $description, $property = null, $clientMessage = null, $httpCode = null)
+    public function __construct($httpCode, $code = null, $description = null, $property = null, $clientMessage = null)
     {
-        $this->code = $code;
-        $this->description = $description;
-        $this->property = $property;
-        $this->clientMessage = $clientMessage;
         $this->httpCode = $httpCode;
 
+        $this->code = $code;
+        $this->description = $description;
+
+        $this->property = $property;
+        $this->clientMessage = $clientMessage;
+
         // Do we have an error code, but no property name (the name of the field that generated the error)?
+        // If so, we can derive the property name and a client-safe error message.
 
         if (empty($this->property) && !empty($this->code)) {
             // Try to derive the property name.
 
             $error_map = Helper::readErrorPropertyMap();
 
-            // Found one; capture the property name.
-            // Capture the "clientMessage" too if there is one.
-
             if (array_key_exists($this->code, $error_map)) {
+                // Found one; capture the property name.
+                // Capture the "clientMessage" too if there is one.
+
                 $this->property = $error_map[$this->code]['property'];
 
                 if (empty($this->clientMessage) && isset($error_map[$this->code]['clientMessage'])) {
@@ -67,7 +80,17 @@ class Error implements JsonSerializable
     }
 
     /**
-     * @return string The error code supplied by the remote API
+     * @return int|string|null The HTTP code associated with the error, if available
+     */
+    public function getHttpCode()
+    {
+        return $this->httpCode;
+    }
+
+    /**
+     * Normally a four-digit numeric code.
+     *
+     * @return null|string The error code supplied by the remote API.
      */
     public function getCode()
     {
@@ -75,7 +98,7 @@ class Error implements JsonSerializable
     }
 
     /**
-     * @return string The textual detail of the error
+     * @return null|string The textual detail of the error.
      */
     public function getDescription()
     {
@@ -96,14 +119,6 @@ class Error implements JsonSerializable
     public function getClientMessage()
     {
         return $this->clientMessage;
-    }
-
-    /**
-     * @return int|string|null The HTTP code associated with the error, if available
-     */
-    public function getHttpCode()
-    {
-        return $this->httpCode;
     }
 
     /**
@@ -129,19 +144,21 @@ class Error implements JsonSerializable
 
         // Some errors have a "code" and some have a "statusCode". They amount to
         // the same thing.
+        // FIXME: Not it doesn't - the statusCode is for transactions only.
+
         // Also card-identifier-error-code when using the drop-in form.
         // See list of codes here:
         // https://github.com/academe/SagePay/blob/master/src/Academe/SagePay/Metadata/error-codes.tsv
 
         $code = Helper::dataGet($data, 'code',
-            Helper::dataGet($data, 'statusCode',
+            Helper::dataGet($data, 'statusCode', // FIXME: remove this
                 Helper::dataGet($data, 'card-identifier-error-code', $httpCode)
             )
         );
 
         // card-identifier-error-message is when using the drop-in form.
         $description = Helper::dataGet($data, 'description',
-            Helper::dataGet($data, 'statusDetail',
+            Helper::dataGet($data, 'statusDetail', // FIXME: remove this
                 Helper::dataGet($data, 'card-identifier-error-message', null)
             )
         );
@@ -177,7 +194,7 @@ class Error implements JsonSerializable
         $property = Helper::dataGet($data, 'property', null);
         $clientMessage = Helper::dataGet($data, 'clientMessage', null);
 
-        return new static($code, $description, $property, $clientMessage, $httpCode);
+        return new static($httpCode, $code, $description, $property, $clientMessage);
     }
 
     /**
@@ -187,11 +204,11 @@ class Error implements JsonSerializable
     public function jsonSerialize()
     {
         $return = [
+            'httpCode' => $this->getHttpCode(),
             'code' => $this->getCode(),
             'description' => $this->getDescription(),
             'property' => $this->getProperty(),
             'clientMessage' => $this->getClientMessage(),
-            'httpCode' => $this->getHttpCode(),
         ];
 
         return $return;

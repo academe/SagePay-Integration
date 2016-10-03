@@ -10,102 +10,101 @@ namespace Academe\SagePay\Psr7\Factory;
  * application would otherwise have to deal with.
  */
 
-use Psr\Http\Message\ResponseInterface;
-use Academe\SagePay\Psr7\Helper;
-use Academe\SagePay\Psr7\Response;
-use Academe\SagePay\Psr7\Request\AbstractRequest;
 use Academe\SagePay\Psr7\Response\AbstractResponse;
+use Academe\SagePay\Psr7\Request\AbstractRequest;
+use Psr\Http\Message\ResponseInterface;
+use Academe\SagePay\Psr7\Response;
+use Academe\SagePay\Psr7\Helper;
+use Teapot\StatusCode\Http;
 
 class ResponseFactory
 {
     /**
-     * Parse a PSR-7 Response message.
-     * TODO: handle 500+ errors.
-     * TODO: as a response can contain multiple messages combined into one (e.g. a payment method,
-     * a payment result and a 3D Secure result) then a method would be helpful to list all the
-     * responses that have been detected, then parse can take a parameter to limit its parsing
-     * to just one of those messages if needed. However, parsing of some messages (e.g. Payment)
-     * will recursively parse out other messages it contains anyway. It is almost like they
-     * shoul be namespaced, since they are all overlapping.
+     * Return a response instance from a PSR-7 Response message.
      */
-    public static function parse($response)
+    public static function fromHttpResponse(ResponseInterface $response)
     {
-        if ($response instanceof ResponseInterface) {
-            // Decoding the body, as that is where all the details will be.
-            $data = Helper::parseBody($response);
+        // Decode the body for the returned data.
+        $data = Helper::parseBody($response);
 
-            // Get the overall HTTP status.
-            $http_code = $response->getStatusCode();
-            $http_reason = $response->getReasonPhrase();
-        } else {
-            $data = $response;
-            $http_code = 200;
-            $http_reason = null;
-        }
+        // Get the HTTP status.
+        $httpCode = $response->getStatusCode();
+        $httpReason = $response->getReasonPhrase();
 
-        // A HTTP error code.
-        // Some errors may come from Sage Pay. Some may involve not being
-        // able to contact Sage Pay at all.
-        if ($http_code >= 400 || Response\ErrorCollection::isResponse($data)) {
+        // Return the response object.
+        return static::fromData($data, $httpCode);
+    }
+
+    /**
+     * Return a response instance from response data.
+     */
+    public static function fromData($data, $httpCode = null)
+    {
+        // An error or error collection.
+        if ($httpCode >= Http::BAD_REQUEST || Helper::dataGet($data, 'errors')) {
             // 4xx and 5xx errors.
             // Return an error collection.
-            if ($response instanceof ResponseInterface) {
-                return new Response\ErrorCollection($response);
-            } else {
-                return Response\ErrorCollection::fromData($data, $http_code);
-            }
+            return Response\ErrorCollection::fromData($data, $httpCode);
         }
 
-        // A card identifier message.
-        if (Response\CardIdentifier::isResponse($data)) {
-            if ($response instanceof ResponseInterface) {
-                return new Response\CardIdentifier($response);
-            } else {
-                return Response\CardIdentifier::fromData($data, $http_code);
-            }
+        // Session key.
+        if (
+            Helper::dataGet($data, 'merchantSessionKey')
+            && Helper::dataGet($data, 'expiry')
+        ) {
+            return Response\SessionKey::fromData($data, $httpCode);
+        }
+
+        // A card identifier.
+        if (
+            Helper::dataGet($data, 'cardIdentifier')
+            || Helper::dataGet($data, 'card-identifier')
+        ) {
+            return Response\CardIdentifier::fromData($data, $httpCode);
         }
 
         // A payment.
-        if (Response\Payment::isResponse($data)) {
-            return new Response\Payment($response);
+        if (
+            Helper::dataGet($data, 'transactionId')
+            && Helper::dataGet($data, 'transactionType') == AbstractRequest::TRANSACTION_TYPE_PAYMENT
+        ) {
+            return Response\Payment::fromData($data, $httpCode);
         }
 
         // A repeat payment.
-        if (Response\Repeat::isResponse($data)) {
-            return new Response\Repeat($response);
-        }
-
-        // Session key
-        if (Response\SessionKey::isResponse($data)) {
-            return new Response\SessionKey($response);
+        if (
+            Helper::dataGet($data, 'transactionId')
+            && Helper::dataGet($data, 'transactionType') == AbstractRequest::TRANSACTION_TYPE_REPEAT
+        ) {
+            return Response\Repeat::fromData($data, $httpCode);
         }
 
         // 3D Secure response.
-        // This is a 3D Secure response *on its own*. They also appear
-        // embedded in a Payment, and so need to be pulled out separately
-        // from there.
-        if (Response\Secure3D::isResponse($data)) {
-            if ($response instanceof ResponseInterface) {
-                return new Response\Secure3D($response);
-            } else {
-                return Response\Secure3D::fromData($data, $http_code);
-            }
+        // This is the simplest of all the messages - just a status and nothing else.
+        // Make sure there is no transactionType field.
 
+        $secure3dStatusList = Response\Secure3D::constantList('STATUS3D');
+        $status = Helper::dataGet($data, 'status');
+
+        if ($status && in_array($status, $secure3dStatusList) && ! Helper::dataGet($data, 'transactionId')) {
+            return Response\Secure3D::fromData($data, $httpCode);
         }
 
         // PaymentMethod response.
         // This is a PaymentMethod response *on its own*. They also appear
         // embedded in a Payment, and so need to be pulled out separately
         // from there.
-        if (Response\PaymentMethod::isResponse($data)) {
-            return new Response\PaymentMethod($response);
+        $paymentMethod = Helper::dataGet($data, 'paymentMethod');
+        if ($paymentMethod) {
+            return Response\PaymentMethod::fromData($paymentMethod, $httpCode);
         }
 
-        // A 3D Secure redirect is required.
-        if (Response\Secure3DRedirect::isResponse($data)) {
-            return new Response\Secure3DRedirect($response);
+        // A 3D Secure redirect.
+        if (
+            Helper::dataGet($data, 'statusCode') == '2007'
+            && Helper::dataGet($data, 'status') == AbstractResponse::STATUS_3DAUTH
+        ) {
+            return Response\Secure3DRedirect::fromData($data, $httpCode);
         }
-
-        return $data;
     }
 }
