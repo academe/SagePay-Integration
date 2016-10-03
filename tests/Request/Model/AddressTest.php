@@ -1,6 +1,6 @@
 <?php
 
-namespace Academe\SagePay\Psr7\Model;
+namespace Academe\SagePay\Psr7\Request\Model;
 
 //use PHPUnit\Framework\TestCase;
 

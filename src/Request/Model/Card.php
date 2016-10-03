@@ -41,17 +41,12 @@ class Card implements PaymentMethodInterface
     protected $save;
 
     /**
-     * @var Captured (safe) details for the card.
-     * TODO: move these to response card class (this is requestcard class).
-     */
-    protected $cardType;
-    protected $lastFourDigits;
-    protected $expiryDate; // MMYY
-
-    /**
      * Card constructor.
+     *
      * @param SessionKey $sessionKey
      * @param CardIdentifier $cardIdentifier
+     * @param boolean $reusable True if this identifier is a reusable card token, created earlier.
+     * @param boolean $save True so (re)save this identifier as a card token for future use.
      */
     public function __construct(SessionKey $sessionKey, CardIdentifier $cardIdentifier, $reusable = null, $save = null)
     {
