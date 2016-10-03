@@ -42,6 +42,7 @@ class Card implements PaymentMethodInterface
 
     /**
      * Card constructor.
+     * TODO: support the text "true" and "false" for the boolean flags.
      *
      * @param SessionKey $sessionKey
      * @param CardIdentifier $cardIdentifier

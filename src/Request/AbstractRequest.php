@@ -7,15 +7,15 @@ namespace Academe\SagePay\Psr7\Request;
  * Contains base methods that request messages will use.
  */
 
-use Exception;
-use UnexpectedValueException;
-use JsonSerializable;
 use Academe\SagePay\Psr7\AbstractMessage;
 use Academe\SagePay\Psr7\Model\Endpoint;
 use Academe\SagePay\Psr7\Model\Auth;
 use Academe\SagePay\Psr7\Factory\FactoryInterface;
-use Academe\SagePay\Psr7\Factory\GuzzleFactory;
 use Academe\SagePay\Psr7\Factory\DiactorosFactory;
+use Academe\SagePay\Psr7\Factory\GuzzleFactory;
+use UnexpectedValueException;
+use JsonSerializable;
+use Exception;
 
 abstract class AbstractRequest extends AbstractMessage implements JsonSerializable
 {

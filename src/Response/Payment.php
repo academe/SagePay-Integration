@@ -39,10 +39,18 @@ class Payment extends AbstractTransaction
             $this->secure3D = Secure3D::fromData(Helper::dataGet($secure3D, '3DSecure'));
         }
 
+// FIXME: do we need PaymentMethod as a factory to return the Card? Do we need it at all (is is ever the sole response).
+/*
         $paymentMethod = Helper::dataGet($data, 'paymentMethod');
         if ($paymentMethod) {
             // Create a PaymentMethod object from the array data.
-            $this->paymentMethod = PaymentMethod::fromData($paymentMethod, $this->getHttpCode());
+            $this->paymentMethod = PaymentMethod::fromData($paymentMethod);
+        }
+*/
+        $paymentMethod = Helper::dataGet($data, 'paymentMethod.card');
+        if ($paymentMethod) {
+            // Create a PaymentMethod object from the array data.
+            $this->paymentMethod = Model\Card::fromData($paymentMethod);
         }
 
         $this->transactionId = Helper::dataGet($data, 'transactionId', null);

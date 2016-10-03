@@ -7,8 +7,8 @@
  */
 
 use Psr\Http\Message\ResponseInterface;
-use ArrayIterator;
 use Academe\SagePay\Psr7\Helper;
+use ArrayIterator;
 
 class ErrorCollection extends AbstractResponse implements \IteratorAggregate
 {
