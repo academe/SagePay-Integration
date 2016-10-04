@@ -50,7 +50,7 @@ class Secure3D extends AbstractResponse
 
     /**
      * @inheritdoc
-     * CHECKME: any other statuses considered sucessfull?
+     * FIXME: any other statuses considered sucessful? e.g. is "not checked" a success?
      */
     public function isSuccess()
     {

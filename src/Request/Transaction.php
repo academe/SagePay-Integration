@@ -1,50 +1,52 @@
-<?php
-
-namespace Academe\SagePay\Psr7\Request;
+<?php namespace Academe\SagePay\Psr7\Request;
 
 /**
- * The transaction value object to send a transaction to Sage Pay.
- * See https://test.sagepay.com/documentation/#transactions
- *
- * @deprecated Use Payment instead.
+ * Request the result of a transaction, stored on Sage Pay servers.
+ * See "Retrieve and Transaction" https://test.sagepay.com/documentation/#transactions
  */
 
-use UnexpectedValueException;
-use Academe\SagePay\Psr7\Model\Endpoint;
 use Academe\SagePay\Psr7\Model\Auth;
-use Academe\SagePay\Psr7\PaymentMethod\PaymentMethodInterface;
-use Academe\SagePay\Psr7\Money\AmountInterface;
-use Academe\SagePay\Psr7\Model\AddressInterface;
-use Academe\SagePay\Psr7\Model\PersonInterface;
+use Academe\SagePay\Psr7\Model\Endpoint;
 
-class Transaction extends Payment
+class Transaction extends AbstractRequest
 {
-    public function __construct(
-        Endpoint $endpoint,
-        Auth $auth,
-        $transactionType,
-        PaymentMethodInterface $paymentMethod,
-        $vendorTxCode,
-        AmountInterface $amount,
-        $description,
-        AddressInterface $billingAddress,
-        PersonInterface $customer,
-        AddressInterface $shippingAddress = null,
-        PersonInterface $shippingRecipient = null,
-        array $options = []
-    ) {
-        parent::__construct(
-            $endpoint,
-            $auth,
-            $paymentMethod,
-            $vendorTxCode,
-            $amount,
-            $description,
-            $billingAddress,
-            $customer,
-            $shippingAddress,
-            $shippingRecipient,
-            $options
-        );
+    protected $resource_path = ['transactions', '{transactionId}'];
+    protected $method = 'GET';
+    protected $transactionId;
+
+    /**
+     * @param Endpoint $endpoint
+     * @param Auth $auth
+     * @param string $transactionId The ID that Sage Pay gave to the transaction
+     */
+    public function __construct(Endpoint $endpoint, Auth $auth, $transactionId)
+    {
+        $this->setEndpoint($endpoint);
+        $this->setAuth($auth);
+        $this->transactionId = $transactionId;
     }
+
+    /**
+     * @return string
+     */
+    public function getTransactionId()
+    {
+        return $this->transactionId;
+    }
+
+    /**
+     * Get the message body data for serializing.
+     * There is no body data for this message.
+     */
+    public function jsonSerialize()
+    {
+    }
+
+    /**
+     * @return array
+     */
+    public function getHeaders()
+    {
+        return $this->getBasicAuthHeaders();
+    } 
 }

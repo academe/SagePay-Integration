@@ -79,6 +79,14 @@ class ResponseFactory
             return Response\Repeat::fromData($data, $httpCode);
         }
 
+        // A refund payment.
+        if (
+            Helper::dataGet($data, 'transactionId')
+            && Helper::dataGet($data, 'transactionType') == AbstractRequest::TRANSACTION_TYPE_REFUND
+        ) {
+            return Response\Refund::fromData($data, $httpCode);
+        }
+
         // 3D Secure response.
         // This is the simplest of all the messages - just a status and nothing else.
         // Make sure there is no transactionType field.
@@ -88,15 +96,6 @@ class ResponseFactory
 
         if ($status && in_array($status, $secure3dStatusList) && ! Helper::dataGet($data, 'transactionId')) {
             return Response\Secure3D::fromData($data, $httpCode);
-        }
-
-        // PaymentMethod response.
-        // This is a PaymentMethod response *on its own*. They also appear
-        // embedded in a Payment, and so need to be pulled out separately
-        // from there.
-        $paymentMethod = Helper::dataGet($data, 'paymentMethod');
-        if ($paymentMethod) {
-            return Response\PaymentMethod::fromData($paymentMethod, $httpCode);
         }
 
         // A 3D Secure redirect.

@@ -126,18 +126,6 @@ abstract class AbstractResponse extends AbstractMessage implements Http, RFC4918
     }
 
     /**
-     * Set the usual three status fields from body data.
-     * @param array $data The response message body data.
-     * @return null
-     */
-    protected function setStatuses($data)
-    {
-        $this->status       = Helper::dataGet($data, 'status', null);
-        $this->statusCode   = Helper::dataGet($data, 'statusCode', null);
-        $this->statusDetail = Helper::dataGet($data, 'statusDetail', null);
-    }
-
-    /**
      * There is a status (e.g. Ok), a statusCode (e.g. 2007), and a statusDetail (e.g. Transaction authorised).
      * Also there is a HTTP return code (e.g. 202). All are needed in different contexts.
      * However, there is a hint that the "status" may be removed, relying on the HTTP return code instead.

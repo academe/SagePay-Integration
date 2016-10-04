@@ -4,8 +4,9 @@ namespace Academe\SagePay\Psr7\Response;
 
 /**
  * Shared transaction response abstract.
- * TODO: create a fromHttpResponse() that returns ANY of the supported transaction responses.
  */
+
+use Academe\SagePay\Psr7\Helper;
 
 abstract class AbstractTransaction extends AbstractResponse
 {
@@ -43,6 +44,32 @@ abstract class AbstractTransaction extends AbstractResponse
     public function getStatusDetail()
     {
         return $this->statusDetail;
+    }
+
+    /**
+     * Set the usual three status fields from body data.
+     * @param array $data The response message body data.
+     * @return null
+     */
+    protected function setStatuses($data)
+    {
+        $this->status       = Helper::dataGet($data, 'status', null);
+        $this->statusCode   = Helper::dataGet($data, 'statusCode', null);
+        $this->statusDetail = Helper::dataGet($data, 'statusDetail', null);
+    }
+
+    protected function setPaymentMethod($data)
+    {
+        $paymentMethod = Helper::dataGet($data, 'paymentMethod');
+
+        if ($paymentMethod) {
+            $card = Helper::dataGet($paymentMethod, 'card');
+
+            if ($card) {
+                // Create a PaymentMethod object from the array data.
+                $this->paymentMethod = Model\Card::fromData($card);
+            }
+        }
     }
 
     /**

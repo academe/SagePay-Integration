@@ -7,9 +7,9 @@ namespace Academe\SagePay\Psr7\Response;
  * See Secrure3DRedirect for when the result is 3D Secure redirect.
  */
 
-use Academe\SagePay\Psr7\Helper;
-use Psr\Http\Message\ResponseInterface;
 use Academe\SagePay\Psr7\Request\AbstractRequest;
+use Psr\Http\Message\ResponseInterface;
+use Academe\SagePay\Psr7\Helper;
 use UnexpectedValueException;
 
 class Payment extends AbstractTransaction
@@ -36,21 +36,7 @@ class Payment extends AbstractTransaction
         $secure3D = Helper::dataGet($data, '3DSecure');
         if ($secure3D) {
             // Create a 3DSecure object from the array data.
-            $this->secure3D = Secure3D::fromData(Helper::dataGet($secure3D, '3DSecure'));
-        }
-
-// FIXME: do we need PaymentMethod as a factory to return the Card? Do we need it at all (is is ever the sole response).
-/*
-        $paymentMethod = Helper::dataGet($data, 'paymentMethod');
-        if ($paymentMethod) {
-            // Create a PaymentMethod object from the array data.
-            $this->paymentMethod = PaymentMethod::fromData($paymentMethod);
-        }
-*/
-        $paymentMethod = Helper::dataGet($data, 'paymentMethod.card');
-        if ($paymentMethod) {
-            // Create a PaymentMethod object from the array data.
-            $this->paymentMethod = Model\Card::fromData($paymentMethod);
+            $this->secure3D = Secure3D::fromData($secure3D);
         }
 
         $this->transactionId = Helper::dataGet($data, 'transactionId', null);
@@ -59,6 +45,13 @@ class Payment extends AbstractTransaction
         $this->retrievalReference = Helper::dataGet($data, 'retrievalReference', null);
         $this->bankResponseCode = Helper::dataGet($data, 'bankResponseCode', null);
         $this->bankAuthorisationCode = Helper::dataGet($data, 'bankAuthorisationCode', null);
+
+        $this->setPaymentMethod($data);
+        $this->setStatuses($data);
+
+        // TODO: optional "amount" and "currency", available only when fetching an
+        // existing payment from Sage Pay.
+        // e.g. "amount": {"totalAmount": 10000, "saleAmount": 10000, "surchargeAmount": 0}, "currency" : "GBP",
 
         return $this;
     }
