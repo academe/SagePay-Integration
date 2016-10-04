@@ -9,14 +9,8 @@ use Academe\SagePay\Psr7\Helper;
 use Psr\Http\Message\ResponseInterface;
 use Academe\SagePay\Psr7\Request\AbstractRequest;
 
-class Secure3DRedirect extends AbstractResponse
+class Secure3DRedirect extends AbstractTransaction
 {
-    /**
-     * The Sage Pay generated transaction ID.
-     * @var
-     */
-    protected $transactionId;
-
     /**
      * The acsUrl and paReq should not be stored in the database.
      * @var
@@ -30,20 +24,13 @@ class Secure3DRedirect extends AbstractResponse
      */
     protected function setData($data)
     {
+        $this->setStatuses($data);
+
         $this->transactionId = Helper::dataGet($data, 'transactionId', null);
         $this->acsUrl = Helper::dataGet($data, 'acsUrl', null);
         $this->paReq = Helper::dataGet($data, 'paReq', null);
 
         return $this;
-    }
-
-    /**
-     * The ID given to the transaction by Sage Pay.
-     * @return mixed
-     */
-    public function getTransactionId()
-    {
-        return $this->transactionId;
     }
 
     /**

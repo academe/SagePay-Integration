@@ -4,6 +4,6 @@
  * The Refund transaction has the same fields as a Repeat transaction.
  */
 
-class Refund extends Repeat
+class Refund extends AbstractTransaction
 {
 }

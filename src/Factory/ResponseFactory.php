@@ -10,7 +10,7 @@ namespace Academe\SagePay\Psr7\Factory;
  * application would otherwise have to deal with.
  */
 
-use Academe\SagePay\Psr7\Response\AbstractResponse;
+use Academe\SagePay\Psr7\Response\AbstractTransaction;
 use Academe\SagePay\Psr7\Request\AbstractRequest;
 use Psr\Http\Message\ResponseInterface;
 use Academe\SagePay\Psr7\Response;
@@ -101,7 +101,7 @@ class ResponseFactory
         // A 3D Secure redirect.
         if (
             Helper::dataGet($data, 'statusCode') == '2007'
-            && Helper::dataGet($data, 'status') == AbstractResponse::STATUS_3DAUTH
+            && Helper::dataGet($data, 'status') == AbstractTransaction::STATUS_3DAUTH
         ) {
             return Response\Secure3DRedirect::fromData($data, $httpCode);
         }

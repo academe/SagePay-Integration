@@ -40,11 +40,36 @@ abstract class AbstractTransaction extends AbstractResponse
     protected $secure3D;
     protected $paymentMethod;
 
+    protected $currency;
+
     protected $totalAmount;
     protected $saleAmount;
     protected $surchargeAmount;
 
-    protected $currency;
+    /**
+     * @param $data
+     * @return $this
+     */
+    protected function setData($data)
+    {
+        // Note the resource is called "3DSecure" and not "Secure3D" as used
+        // for valid class, method and variable names.
+
+        $this->transactionId = Helper::dataGet($data, 'transactionId', null);
+        $this->transactionType = Helper::dataGet($data, 'transactionType', null);
+
+        $this->retrievalReference = Helper::dataGet($data, 'retrievalReference', null);
+        $this->bankResponseCode = Helper::dataGet($data, 'bankResponseCode', null);
+        $this->bankAuthorisationCode = Helper::dataGet($data, 'bankAuthorisationCode', null);
+
+        // Common fields.
+        $this->setPaymentMethod($data);
+        $this->setStatuses($data);
+        $this->set3dSecure($data);
+        $this->setAmount($data);
+
+        return $this;
+    }
 
     /**
      * @return string The numeric code that represents the status detail.
@@ -228,28 +253,36 @@ abstract class AbstractTransaction extends AbstractResponse
      */
     public function jsonSerialize()
     {
-        // Status details.
-        $return = [
-            'httpCode' => $this->getHttpCode(),
-            'status' => $this->getStatus(),
-            'statusCode' => $this->getStatusCode(),
-            'statusDetail' => $this->getStatusDetail(),
-        ];
+        $return = [];
 
         // Transaction context.
         $return['transactionId'] = $this->transactionId;
         $return['transactionType'] = $this->transactionType;
 
-        if ($secure3D = $this->get3DSecure()) {
-            $return['3DSecure'] = $secure3D;
+        // Status details.
+        $return['httpCode'] = $this->getHttpCode();
+        $return['status'] = $this->getStatus();
+        $return['statusCode'] = $this->getStatusCode();
+        $return['statusDetail'] = $this->getStatusDetail();
+
+        if (($retrievalReference = $this->getRetrievalReference()) !== null) {
+            $return['retrievalReference'] = $retrievalReference;
+        }
+
+        if (($bankResponseCode = $this->getBankResponseCode()) !== null) {
+            $return['bankResponseCode'] = $bankResponseCode;
+        }
+
+        if (($bankAuthorisationCode = $this->getBankAuthorisationCode()) !== null) {
+            $return['bankAuthorisationCode'] = $bankAuthorisationCode;
         }
 
         if ($paymentMethod = $this->getPaymentMethod()) {
             $return['paymentMethod'] = $paymentMethod;
         }
 
-        if ($currency = $this->getCurrency()) {
-            $return['currency'] = $currency->getCode();
+        if ($secure3D = $this->get3DSecure()) {
+            $return['3DSecure'] = $secure3D;
         }
 
         $amount = [];
@@ -270,16 +303,8 @@ abstract class AbstractTransaction extends AbstractResponse
             $return['amount'] = $amount;
         }
 
-        if (($retrievalReference = $this->getRetrievalReference()) !== null) {
-            $return['retrievalReference'] = $retrievalReference;
-        }
-
-        if (($bankResponseCode = $this->getBankResponseCode()) !== null) {
-            $return['bankResponseCode'] = $bankResponseCode;
-        }
-
-        if (($bankAuthorisationCode = $this->getBankAuthorisationCode()) !== null) {
-            $return['bankAuthorisationCode'] = $bankAuthorisationCode;
+        if ($currency = $this->getCurrency()) {
+            $return['currency'] = $currency->getCode();
         }
 
         return $return;
