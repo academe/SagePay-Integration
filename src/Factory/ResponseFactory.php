@@ -99,6 +99,8 @@ class ResponseFactory
         }
 
         // A 3D Secure redirect.
+        // Like Secure3D, this one does not have a TransactionType, though shares many fields
+        // with the abstract transaction response.
         if (
             Helper::dataGet($data, 'statusCode') == '2007'
             && Helper::dataGet($data, 'status') == AbstractTransaction::STATUS_3DAUTH
