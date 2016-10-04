@@ -14,15 +14,6 @@ use Psr\Http\Message\ResponseInterface;
 
 class Repeat extends AbstractTransaction
 {
-    protected $transactionId;
-    protected $transactionType;
-
-    protected $retrievalReference;
-    protected $bankResponseCode;
-    protected $bankAuthorisationCode;
-
-    protected $paymentMethod;
-
     /**
      * @param $data
      * @return $this
@@ -33,57 +24,15 @@ class Repeat extends AbstractTransaction
         $this->transactionType          = Helper::dataGet($data, 'transactionType', null);
 
         $this->retrievalReference       = Helper::dataGet($data, 'retrievalReference', null);
+        $this->bankResponseCode         = Helper::dataGet($data, 'bankResponseCode', null);
         $this->bankAuthorisationCode    = Helper::dataGet($data, 'bankAuthorisationCode', null);
 
         $this->setPaymentMethod($data);
         $this->setStatuses($data);
+        $this->set3dSecure($data);
+        $this->setAmount($data);
 
         return $this;
-    }
-
-    /**
-     * The ID given to the transaction by Sage Pay.
-     * @return mixed
-     */
-    public function getTransactionId()
-    {
-        return $this->transactionId;
-    }
-
-    /**
-     * The type of the transaction.
-     * @return mixed
-     */
-    public function getTransactionType()
-    {
-        return $this->transactionType;
-    }
-
-    /**
-     * Sage Pay unique Authorisation Code for a successfully authorised
-     * transaction. Only present if Status is OK (or Ok).
-     * @return mixed
-     */
-    public function getRetrievalReference()
-    {
-        return $this->retrievalReference;
-    }
-
-    /**
-     * The authorisation code returned from your merchant bank.
-     * @return mixed
-     */
-    public function getBankAuthorisationCode()
-    {
-        return $this->bankAuthorisationCode;
-    }
-
-    /**
-     * @return PaymentMethod|null The payment method object, if available.
-     */
-    public function getPaymentMethod()
-    {
-        return $this->paymentMethod;
     }
 
     /**
@@ -93,16 +42,6 @@ class Repeat extends AbstractTransaction
     public function jsonSerialize()
     {
         $return = parent::jsonSerialize();
-
-        $return['transactionId'] = $this->transactionId;
-        $return['transactionType'] = $this->transactionType;
-
-        $return['retrievalReference'] = $this->retrievalReference;
-        $return['bankAuthorisationCode'] = $this->bankAuthorisationCode;
-
-        if ($paymentMethod = $this->getPaymentMethod()) {
-            $return['paymentMethod'] = $paymentMethod;
-        }
 
         return $return;
     }
