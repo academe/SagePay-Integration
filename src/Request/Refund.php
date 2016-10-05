@@ -127,12 +127,4 @@ class Refund extends AbstractRequest
 
         return $result;
     }
-
-    /**
-     * @return array
-     */
-    public function getHeaders()
-    {
-        return $this->getBasicAuthHeaders();
-    } 
 }

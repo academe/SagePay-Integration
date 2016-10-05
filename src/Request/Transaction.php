@@ -1,4 +1,6 @@
-<?php namespace Academe\SagePay\Psr7\Request;
+<?php
+
+namespace Academe\SagePay\Psr7\Request;
 
 /**
  * Request the result of a transaction, stored on Sage Pay servers.
@@ -41,12 +43,4 @@ class Transaction extends AbstractRequest
     public function jsonSerialize()
     {
     }
-
-    /**
-     * @return array
-     */
-    public function getHeaders()
-    {
-        return $this->getBasicAuthHeaders();
-    } 
 }

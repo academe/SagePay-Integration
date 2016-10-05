@@ -107,5 +107,10 @@ class ResponseFactory
         ) {
             return Response\Secure3DRedirect::fromData($data, $httpCode);
         }
+
+        // A void instruction.
+        if (Helper::dataGet($data, 'instructionType') == 'void') {
+            return Response\Void::fromData($data, $httpCode);
+        }
     }
 }

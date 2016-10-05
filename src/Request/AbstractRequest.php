@@ -127,12 +127,13 @@ abstract class AbstractRequest extends AbstractMessage implements JsonSerializab
     }
 
     /**
+     * Use this if your transport tool does not do "Basic Auth" out of the box.
      * @returns array Headers for the request, usually the authentication headers.
      */
     public function getHeaders()
     {
-        return [];
-    }
+        return $this->getBasicAuthHeaders();
+    } 
 
     /**
      * @returns string The HTTP method that the 
