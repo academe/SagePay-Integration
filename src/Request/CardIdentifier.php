@@ -1,14 +1,16 @@
 <?php namespace Academe\SagePay\Psr7\Request;
 
 /**
- * Value object to hold the card details, for sending to SagePay.
+ * Request message for sending card details to Sage Pay.
+ *
  * The card details will normally only be given values in advance
  * during testing. In production this will be left empty and this
  * class just used as a helper for generating the card field on the
  * merchant site form.
+ *
  * But with the right PCI compliance, the details could be captured
  * by the merchant site and sent direct to SagePay server-to-server,
- * as SagePay Direct would.
+ * as Sage Pay Direct would.
  */
 
 use Academe\SagePay\Psr7\Model\Auth;

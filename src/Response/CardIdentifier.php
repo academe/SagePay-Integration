@@ -1,8 +1,9 @@
 <?php namespace Academe\SagePay\Psr7\Response;
 
 /**
- * Value object to hold the card identifier, returned by SagePay.
- * Reasonable validation is done at creation.
+ * Value object to hold the card identifier, returned by Sage Pay.
+ * This is just the temporary card identifier linked to a merchant session.
+ * Once it is used for the first time, it can be saved and becomes more permanent.
  */
 
 use DateTime;
@@ -85,8 +86,7 @@ class CardIdentifier extends AbstractResponse
         return [
             'cardIdentifier' => $this->getCardIdentifier(),
             'expiry' => $this->getExpiry() ? $this->getExpiry()->format(Helper::SAGEPAY_DATE_FORMAT) : null,
-            'cardType' => $this->getCardType(),
-            'httpCode' => $this->getHttpCode(),
+            'cardType' => $this->getCardType()
         ];
     }
 }

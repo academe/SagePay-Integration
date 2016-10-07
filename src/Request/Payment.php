@@ -324,7 +324,7 @@ class Payment extends AbstractRequest
         // a complaint from the remote gateway.
         $result = [
             'transactionType' => static::TRANSACTION_TYPE_PAYMENT,
-            'paymentMethod' => $this->paymentMethod,
+            'paymentMethod' => $this->paymentMethod->payData(),
             'vendorTxCode' => $this->vendorTxCode,
             'amount' => (int)$this->amount->getAmount(),
             'currency' => $this->amount->getCurrencyCode(),

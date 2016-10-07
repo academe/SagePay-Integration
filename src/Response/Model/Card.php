@@ -6,10 +6,11 @@ namespace Academe\SagePay\Psr7\Response\Model;
  * Card details response object.
  */
 
+use Academe\SagePay\Psr7\Request\Model\PaymentMethodInterface;
 use Academe\SagePay\Psr7\Helper;
 use JsonSerializable;
 
-class Card implements JsonSerializable
+class Card implements JsonSerializable, PaymentMethodInterface
 {
     /**
      * @var Tokenised card.
@@ -22,8 +23,12 @@ class Card implements JsonSerializable
     protected $reusable;
 
     /**
+     * @var Flag indicates this card is to be saved so it can be used again.
+     */
+    protected $save;
+
+    /**
      * @var Captured (safe) details for the card.
-     * TODO: move these to response card class (this is requestcard class).
      */
     protected $cardType;
     protected $lastFourDigits;
@@ -43,7 +48,8 @@ class Card implements JsonSerializable
         $lastFourDigits = null,
         $expiryDate = null,
         $cardIdentifier = null,
-        $reusable = null
+        $reusable = null,
+        $save = null
     ) {
         if (isset($cardType)) {
             $this->cardType = $cardType;
@@ -64,6 +70,13 @@ class Card implements JsonSerializable
 
         if (isset($reusable)) {
             $this->reusable = (bool)$reusable;
+        }
+        if (isset($reusable)) {
+            $this->reusable = (bool)$reusable;
+        }
+
+        if (isset($save)) {
+            $this->save = (bool)$save;
         }
     }
 
@@ -124,6 +137,42 @@ class Card implements JsonSerializable
     }
 
     /**
+     * Tells you if this is a reusable card token.
+     *
+     * @return boolean
+     */
+    public function isReusable()
+    {
+        return $this->reusable === true;
+    }
+
+    /**
+     * Content of the reusable flag.
+     *
+     * @return boolean|null
+     */
+    public function getReusable()
+    {
+        return $this->reusable;
+    }
+
+    /**
+     * Sets or resets the save flag.
+     * Used if the save flag needs to be changed after retrieving the card
+     * object from storage.
+     *
+     * @returnb self
+     */
+    public function withSave($save = true)
+    {
+        $clone = clone $this;
+
+        $clone->save = (bool)$save;
+
+        return $clone;
+    }
+
+    /**
      * Getter for the type of credit card.
      * There is no definitive list of card types, but "Visa", "MasterCard" and
      * "American Express" are given as examples.
@@ -179,5 +228,28 @@ class Card implements JsonSerializable
         }
 
         return substr($expiry, 2, 2);
+    }
+
+    /**
+     * Return the body partial for request construction.
+     * @return array
+     */
+    public function payData()
+    {
+        $message = [
+            'card' => [
+                'cardIdentifier' => $this->cardIdentifier,
+            ],
+        ];
+
+        if ($this->reusable !== null) {
+            $message['card']['reusable'] = $this->reusable;
+        }
+
+        if ($this->save !== null) {
+            $message['card']['save'] = $this->save;
+        }
+
+        return $message;
     }
 }

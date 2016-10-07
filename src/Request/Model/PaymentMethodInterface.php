@@ -8,4 +8,10 @@ namespace Academe\SagePay\Psr7\Request\Model;
 
 interface PaymentMethodInterface extends \JsonSerializable
 {
+    /**
+     * Returns the data that needs to be serialized when making a payment.
+     *
+     * @return array
+     */
+    public function payData();
 }

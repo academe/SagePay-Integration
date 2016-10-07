@@ -31,36 +31,23 @@ class Card implements PaymentMethodInterface
     protected $cardIdentifier;
 
     /**
-     * @var Flag indicates this is a reusable card identifier; it has been used before.
-     */
-    protected $reusable;
-
-    /**
-     * @var Flag indicates this card identifier must be saved on next use, so it can be used again.
-     */
-    protected $save;
-
-    /**
      * Card constructor.
-     * TODO: support the text "true" and "false" for the boolean flags.
+     * TODO: this CardIdentifier is from the initial tokenisation of a card only. We may want to
+     * use a saved card, which is something else.
      *
      * @param SessionKey $sessionKey
      * @param CardIdentifier $cardIdentifier
      * @param boolean $reusable True if this identifier is a reusable card token, created earlier.
      * @param boolean $save True so (re)save this identifier as a card token for future use.
      */
-    public function __construct(SessionKey $sessionKey, CardIdentifier $cardIdentifier, $reusable = null, $save = null)
+    public function __construct(SessionKey $sessionKey, CardIdentifier $cardIdentifier, $save = null)
     {
-        if (isset($reusable)) {
-            $this->reusable = (bool)$reusable;
-        }
+        $this->cardIdentifier = $cardIdentifier;
+        $this->sessionKey = $sessionKey;
 
         if (isset($save)) {
             $this->save = (bool)$save;
         }
-
-        $this->cardIdentifier = $cardIdentifier;
-        $this->sessionKey = $sessionKey;
     }
 
     /**
@@ -86,7 +73,7 @@ class Card implements PaymentMethodInterface
     }
 
     /**
-     * Return the body partial for message construction.
+     * Return the complete object data for serialized storage.
      * @return array
      */
     public function jsonSerialize()
@@ -98,9 +85,30 @@ class Card implements PaymentMethodInterface
             ],
         ];
 
-        if ($this->reusable !== null) {
-            $message['card']['reusable'] = $this->reusable;
-        }
+        return $message;
+    }
+
+    /**
+     * Sets or resets the save flag.
+     *
+     * @returnb self
+     */
+    public function withSave($save = true)
+    {
+        $clone = clone $this;
+
+        $clone->save = (bool)$save;
+
+        return $clone;
+    }
+
+    /**
+     * Return the body partial for request construction.
+     * @return array
+     */
+    public function payData()
+    {
+        $message = $this->jsonSerialize();
 
         if ($this->save !== null) {
             $message['card']['save'] = $this->save;
