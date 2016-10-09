@@ -18,29 +18,27 @@ class SecurityCode extends AbstractRequest
 {
     protected $resource_path = ['card-identifiers', '{cardIdentifier}', 'security-code'];
 
+    protected $cardIdentifier;
+
     /**
-     * TODO: validation
-     * $expiryDate MMYY (maybe convert some common formats).
-     * $cardNumber Lunn check.
-     * $securityCode Digits only.
      * @param Endpoint $endpoint
      * @param Auth $auth
      * @param SessionKeyResponse $sessionKey
-     * @param $cardholderName
-     * @param $cardNumber
-     * @param $expiryDate
-     * @param null $securityCode
+     * @param string $cardIdentifier
+     * @param string $securityCode
      */
     public function __construct(
         Endpoint $endpoint,
         Auth $auth,
         SessionKeyResponse $sessionKey,
+        $cardIdentifier,
         $securityCode
     ) {
         $this->setEndpoint($endpoint);
         $this->setAuth($auth);
         $this->sessionKey = $sessionKey;
 
+        $this->cardIdentifier = $cardIdentifier;
         $this->securityCode = new SensitiveValue($securityCode);
     }
 
@@ -50,5 +48,13 @@ class SecurityCode extends AbstractRequest
     public function getSecurityCode()
     {
         return $this->securityCode ? $this->securityCode->peek() : $this->securityCode;
+    }
+
+    /**
+     *
+     */
+    public function getCardIdentifier()
+    {
+        return $this->cardIdentifier;
     }
 }
