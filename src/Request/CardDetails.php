@@ -18,7 +18,7 @@ use Academe\SagePay\Psr7\Model\Endpoint;
 use Academe\SagePay\Psr7\Response\SessionKey as SessionKeyResponse;
 use Academe\SagePay\Psr7\Security\SensitiveValue;
 
-class CardIdentifier extends AbstractRequest
+class CardDetails extends AbstractRequest
 {
     protected $resource_path = ['card-identifiers'];
 
@@ -34,10 +34,6 @@ class CardIdentifier extends AbstractRequest
     protected $securityCode;
 
     /**
-     * TODO: validation
-     * $expiryDate MMYY (maybe convert some common formats).
-     * $cardNumber Lunn check.
-     * $securityCode Digits only.
      * @param Endpoint $endpoint
      * @param Auth $auth
      * @param SessionKeyResponse $sessionKey
@@ -50,6 +46,7 @@ class CardIdentifier extends AbstractRequest
         Endpoint $endpoint,
         Auth $auth,
         SessionKeyResponse $sessionKey,
+        //
         $cardholderName,
         $cardNumber,
         $expiryDate,

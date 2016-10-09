@@ -18,12 +18,22 @@ class CardIdentifier extends AbstractResponse
     protected $cardType;
 
     /**
+     * This can be set from either a direct response from Sage Pay, or fields
+     * from the drop-in form (a server request).
+     * TODO: other fields can be provided by the drop-in form, such as card-type.
+     * CHECKME: is it worth merging this with Response\Model\Card, since both are
+     * essentially card details returned from Sage Pay?
+     *
      * @param array|object $data The parsed data returned by Sage Pay.
      * @return $this
      */
     protected function setData($data)
     {
-        $this->cardIdentifier = Helper::dataGet($data, 'cardIdentifier', Helper::dataGet($data, 'card-identifier', null));
+        $this->cardIdentifier = Helper::dataGet(
+            $data,
+            'cardIdentifier',
+            Helper::dataGet($data, 'card-identifier', null)
+        );
 
         if ($expiry = Helper::dataGet($data, 'expiry', null)) {
             $this->expiry = Helper::parseDateTime($expiry);

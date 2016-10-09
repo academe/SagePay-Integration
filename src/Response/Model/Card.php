@@ -3,14 +3,13 @@
 namespace Academe\SagePay\Psr7\Response\Model;
 
 /**
- * Card details response object.
+ * Abstract Card details.
  */
 
-use Academe\SagePay\Psr7\Request\Model\PaymentMethodInterface;
 use Academe\SagePay\Psr7\Helper;
 use JsonSerializable;
 
-class Card implements JsonSerializable, PaymentMethodInterface
+class Card implements JsonSerializable
 {
     /**
      * @var Tokenised card.
@@ -21,11 +20,6 @@ class Card implements JsonSerializable, PaymentMethodInterface
      * @var Flag indicates this is a reusable card identifier; it has been used before.
      */
     protected $reusable;
-
-    /**
-     * @var Flag indicates this card is to be saved so it can be used again.
-     */
-    protected $save;
 
     /**
      * @var Captured (safe) details for the card.
@@ -106,10 +100,9 @@ class Card implements JsonSerializable, PaymentMethodInterface
     }
 
     /**
-     * Serialisation for storage.
-     * @return array
+     *
      */
-    public function jsonSerialize()
+    public function getData()
     {
         $message = ['card' => []];
 
@@ -134,6 +127,15 @@ class Card implements JsonSerializable, PaymentMethodInterface
         }
 
         return $message;
+    }
+
+    /**
+     * Serialisation for storage.
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return $this->getData();
     }
 
     /**
@@ -192,6 +194,11 @@ class Card implements JsonSerializable, PaymentMethodInterface
         return $this->lastFourDigits;
     }
 
+    public function getCardIdentifier()
+    {
+        return $this->cardIdentifier;
+    }
+
     /**
      * Getter for the raw expiry date of the credit card.
      * return string|null Format MMYY
@@ -234,7 +241,7 @@ class Card implements JsonSerializable, PaymentMethodInterface
      * Return the body partial for request construction.
      * @return array
      */
-    public function payData()
+    public function DISABLED_payData()
     {
         $message = [
             'card' => [
@@ -244,10 +251,6 @@ class Card implements JsonSerializable, PaymentMethodInterface
 
         if ($this->reusable !== null) {
             $message['card']['reusable'] = $this->reusable;
-        }
-
-        if ($this->save !== null) {
-            $message['card']['save'] = $this->save;
         }
 
         return $message;
