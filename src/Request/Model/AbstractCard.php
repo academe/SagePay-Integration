@@ -23,20 +23,6 @@ abstract class AbstractCard implements PaymentMethodInterface
      */
     protected $cardIdentifier;
 
-    /**
-     * Sets or resets the save flag.
-     *
-     * @returnb self
-     */
-    public function withSave($save = true)
-    {
-        $clone = clone $this;
-
-        $clone->save = (bool)$save;
-
-        return $clone;
-    }
-
     protected function setCardIdentifier($cardIdentifier)
     {
         // We just want the raw data from this object.

@@ -54,6 +54,21 @@ class SessionCard extends AbstractCard
     }
 
     /**
+     * Sets or resets the save flag.
+     * Only valid for unsaved cards, i.e. the first use "SessionCard".
+     *
+     * @returnb self
+     */
+    public function withSave($save = true)
+    {
+        $clone = clone $this;
+
+        $clone->save = (bool)$save;
+
+        return $clone;
+    }
+
+    /**
      * Return the complete object data for serialized storage.
      * @return array
      */
