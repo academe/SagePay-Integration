@@ -104,7 +104,7 @@ $psr7_response = $client->send($key_request->message());
 
 // Capture the result in our local response model.
 // Use the ResponseFactory to automatically choose the correct message class.
-$session_key = Factory\ResponseFactory::parse($psr7_response);
+$session_key = Factory\ResponseFactory::fromHttpResponse($psr7_response);
 
 // If an error is indicated, then you will be returned an ErrorCollection instead
 // of the session key. Look into that to diagnose the problem.
@@ -132,10 +132,10 @@ first to explore how it can work in a simple, robust, and flexible way.
 This has been extended to getting the card identifier:
 
 ~~~php
-use Academe\SagePay\Psr7\Request\CardIdentifier as CardIdentifierRequest;
+use Academe\SagePay\Psr7\Request;
 
 // $endpoint, $auth and $session_key from before.
-$card_identifier_request = new CardIdentifierRequest(
+$card_identifier_request = new Request\CardDetails(
     $endpoint, $auth, $session_key,
     'Fred', '4929000000006', '1220', '123'
 );
@@ -144,8 +144,9 @@ $card_identifier_request = new CardIdentifierRequest(
 // The same error handling as shown earlier can be used.
 $psr7_response = $client->send($card_identifier_request->message());
 
-// Grab the result in the local object.
-$card_identifier = Factory\ResponseFactory::parse($psr7_response);
+// Grab the result as a local model.
+// If all is well, we will have a Resposne\CardIdentifier
+$card_identifier = Factory\ResponseFactory::fromHttpResponse($psr7_response);
 
 // Again, an ErrorCollection will be returned in the event of an error.
 if ($card_identifier->isError()) {
@@ -187,7 +188,11 @@ $customer = new Model\Person(
 $amount = Money\Amount::GBP()->withMinorUnit(999);
 
 // We have a card to charge (we get the session key and captured the card identifier earlier).
-$card = new PaymentMethod\Card($session_key, $card_identifier);
+// See below for details of the various card request objects.
+$card = new Request\Model\SessionCard($session_key, $card_identifier);
+
+// If you want the card to be reusable, then set its "save" flag:
+$card = $card->withSave();
 
 // Put it all together into a transaction.
 $payment = new Request\Payment(
@@ -204,6 +209,8 @@ $payment = new Request\Payment(
     [
         // Don't use 3DSecure this time.
         'Apply3DSecure' => Request\Payment::APPLY_3D_SECURE_DISABLE,
+        // There are other objects available.
+        'ApplyAvsCvcCheck' => APPLY_AVS_CVC_CHECK_FORCE
     ]
 
 );
@@ -212,7 +219,7 @@ $payment = new Request\Payment(
 $psr7_response = $client->send($payment->message());
 
 // Assuming we got no exceptions, extract the response details.
-$payment_response = Factory\ResponseFactory::parse($psr7_response);
+$payment_response = Factory\ResponseFactory::fromHttpResponse($psr7_response);
 
 // Again, an ErrorCollection will be returned in the event of an error.
 if ($payment_response->isError()) {
@@ -257,8 +264,8 @@ $transaction_result = new Request\TransactionResult(
 $response = $client->send($transaction_result->message());
 
 // Assuming no exceptions, this gives you the payment or repeat payment record.
-// But do check for errors in the same way.
-$fetched_transaction = Factory\ResponseFactory::parse($response);
+// But do check for errors in the usual way.
+$fetched_transaction = Factory\ResponseFactory::fromHttpResponse($response);
 ~~~
 
 ### Using 3D Secure
@@ -269,7 +276,7 @@ To turn on 3D Secure, use the appropriate option when sending the payment:
 
 ~~~php
     [
-        // Also APPLY_3D_SECURE_USEMSPSETTING and APPLY_3D_SECURE_FORCEIGNORINGRULES
+        // Also available: APPLY_3D_SECURE_USEMSPSETTING and APPLY_3D_SECURE_FORCEIGNORINGRULES
         'Apply3DSecure' => Request\Payment::APPLY_3D_SECURE_FORCE,
     ]
 ~~~
@@ -371,7 +378,7 @@ Handling the 3D Secure result involves two steps:
 
     // Send to Sage Pay and get the final 3D Secure result.
     $response = $client->send($request->message());
-    $secure3d_response = Factory\ResponseFactory::parse($response);
+    $secure3d_response = Factory\ResponseFactory::fromHttpResponse($response);
 
     // This will be the result. We are looking for `Authenticated` or similar.
     echo $secure3d_response->getStatus();
@@ -401,8 +408,28 @@ seems to work for now.
     $response = $client->send($transaction_result->message());
 
     // We should have the payment, repeat payment, or an error collection.
-    $transaction_fetch = Factory\ResponseFactory::parse($response);
+    $transaction_fetch = Factory\ResponseFactory::fromHttpResponse($response);
 
     // We should now have the final results.
     echo json_encode($transaction_fetch);
 ~~~
+
+## Payment Methods
+
+At this time, Sage Pay Pi supports just `card` payment types. However, there are three
+different types of card object:
+
+1. `Request\Model\SessionCard` - The fist time a card is used. It has been tokenised and will
+   be held agains the merchant session key for 400 seconds before being discarded.
+2. `Request\Model\ReusableCard` - A card that has been saved and so is reusable. Use this for
+   non-interaractive payments when no CVV is being used.
+3. `Request\Model\ReusableCvvCard` - A card that has been saved and so is reusable, and has
+   been linked to a CVV and merchant session. Use this for interactive reuse of a card, where
+   the user is being asked to supply their CVV for additional security. The CVV is (normally)
+   linked to the card and the merchant session on the client side, and so will remain active
+   for a limited time (400 seconds).
+
+The `ReusableCard` does not need a merchant session key. `ReusableCvvCard` does require a
+merchant session key and a call to link the session key + card identifier + CVV together
+(preferably on the client side, but can be done server-side if appropriately PCI accredited
+or while testing).
