@@ -433,3 +433,32 @@ The `ReusableCard` does not need a merchant session key. `ReusableCvvCard` does 
 merchant session key and a call to link the session key + card identifier + CVV together
 (preferably on the client side, but can be done server-side if appropriately PCI accredited
 or while testing).
+
+To save a reusable card, take the `PaymentMethod` from a successful payment.
+Note: it is not possible at this time to set up a reusable card without making a payment.
+
+~~~php
+...
+// Get the transaction response.
+$transaction_response = Factory\ResponseFactory::fromHttpResponse($response);
+
+// Get the ccard. Only cards are supported as Payment Method at this time,
+// though that will change.
+$card = $transaction_response->getPaymentMethod();
+
+// If it is reusable, then it can be serialised for storage:
+if ($card->->isReusable()) {
+    // Also can use getData() if you want the data without being encoded.
+    $serialised_card = json_encode($card);
+}
+
+// In a later payment, the card can be reused:
+$card = Request\Model\ReusableCard::fromData(json_decode($serialised_card));
+
+// Or more explicitly:
+$card = new Request\Model\ReusableCard($cardIdentifier);
+
+// Or if being linked to a CVV:
+$card = new Request\Model\ReusableCard($merchantSessionKey, $cardIdentifier);
+
+~~~
