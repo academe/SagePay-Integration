@@ -20,6 +20,10 @@ class SecurityCode extends AbstractRequest
 
     protected $cardIdentifier;
     protected $sessionKey;
+
+    /**
+     * @var A sensitive value.
+     */
     protected $securityCode;
 
     /**
@@ -80,6 +84,8 @@ class SecurityCode extends AbstractRequest
 
     /**
      * Get the message header data as an array.
+     * TODO: Move the details of this to the abstract, as it is used in several places,
+     * and remove it from the Response\SessionKey class as it has nothing to do with responses.
      * @return array
      */
     public function getHeaders()
