@@ -15,6 +15,18 @@ use Academe\SagePay\Psr7\Helper;
 class ReusableCvvCard extends SessionCard
 {
     /**
+     * Card constructor.
+     *
+     * @param Academe\SagePay\Psr7\Response\SessionKey|string $sessionKey
+     * @param Academe\SagePay\Psr7\Response\CardIdentifier|string $cardIdentifier
+     */
+    public function __construct($sessionKey, $cardIdentifier)
+    {
+        $this->setCardIdentifier($cardIdentifier);
+        $this->setSessionKey($sessionKey);
+    }
+
+    /**
      * Return the complete object data for serialized storage.
      * @return array
      */
@@ -27,10 +39,6 @@ class ReusableCvvCard extends SessionCard
                 'reusable' => true,
             ],
         ];
-
-        if ($this->save !== null) {
-            $message['card']['save'] = $this->save;
-        }
 
         return $message;
     }

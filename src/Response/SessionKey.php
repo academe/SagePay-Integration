@@ -120,6 +120,7 @@ class SessionKey extends AbstractResponse
 
     /**
      * Return the authorisation HTTP headers for the session key.
+     * TODO: this really belongs in the request somewhere, not the response.
      */
     public function getAuthHeaders()
     {

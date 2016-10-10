@@ -112,5 +112,11 @@ class ResponseFactory
         if (Helper::dataGet($data, 'instructionType') == 'void') {
             return Response\Void::fromData($data, $httpCode);
         }
+
+        // A 204 with an empty body is a quiet accpetance that what was send is successful.
+        // e.g. returned when a CVV is linked to a card.
+        if ($httpCode == 204 && empty($data)) {
+            return Response\NoContent::fromData($data, $httpCode);
+        }
     }
 }

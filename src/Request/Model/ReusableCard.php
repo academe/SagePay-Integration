@@ -20,9 +20,8 @@ class ReusableCard extends AbstractCard
      * Card constructor.
      *
      * @param CardIdentifier|string $cardIdentifier
-     * @param boolean $save True so (re)save this identifier as a card token for future use.
      */
-    public function __construct($cardIdentifier, $save = null)
+    public function __construct($cardIdentifier)
     {
         $this->setCardIdentifier($cardIdentifier);
 
@@ -64,10 +63,6 @@ class ReusableCard extends AbstractCard
                 'reusable' => true,
             ],
         ];
-
-        if ($this->save !== null) {
-            $message['card']['save'] = $this->save;
-        }
 
         return $message;
     }
