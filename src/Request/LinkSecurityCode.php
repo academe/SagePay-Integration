@@ -14,7 +14,7 @@ use Academe\SagePay\Psr7\Model\Endpoint;
 use Academe\SagePay\Psr7\Response\SessionKey as SessionKeyResponse;
 use Academe\SagePay\Psr7\Security\SensitiveValue;
 
-class SecurityCode extends AbstractRequest
+class LinkSecurityCode extends AbstractRequest
 {
     protected $resource_path = ['card-identifiers', '{cardIdentifier}', 'security-code'];
 
@@ -29,27 +29,23 @@ class SecurityCode extends AbstractRequest
     /**
      * @param Endpoint $endpoint
      * @param Auth $auth
-     * @param SessionKeyResponse $sessionKey
-     * @param string $cardIdentifier
+     * @param SessionKeyResponse|string $sessionKey
+     * @param Response\CardIdentifier|string $cardIdentifier
      * @param string $securityCode
      */
     public function __construct(
         Endpoint $endpoint,
         Auth $auth,
         $sessionKey,
-        $cardIdentifier, // TODO: support string or object
+        $cardIdentifier,
         $securityCode
     ) {
         $this->setEndpoint($endpoint);
         $this->setAuth($auth);
 
-        if ($sessionKey instanceof SessionKeyResponse) {
-            // We only want the string.
-            $sessionKey = $sessionKey->getMerchantSessionKey();
-        }
-        $this->sessionKey = $sessionKey;
+        $this->sessionKey = (string)$sessionKey;
+        $this->cardIdentifier = (string)$cardIdentifier;
 
-        $this->cardIdentifier = $cardIdentifier;
         $this->securityCode = new SensitiveValue($securityCode);
     }
 

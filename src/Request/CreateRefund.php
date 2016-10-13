@@ -1,4 +1,6 @@
-<?php namespace Academe\SagePay\Psr7\Request;
+<?php
+
+namespace Academe\SagePay\Psr7\Request;
 
 /**
  * The refund payment value object to send a transaction to Sage Pay.
