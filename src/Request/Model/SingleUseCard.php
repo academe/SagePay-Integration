@@ -23,8 +23,8 @@ class SingleUseCard extends AbstractCard
      */
     public function __construct($sessionKey, $cardIdentifier, $save = null)
     {
-        $this->setCardIdentifier($cardIdentifier);
-        $this->setSessionKey($sessionKey);
+        $this->sessionKey = (string)$sessionKey;
+        $this->cardIdentifier = (string)$cardIdentifier;
 
         if (isset($save)) {
             $this->save = (bool)$save;

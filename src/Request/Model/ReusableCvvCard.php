@@ -22,8 +22,8 @@ class ReusableCvvCard extends SingleUseCard
      */
     public function __construct($sessionKey, $cardIdentifier)
     {
-        $this->setCardIdentifier($cardIdentifier);
-        $this->setSessionKey($sessionKey);
+        $this->cardIdentifier = (string)$cardIdentifier;
+        $this->sessionKey = (string)$sessionKey;
     }
 
     /**

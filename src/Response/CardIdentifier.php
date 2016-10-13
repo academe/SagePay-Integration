@@ -53,6 +53,16 @@ class CardIdentifier extends AbstractResponse
     }
 
     /**
+     * When used in a further request, there is just one important part of this
+     * object: the card identifier string.
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string)$this->getCardIdentifier();
+    }
+
+    /**
      * The expiry timestamp of the card identifier resource, not the expiry date of the card.
      * @return mixed
      */

@@ -36,7 +36,7 @@ class CardDetails extends AbstractRequest
     /**
      * @param Endpoint $endpoint
      * @param Auth $auth
-     * @param SessionKeyResponse $sessionKey
+     * @param SessionKeyResponse|string $sessionKey Any object that casts to sessionKey string is suitable.
      * @param $cardholderName
      * @param $cardNumber
      * @param $expiryDate
@@ -45,7 +45,7 @@ class CardDetails extends AbstractRequest
     public function __construct(
         Endpoint $endpoint,
         Auth $auth,
-        SessionKeyResponse $sessionKey,
+        $sessionKey,
         //
         $cardholderName,
         $cardNumber,
@@ -54,7 +54,7 @@ class CardDetails extends AbstractRequest
     ) {
         $this->setEndpoint($endpoint);
         $this->setAuth($auth);
-        $this->sessionKey = $sessionKey;
+        $this->sessionKey = (string)$sessionKey;
 
         $this->cardholderName = new SensitiveValue($cardholderName);
         $this->cardNumber = new SensitiveValue($cardNumber);
@@ -129,7 +129,7 @@ class CardDetails extends AbstractRequest
 
         // The security code is optional, so only provide it if it has been set.
 
-        if ( ! empty($this->getSecurityCode())) {
+        if (! empty($this->getSecurityCode())) {
             $data['cardDetails']['securityCode'] = $this->getSecurityCode();
         }
 
@@ -145,6 +145,8 @@ class CardDetails extends AbstractRequest
      */
     public function getHeaders()
     {
-        return $this->sessionKey->getAuthHeaders();
+        return [
+            'Authorization' => 'Bearer ' . $this->sessionKey,
+        ];
     } 
 }

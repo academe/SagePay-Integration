@@ -40,6 +40,16 @@ class SessionKey extends AbstractResponse
     }
 
     /**
+     * When used in a further request, there is just one important part of this
+     * object: the session key string.
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string)$this->getMerchantSessionKey();
+    }
+
+    /**
      * @return null|DateTime The time at which the session key will expire
      */
     public function getExpiry()
@@ -115,17 +125,6 @@ class SessionKey extends AbstractResponse
         return [
             'merchantSessionKey' => $this->getMerchantSessionKey(),
             'expiry' => $this->getExpiry() ? $this->getExpiry()->format(Helper::SAGEPAY_DATE_FORMAT) : null,
-        ];
-    }
-
-    /**
-     * Return the authorisation HTTP headers for the session key.
-     * TODO: this really belongs in the request somewhere, not the response.
-     */
-    public function getAuthHeaders()
-    {
-        return [
-            'Authorization' => 'Bearer ' . $this->getMerchantSessionKey(),
         ];
     }
 }

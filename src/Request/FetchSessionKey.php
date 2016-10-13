@@ -32,11 +32,7 @@ class FetchSessionKey extends AbstractRequest
         $this->endpoint = $endpoint;
 
         // We only want the session key string.
-        if ($sessionKey instanceof SessionKeyResponse) {
-            $sessionKey = $sessionKey->getMerchantSessionKey();
-        }
-
-        $this->sessionKey = $sessionKey;
+        $this->sessionKey = (string)$sessionKey;
     }
 
     /**

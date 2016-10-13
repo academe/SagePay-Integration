@@ -22,28 +22,4 @@ abstract class AbstractCard implements PaymentMethodInterface
      * @var Tokenised card.
      */
     protected $cardIdentifier;
-
-    protected function setCardIdentifier($cardIdentifier)
-    {
-        // We just want the raw data from this object.
-        if ($cardIdentifier instanceof CardIdentifier) {
-            $cardIdentifier = $cardIdentifier->getCardIdentifier();
-        }
-
-        $this->cardIdentifier = $cardIdentifier;
-
-        return $this;
-    }
-
-    protected function setSessionKey($sessionKey)
-    {
-        // We just want the raw data from this object.
-        if ($sessionKey instanceof SessionKey) {
-            $sessionKey = $sessionKey->getMerchantSessionKey();
-        }
-
-        $this->sessionKey = $sessionKey;
-
-        return $this;
-    }
 }
