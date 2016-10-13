@@ -12,7 +12,7 @@ use Academe\SagePay\Psr7\Money\AmountInterface;
 use Academe\SagePay\Psr7\Model\AddressInterface;
 use Academe\SagePay\Psr7\Model\PersonInterface;
 
-class Refund extends AbstractRequest
+class CreateRefund extends AbstractRequest
 {
     // Supports the URL "api/v1/transactions/<transactionId>"
     protected $resource_path = ['transactions'];
