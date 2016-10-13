@@ -15,10 +15,10 @@
 
 use Academe\SagePay\Psr7\Model\Auth;
 use Academe\SagePay\Psr7\Model\Endpoint;
-use Academe\SagePay\Psr7\Response\SessionKey as SessionKeyResponse;
+use Academe\SagePay\Psr7\Response\SessionKey;
 use Academe\SagePay\Psr7\Security\SensitiveValue;
 
-class CardDetails extends AbstractRequest
+class CreateCardIdentifier extends AbstractRequest
 {
     protected $resource_path = ['card-identifiers'];
 
@@ -36,7 +36,7 @@ class CardDetails extends AbstractRequest
     /**
      * @param Endpoint $endpoint
      * @param Auth $auth
-     * @param SessionKeyResponse|string $sessionKey Any object that casts to sessionKey string is suitable.
+     * @param SessionKey|string $sessionKey Any object that casts to sessionKey string is suitable.
      * @param $cardholderName
      * @param $cardNumber
      * @param $expiryDate

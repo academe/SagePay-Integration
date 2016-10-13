@@ -135,7 +135,7 @@ This has been extended to getting the card identifier:
 use Academe\SagePay\Psr7\Request;
 
 // $endpoint, $auth and $session_key from before.
-$card_identifier_request = new Request\CardDetails(
+$card_identifier_request = new Request\CreateCardIdentifier(
     $endpoint, $auth, $session_key,
     'Fred', '4929000000006', '1220', '123'
 );
