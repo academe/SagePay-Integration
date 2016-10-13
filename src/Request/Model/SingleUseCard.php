@@ -12,7 +12,7 @@ namespace Academe\SagePay\Psr7\Request\Model;
 
 use Academe\SagePay\Psr7\Helper;
 
-class SessionCard extends AbstractCard
+class SingleUseCard extends AbstractCard
 {
     /**
      * Card constructor.

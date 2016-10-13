@@ -12,7 +12,7 @@ namespace Academe\SagePay\Psr7\Request\Model;
 
 use Academe\SagePay\Psr7\Helper;
 
-class ReusableCvvCard extends SessionCard
+class ReusableCvvCard extends SingleUseCard
 {
     /**
      * Card constructor.
