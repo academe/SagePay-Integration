@@ -8,10 +8,13 @@
 use Academe\SagePay\Psr7\Model\Endpoint;
 use Academe\SagePay\Psr7\Response\SessionKey as SessionKeyResponse;
 
-class SessionKeyValidate extends AbstractRequest
+class FetchSessionKey extends AbstractRequest
 {
     protected $resource_path = ['merchant-session-keys', '{merchantSessionKey}'];
 
+    /**
+     * @var string The session key.
+     */
     protected $sessionKey;
 
     /**
@@ -22,11 +25,17 @@ class SessionKeyValidate extends AbstractRequest
     /**
      * Supply the previously provided SessionKeyResponse for validation.
      * @param Endpoint $endpoint
-     * @param SessionKeyResponse $sessionKey
+     * @param SessionKeyResponse|string $sessionKey
      */
-    public function __construct(Endpoint $endpoint, SessionKeyResponse $sessionKey)
+    public function __construct(Endpoint $endpoint, $sessionKey)
     {
         $this->endpoint = $endpoint;
+
+        // We only want the session key string.
+        if ($sessionKey instanceof SessionKeyResponse) {
+            $sessionKey = $sessionKey->getMerchantSessionKey();
+        }
+
         $this->sessionKey = $sessionKey;
     }
 
@@ -37,7 +46,7 @@ class SessionKeyValidate extends AbstractRequest
      */
     public function getMerchantSessionKey()
     {
-        return $this->sessionKey->getMerchantSessionKey();
+        return $this->sessionKey;
     }
 
     /**

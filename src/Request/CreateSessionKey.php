@@ -10,7 +10,7 @@ namespace Academe\SagePay\Psr7\Request;
 use Academe\SagePay\Psr7\Model\Auth;
 use Academe\SagePay\Psr7\Model\Endpoint;
 
-class SessionKey extends AbstractRequest
+class CreateSessionKey extends AbstractRequest
 {
     protected $resource_path = ['merchant-session-keys'];
 

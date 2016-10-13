@@ -68,7 +68,7 @@ class SessionKey extends AbstractResponse
             return false;
         }
 
-        // Do we have a 404 HTTP respons code recorded?
+        // Do we have a 404 HTTP response code recorded?
         if ($this->getHttpCode() !== null && $this->getHttpCode() === $this::NOT_FOUND) {
             return false;
         }
