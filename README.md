@@ -195,7 +195,7 @@ $card = new Request\Model\SessionCard($session_key, $card_identifier);
 $card = $card->withSave();
 
 // Put it all together into a transaction.
-$payment = new Request\Payment(
+$payment = new Request\CreatePayment(
     $endpoint,
     $auth,
     $card,
@@ -208,7 +208,7 @@ $payment = new Request\Payment(
     null, // Optional shipping recipient
     [
         // Don't use 3DSecure this time.
-        'Apply3DSecure' => Request\Payment::APPLY_3D_SECURE_DISABLE,
+        'Apply3DSecure' => Request\CreatePayment::APPLY_3D_SECURE_DISABLE,
         // There are other objects available.
         'ApplyAvsCvcCheck' => APPLY_AVS_CVC_CHECK_FORCE
     ]
@@ -277,7 +277,7 @@ To turn on 3D Secure, use the appropriate option when sending the payment:
 ~~~php
     [
         // Also available: APPLY_3D_SECURE_USEMSPSETTING and APPLY_3D_SECURE_FORCEIGNORINGRULES
-        'Apply3DSecure' => Request\Payment::APPLY_3D_SECURE_FORCE,
+        'Apply3DSecure' => Request\CreatePayment::APPLY_3D_SECURE_FORCE,
     ]
 ~~~
 
