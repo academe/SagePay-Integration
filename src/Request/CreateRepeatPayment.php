@@ -3,6 +3,9 @@
 /**
  * The repeat payment value object to send a transaction to Sage Pay.
  * See https://test.sagepay.com/documentation/#transactions
+ * This does not seem to positively identify a payment as apposed to an
+ * authorisation. Sage Pay Direct/Server allows a repeat to be either an
+ * authorisation or a payment.
  */
 
 use UnexpectedValueException;
@@ -12,7 +15,7 @@ use Academe\SagePay\Psr7\Money\AmountInterface;
 use Academe\SagePay\Psr7\Model\AddressInterface;
 use Academe\SagePay\Psr7\Model\PersonInterface;
 
-class Repeat extends AbstractRequest
+class CreateRepeatPayment extends AbstractRequest
 {
     // Supports the URL "api/v1/transactions/<transactionId>"
     protected $resource_path = ['transactions'];
@@ -42,8 +45,8 @@ class Repeat extends AbstractRequest
      *
      * @param Endpoint $endpoint
      * @param Auth $auth
-     * @param string $transactionId
-     * @param string $vendorTxCode
+     * @param string $transactionId The transacation ID of the original reference payment
+     * @param string $vendorTxCode The merchant site vnedor code for the repeat payment
      * @param AmountInterface $amount
      * @param string $description
      * @param AddressInterface|null $shippingAddress

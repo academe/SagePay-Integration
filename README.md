@@ -254,7 +254,7 @@ Either way, this is how you do it:
 
 ~~~php
 // Prepare the message.
-$transaction_result = new Request\TransactionResult(
+$transaction_result = new Request\FetchTransaction(
     $endpoint,
     $auth,
     $transaction_response->getTransactionId() // From earlier
@@ -397,7 +397,7 @@ seems to work for now.
     sleep(1);
 
     // Get fetch the transaction with full details.
-    $transaction_result = new Request\TransactionResult(
+    $transaction_result = new Request\FetchTransaction(
         $endpoint,
         $auth,
         // transaction ID would normally be in the session, as described above.

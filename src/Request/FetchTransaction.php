@@ -10,7 +10,7 @@ namespace Academe\SagePay\Psr7\Request;
 use Academe\SagePay\Psr7\Model\Auth;
 use Academe\SagePay\Psr7\Model\Endpoint;
 
-class Transaction extends AbstractRequest
+class FetchTransaction extends AbstractRequest
 {
     protected $resource_path = ['transactions', '{transactionId}'];
     protected $method = 'GET';
