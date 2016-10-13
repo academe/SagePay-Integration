@@ -28,8 +28,8 @@ class CreateRefund extends AbstractRequest
      *
      * @param Endpoint $endpoint
      * @param Auth $auth
-     * @param string $transactionId
-     * @param string $vendorTxCode
+     * @param string $transactionId The reference transaction ID.
+     * @param string $vendorTxCode The new merchent site ID for this refund.
      * @param AmountInterface $amount
      * @param string $description
      * @param AddressInterface|null $shippingAddress
@@ -47,9 +47,8 @@ class CreateRefund extends AbstractRequest
         $this->setAuth($auth);
         $this->setDescription($description);
 
-        // The reference transaction ID.
         $this->setTransactionId($transactionId);
-        // The new merchent site ID for *this* refund.
+
         $this->vendorTxCode = $vendorTxCode;
         $this->amount = $amount;
     }

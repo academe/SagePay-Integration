@@ -11,7 +11,7 @@ namespace Academe\SagePay\Psr7\Request;
 use Academe\SagePay\Psr7\Model\Auth;
 use Academe\SagePay\Psr7\Model\Endpoint;
 
-class Void extends AbstractRequest
+class CreateVoid extends AbstractRequest
 {
     protected $transactionId;
     protected $instructionType = 'void';
