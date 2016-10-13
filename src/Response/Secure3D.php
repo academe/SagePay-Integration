@@ -1,9 +1,9 @@
 <?php namespace Academe\SagePay\Psr7\Response;
 
 /**
- * The 3DSecure response embedded within a Sage Pay transaction
+ * The 3D Secure response embedded within a Sage Pay transaction
  * or in response to a Secure3DRequest message.
- * It only includes the status, which gives tje final 3D Secure
+ * It only includes the status, which gives the final 3D Secure
  * result for the transaction.
  */
 
@@ -50,7 +50,7 @@ class Secure3D extends AbstractResponse
 
     /**
      * @inheritdoc
-     * FIXME: any other statuses considered sucessful? e.g. is "not checked" a success?
+     * CHECKME: any other statuses considered sucessful? e.g. is "not checked" a success?
      */
     public function isSuccess()
     {
@@ -63,7 +63,6 @@ class Secure3D extends AbstractResponse
      */
     public function jsonSerialize()
     {
-        //$return = parent::jsonSerialize();
         $return = [];
 
         $return['status'] = $this->getStatus();

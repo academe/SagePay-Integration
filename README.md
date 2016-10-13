@@ -365,7 +365,7 @@ Handling the 3D Secure result involves two steps:
 2. If successful, fetching the final transaction from Sage Pay.
 
 ~~~php
-    $request = new Request\Secure3D(
+    $request = new Request\CreateSecure3D(
         $endpoint,
         $auth,
         $secure3d_server_request,
