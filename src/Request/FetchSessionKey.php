@@ -1,4 +1,6 @@
-<?php namespace Academe\SagePay\Psr7\Request;
+<?php
+
+namespace Academe\SagePay\Psr7\Request;
 
 /**
  * The request for fetching a copy of a session key, to check its validity.

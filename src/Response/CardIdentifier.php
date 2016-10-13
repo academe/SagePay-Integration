@@ -1,4 +1,6 @@
-<?php namespace Academe\SagePay\Psr7\Response;
+<?php
+
+namespace Academe\SagePay\Psr7\Response;
 
 /**
  * Value object to hold the card identifier, returned by Sage Pay.

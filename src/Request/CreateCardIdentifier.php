@@ -1,16 +1,16 @@
-<?php namespace Academe\SagePay\Psr7\Request;
+<?php
+
+namespace Academe\SagePay\Psr7\Request;
 
 /**
- * Request message for sending card details to Sage Pay.
+ * Request message for sending card details to Sage Pay to get a
+ * Card Identifier.
  *
- * The card details will normally only be given values in advance
- * during testing. In production this will be left empty and this
- * class just used as a helper for generating the card field on the
- * merchant site form.
+ * This will normally only be done on the server side when testing.
  *
- * But with the right PCI compliance, the details could be captured
+ * With the right PCI compliance, the details could be captured
  * by the merchant site and sent direct to SagePay server-to-server,
- * as Sage Pay Direct would.
+ * similat to how Sage Pay Direct would.
  */
 
 use Academe\SagePay\Psr7\Model\Auth;
@@ -52,10 +52,12 @@ class CreateCardIdentifier extends AbstractRequest
         $expiryDate,
         $securityCode = null
     ) {
+        // Access data.
         $this->setEndpoint($endpoint);
         $this->setAuth($auth);
         $this->sessionKey = (string)$sessionKey;
 
+        // Card details.
         $this->cardholderName = new SensitiveValue($cardholderName);
         $this->cardNumber = new SensitiveValue($cardNumber);
         $this->expiryDate = new SensitiveValue($expiryDate);

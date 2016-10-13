@@ -95,22 +95,31 @@ class Payment extends AbstractRequest
         Model\PersonInterface $shippingRecipient = null,
         array $options = []
     ) {
+        // Access details.
         $this->setEndpoint($endpoint);
         $this->setAuth($auth);
+
         $this->setDescription($description);
 
+        // Payment details.
         $this->paymentMethod = $paymentMethod;
         $this->vendorTxCode = $vendorTxCode;
         $this->amount = $amount;
+
+        // Customer details.
         $this->billingAddress = $billingAddress->withFieldPrefix('');
         $this->customer = $customer->withFieldPrefix($this->customerFieldsPrefix);
+
+        // Optional recipient details.
         if (isset($shippingAddress)) {
             $this->shippingAddress = $shippingAddress->withFieldPrefix($this->shippingAddressFieldPrefix);
         }
+
         if (isset($shippingRecipient)) {
             $this->shippingRecipient = $shippingRecipient->withFieldPrefix($this->shippingNameFieldPrefix);
         }
 
+        // Additional options.
         $this->setOptions($options);
     }
 
