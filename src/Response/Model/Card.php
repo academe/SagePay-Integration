@@ -42,8 +42,7 @@ class Card implements JsonSerializable
         $lastFourDigits = null,
         $expiryDate = null,
         $cardIdentifier = null,
-        $reusable = null,
-        $save = null
+        $reusable = null
     ) {
         if (isset($cardType)) {
             $this->cardType = $cardType;
@@ -67,10 +66,6 @@ class Card implements JsonSerializable
         }
         if (isset($reusable)) {
             $this->reusable = (bool)$reusable;
-        }
-
-        if (isset($save)) {
-            $this->save = (bool)$save;
         }
     }
 
@@ -159,22 +154,6 @@ class Card implements JsonSerializable
     }
 
     /**
-     * Sets or resets the save flag.
-     * Used if the save flag needs to be changed after retrieving the card
-     * object from storage.
-     *
-     * @returnb self
-     */
-    public function withSave($save = true)
-    {
-        $clone = clone $this;
-
-        $clone->save = (bool)$save;
-
-        return $clone;
-    }
-
-    /**
      * Getter for the type of credit card.
      * There is no definitive list of card types, but "Visa", "MasterCard" and
      * "American Express" are given as examples.
@@ -235,24 +214,5 @@ class Card implements JsonSerializable
         }
 
         return substr($expiry, 2, 2);
-    }
-
-    /**
-     * Return the body partial for request construction.
-     * @return array
-     */
-    public function DISABLED_payData()
-    {
-        $message = [
-            'card' => [
-                'cardIdentifier' => $this->cardIdentifier,
-            ],
-        ];
-
-        if ($this->reusable !== null) {
-            $message['card']['reusable'] = $this->reusable;
-        }
-
-        return $message;
     }
 }
