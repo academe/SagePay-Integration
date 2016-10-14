@@ -281,13 +281,13 @@ To turn on 3D Secure, use the appropriate option when sending the payment:
     ]
 ~~~
 
-### 3D Secure Callback
+### 3D Secure Redirect
 
-The result of the transaction, assuming all is otherwise fine, will a `Secure3DRedirect` object.
+The result of the transaction, assuming all is otherwise fine, will be a `Secure3DRedirect` object.
 This message will return true for `isRedirect()`.
 Given this, a POST redirection is needed.
 
-This minimal form will deomstrate how the redirect is done:
+This minimal form will demonstrate how the redirect is done:
 
 ~~~php
 if ($transaction_response->isRedirect()) {
@@ -296,7 +296,8 @@ if ($transaction_response->isRedirect()) {
 
     // This is where the bank will return the user when they are finished there.
     // It needs to be an SSL URL to avoid browser errors. That is a consequence of
-    // the way the banks do the redirect back, and something we cannot control.
+    // the way the banks do the redirect back to the merchant site, and something we
+    // cannot control.
     $termUrl = 'https://example.com/your-3dsecure-result-handler-path/';
 
     // $md is optional and is usually a key to help find the transaction in storage.
