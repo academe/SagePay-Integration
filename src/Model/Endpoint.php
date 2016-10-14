@@ -1,4 +1,6 @@
-<?php namespace Academe\SagePay\Psr7\Model;
+<?php
+
+namespace Academe\SagePay\Psr7\Model;
 
 /**
  * The endpoint to use to access the Sage Pay API.
@@ -31,12 +33,11 @@ class Endpoint
     const MODE_TEST = 2;
 
     /**
-     * Perhaps an Endpoint class will do the job, and could use a PSR-7 Url?
-     * @var array The endpoint URLs, one for each mode.
+     * @var array The endpoint URL templates, one for each mode.
      */
-    protected $urls = [
-        1 => 'https://www.sagepay.com/api/{version}{resource}',
-        2 => 'https://test.sagepay.com/api/{version}{resource}',
+    protected $urls_templates = [
+        1 => 'https://pi-live.sagepay.com/api/{version}{resource}',
+        2 => 'https://pi-test.sagepay.com/api/{version}{resource}',
     ];
 
     /**
@@ -45,7 +46,7 @@ class Endpoint
     public function __construct($mode = self::MODE_LIVE)
     {
         // The mode - testing or production. Possible others later.
-        if ( ! isset($this->urls[$mode])) {
+        if (! isset($this->urls_templates[$mode])) {
             throw new UnexpectedValueException(sprintf('Unexpected mode value "%s"', $mode));
         }
 
@@ -82,12 +83,12 @@ class Endpoint
      */
     public function withUrl($mode, $url)
     {
-        if ( ! isset($this->urls[$mode])) {
+        if ( ! isset($this->urls_templates[$mode])) {
             throw new UnexpectedValueException(sprintf('Unexpected mode value "%s"', $mode));
         }
 
         $copy = clone $this;
-        $copy->urls[$mode] = $url;
+        $copy->urls_templates[$mode] = $url;
         return $copy;
     }
 
@@ -117,7 +118,7 @@ class Endpoint
         return str_replace(
             ['{version}', '{resource}'],
             [$this->getApiVersion(), $resource],
-            $this->urls[$this->mode]
+            $this->urls_templates[$this->mode]
         );
     }
 
