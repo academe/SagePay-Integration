@@ -189,7 +189,7 @@ $amount = Money\Amount::GBP()->withMinorUnit(999);
 
 // We have a card to charge (we get the session key and captured the card identifier earlier).
 // See below for details of the various card request objects.
-$card = new Request\Model\SessionCard($session_key, $card_identifier);
+$card = new Request\Model\SingleUseCard($session_key, $card_identifier);
 
 // If you want the card to be reusable, then set its "save" flag:
 $card = $card->withSave();
@@ -419,7 +419,7 @@ seems to work for now.
 At this time, Sage Pay Pi supports just `card` payment types. However, there are three
 different types of card object:
 
-1. `Request\Model\SessionCard` - The fist time a card is used. It has been tokenised and will
+1. `Request\Model\SingleUseCard` - The fist time a card is used. It has been tokenised and will
    be held agains the merchant session key for 400 seconds before being discarded.
 2. `Request\Model\ReusableCard` - A card that has been saved and so is reusable. Use this for
    non-interaractive payments when no CVV is being used.
@@ -434,6 +434,27 @@ merchant session key and a call to link the session key + card identifier + CVV 
 (preferably on the client side, but can be done server-side if appropriately PCI accredited
 or while testing).
 
+A CVV can be linked to a a reusable card with the `LinkSecurityCode` message:
+
+~~~php
+$security_code = new Request\LinkSecurityCode(
+    $endpoint,
+    $auth,
+    $session_key,
+    $cardIdentifier,
+    '123' // The CVV obtained from the user.
+);
+
+// Send the message to create the link.
+// The result will be a `Response\NoContent` if all is well.
+$security_code_response = Factory\ResponseFactory::fromHttpResponse(
+    $client->send($security_code->message())
+);
+
+// Could check for errors here:
+$security_code_response->isError();
+~~~
+
 To save a reusable card, take the `PaymentMethod` from a successful payment.
 Note: it is not possible at this time to set up a reusable card without making a payment.
 
@@ -447,7 +468,7 @@ $transaction_response = Factory\ResponseFactory::fromHttpResponse($response);
 $card = $transaction_response->getPaymentMethod();
 
 // If it is reusable, then it can be serialised for storage:
-if ($card->->isReusable()) {
+if ($card->isReusable()) {
     // Also can use getData() if you want the data without being encoded.
     $serialised_card = json_encode($card);
 }
