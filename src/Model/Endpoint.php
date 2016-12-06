@@ -35,8 +35,8 @@ class Endpoint
      * @var array The endpoint URLs, one for each mode.
      */
     protected $urls = [
-        1 => 'https://www.sagepay.com/api/{version}{resource}',
-        2 => 'https://test.sagepay.com/api/{version}{resource}',
+        1 => 'https://pi-live.sagepay.com/api/{version}{resource}',
+        2 => 'https://pi-test.sagepay.com/api/{version}{resource}',
     ];
 
     /**
