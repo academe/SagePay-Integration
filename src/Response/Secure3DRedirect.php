@@ -1,4 +1,6 @@
-<?php namespace Academe\SagePay\Psr7\Response;
+<?php
+
+namespace Academe\SagePay\Psr7\Response;
 
 /**
  * Response to a Payment (and probably Authorise) requent when a
