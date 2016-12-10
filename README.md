@@ -47,7 +47,7 @@ The default development branch is `PSR-7`.
 
 Get the development branch through composer:
 
-    composer.phar require academe/sagepaymsg:dev-PSR-7
+    composer.phar require academe/sagepaymsg:dev-master
 
 or the latest release:
 
@@ -79,11 +79,11 @@ use Academe\SagePay\Psr7\Response;
 use Academe\SagePay\Psr7\Model;
 use Academe\SagePay\Psr7\Factory;
 
-// Set up auth details.
-$auth = new Moadel\Auth('vendor-name', 'your-key', 'your-password');
+// Set up auth details object.
+$auth = new Model\Auth('vendor-name', 'your-key', 'your-password');
 
-// Also the endpoint, which is now a separate class.
-// This one is the test API endpoint.
+// Also the endpoint.
+// This one is set as the test API endpoint.
 $endpoint = new Model\Endpoint(Model\Endpoint::MODE_TEST);
 
 // Request object to construct the session key message.
