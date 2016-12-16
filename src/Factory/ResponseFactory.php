@@ -80,19 +80,6 @@ class ResponseFactory
             return new Response\SessionKey($response);
         }
 
-        // 3D Secure response.
-        // This is a 3D Secure response *on its own*. They also appear
-        // embedded in a Payment, and so need to be pulled out separately
-        // from there.
-        if (Response\Secure3D::isResponse($data)) {
-            if ($response instanceof ResponseInterface) {
-                return new Response\Secure3D($response);
-            } else {
-                return Response\Secure3D::fromData($data, $http_code);
-            }
-
-        }
-
         // PaymentMethod response.
         // This is a PaymentMethod response *on its own*. They also appear
         // embedded in a Payment, and so need to be pulled out separately
@@ -104,6 +91,19 @@ class ResponseFactory
         // A 3D Secure redirect is required.
         if (Response\Secure3DRedirect::isResponse($data)) {
             return new Response\Secure3DRedirect($response);
+        }
+
+        // 3D Secure response.
+        // This is a 3D Secure response *on its own*. They also appear
+        // embedded in a Payment, and so need to be pulled out separately
+        // from there.
+        if (Response\Secure3D::isResponse($data)) {
+            if ($response instanceof ResponseInterface) {
+                return new Response\Secure3D($response);
+            } else {
+                return Response\Secure3D::fromData($data, $http_code);
+            }
+
         }
 
         return $data;
