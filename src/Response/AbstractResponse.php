@@ -187,7 +187,7 @@ abstract class AbstractResponse extends AbstractMessage implements Http, RFC4918
      */
     public function isError()
     {
-        return ! $this->isSuccess();
+        return false;
     }
 
     /**
