@@ -1,4 +1,6 @@
-<?php namespace Academe\SagePay\Psr7\Response;
+<?php
+
+namespace Academe\SagePay\Psr7\Response;
 
 /**
  * Shared message abstract.
@@ -185,7 +187,7 @@ abstract class AbstractResponse extends AbstractMessage implements Http, RFC4918
      */
     public function isError()
     {
-        return false;
+        return ! $this->isSuccess();
     }
 
     /**
