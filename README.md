@@ -382,6 +382,19 @@ Handling the 3D Secure result involves two steps:
     $secure3d_response = Factory\ResponseFactory::fromHttpResponse($response);
 
     // This will be the result. We are looking for `Authenticated` or similar.
+    //
+    // NOTE: the result of the 3D Secure verification here is NOT safe to use.
+    // I have found that on live, it is possible for the card to totally fail
+    // authentication, while the 3D Secure result returns `Authenticated` here.
+    // Instead, you MUST fetch the remote transaction from the gateway to find
+    // the real state of both the Secure 3D check and the card authentication
+    // checks.
+    // Whether this is a bug in the gateway, or some misunderstanding of how the
+    // process works, is unclear, but as at late 2016, this is how it works on
+    // live. The test system behaves differently, and I have not yet managed to
+    // emulate this behaviour, i.e. with an invalid card the test gateway will not
+    // return a 3D Secure redirect, but the live gateway does.
+
     echo $secure3d_response->getStatus();
 ~~~
 
