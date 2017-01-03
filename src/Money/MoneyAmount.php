@@ -1,4 +1,6 @@
-<?php namespace Academe\SagePay\Psr7\Money;
+<?php
+
+namespace Academe\SagePay\Psr7\Money;
 
 /**
  * Value object for the amount, wrapping the moneyphp/money package.

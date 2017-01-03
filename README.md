@@ -20,6 +20,8 @@ The new class names should hopefully link more closely to the RESTful nature of 
 The `PSR7` branch is now in maintenance mode only, and won't have any major changes - just bugfixes if they are reported.
 The aim is to release on the master branch as soon as a demo (and some units tests) are up and running.
 
+The aim is for this package to support ALL functionality that the gateway supports, keeping up with changes quickly.
+
 ## Want to Help?
 
 Issues, comments, suggestions and PRs are all welcome. So far as I know, this is the first API for the
@@ -67,7 +69,7 @@ Until this library has been released to packagist, include the VCS in `composer.
 
 The `CreateSessionKey` message has had PSR-7 support added, and can be used like this:
 
-~~~php
+```php
 // require "guzzlehttp/guzzle:~6.0"
 // This will bring in guzzle/psr7 too, which is also needed.
 // require "zendframework/zend-diactoros": "~1.3" if you prefer to use that instead.
@@ -129,14 +131,14 @@ if ($session_key->isError()) {
 // The result we want:
 
 echo "Session key is: " . $session_key->getMerchantSessionKey();
-~~~
+```
 
 ### Get a Card Identifier
 
 The Card Identifier (a temporary, tokenised card detail) can be created using the
 equally temporary session key.
 
-~~~php
+```php
 use Academe\SagePay\Psr7\Request;
 
 // Create a card indentifier on the API.
@@ -176,7 +178,7 @@ echo "Card type = " . $card_identifier->getCardType(); // e.g. Visa
 // better off just starting your own 400 second timer here.
 
 var_dump($card_identifier->expiry()); // DateTime object.
-~~~
+```
 
 At this point the card details are *sane* and have been saved in the remote
 API. Nothing has been checked against the bank, so we have no idea yet if these
@@ -186,7 +188,7 @@ details will be authenticated or not.
 
 A transaction can be initiated using the card identifier.
 
-~~~php
+```php
 use Academe\SagePay\Psr7\Money;
 use Academe\SagePay\Psr7\PaymentMethod;
 
@@ -284,7 +286,7 @@ if ($payment_response->isSuccess()) {
     // Payment is successfully authorised.
     // Store everything, then tell the user they have paid.
 }
-~~~
+```
 
 ### Fetch a Transaction Result Again
 
@@ -294,7 +296,7 @@ If a 3D Secure action was needed, then the 3D Secure results need to be sent
 to Sage Pay before you can fetch the transaction.
 Either way, this is how you do it:
 
-~~~php
+```php
 // Prepare the message.
 
 $transaction_result = new Request\FetchTransaction(
@@ -311,7 +313,7 @@ $response = $client->send($transaction_result->message());
 // But do check for errors in the usual way (i.e. you could get an error collection here).
 
 $fetched_transaction = Factory\ResponseFactory::fromHttpResponse($response);
-~~~
+```
 
 ### Using 3D Secure
 
@@ -319,7 +321,7 @@ Now, if you want to use 3D Secure (and you really should) then we have a callbac
 
 To turn on 3D Secure, use the appropriate option when sending the payment:
 
-~~~php
+```php
 $payment = new Request\CreatePayment(
     ...
     [
@@ -327,7 +329,7 @@ $payment = new Request\CreatePayment(
         'Apply3DSecure' => Request\CreatePayment::APPLY_3D_SECURE_FORCE,
     ]
 );
-~~~
+```
 
 ### 3D Secure Redirect
 
@@ -339,7 +341,7 @@ It is not clear why the banks do this, but you just have to go with with it.
 
 This minimal form will demonstrate how the redirect is done:
 
-~~~php
+```php
 // $transaction_response is the message we get back after sending the payment request.
 
 if ($transaction_response->isRedirect()) {
@@ -382,7 +384,7 @@ if ($transaction_response->isRedirect()) {
     // Obviously don't exit if you are using a framework and views.
     exit;
 }
-~~~
+```
 
 The above example does not take into account how you would show the 3D Secure form in an iframe instead
 of inline. That is out of scope for this simple description, for now at least.
@@ -396,7 +398,7 @@ This form will then take the user off to the 3D Secure password page. For Sage P
 Now you need to handle the return from the bank. Using Diactoros (and now Guzzle) you can catch the return
 message as a PSR-7 ServerRequest like this:
 
-~~~php
+```php
 use Academe\SagePay\Psr7\ServerRequest;
 
 $psr7_ServerRequest = \Zend\Diactoros\ServerRequestFactory::fromGlobals();
@@ -412,18 +414,18 @@ if (ServerRequest\Secure3DAcs::isRequest($psr7_ServerRequest->getBody()))
     $secure3d_server_request = new ServerRequest\Secure3DAcs($psr7_ServerRequest);
     ...
 }
-~~~
+```
 
 or
 
-~~~php
+```php
 use Academe\SagePay\Psr7\ServerRequest;
 
 if (ServerRequest\Secure3DAcs::isRequest($_POST)) {
     $secure3d_server_request = ServerRequest\Secure3DAcs::fromData($_POST);
     ...
 }
-~~~
+```
 
 Both will work fine, but it's just about what works best for your framework and application.
 
@@ -432,7 +434,7 @@ Handling the 3D Secure result involves two steps:
 1. Passing the result to Sage Pay to get the final transaction state (WARNING: see note below).
 2. If successful, fetching the final transaction from Sage Pay.
 
-~~~php
+```php
     $request = new Request\CreateSecure3D(
         $endpoint,
         $auth,
@@ -464,7 +466,7 @@ Handling the 3D Secure result involves two steps:
     // return a 3D Secure redirect, but the live gateway does.
 
     echo $secure3d_response->getStatus();
-~~~
+```
 
 ### Final Transaction After 3D Secure
 
@@ -478,7 +480,7 @@ time and try again, and maybe once more if necessary.
 This is supposed to have been fixed in the gateway several times, but still gets occasionally
 reported as still being an issue.
 
-~~~php
+```php
     // Give the gateway some time to get its syncs in order.
     sleep(1);
 
@@ -504,7 +506,7 @@ reported as still being an issue.
     // The transaction data is all [described in the docs](https://test.sagepay.com/documentation/#transactions).
 
     echo json_encode($transaction_fetch);
-~~~
+```
 
 ## Payment Methods
 
@@ -529,7 +531,7 @@ or while testing).
 
 A CVV can be linked to a reusable card with the `LinkSecurityCode` message:
 
-~~~php
+```php
 $security_code = new Request\LinkSecurityCode(
     $endpoint,
     $auth,
@@ -548,14 +550,14 @@ $security_code_response = Factory\ResponseFactory::fromHttpResponse(
 // Should check for errors here:
 
 if ($security_code_response->isError()) {...}
-~~~
+```
 
 To save a reusable card, take the `PaymentMethod` from a successful payment.
 Note: it is not possible at this time to set up a reusable card without making a payment.
 That is a restriction of the gateway. Some gateways will allow you to create zero-amount
 payments just to authenticate and set up a reusable card, but not here.
 
-~~~php
+```php
 ...
 
 // Get the transaction response.
@@ -585,4 +587,4 @@ $card = new Request\Model\ReusableCard($cardIdentifier);
 // Or if being linked to a freshly-entered CVV:
 
 $card = new Request\Model\ReusableCard($merchantSessionKey, $cardIdentifier);
-~~~
+```

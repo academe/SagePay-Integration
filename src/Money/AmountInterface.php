@@ -1,4 +1,6 @@
-<?php namespace Academe\SagePay\Psr7\Money;
+<?php
+
+namespace Academe\SagePay\Psr7\Money;
 
 /**
  * Amount interface, for carrying an amount and its currency.
