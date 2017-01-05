@@ -8,6 +8,7 @@ namespace Academe\SagePay\Psr7\Money;
  * TODO: create a CurrencyInterface for this.
  */
 
+use Academe\SagePay\Psr7\Iso4217\Currencies;
 use UnexpectedValueException;
 
 class Currency
@@ -18,31 +19,18 @@ class Currency
     protected $code;
 
     /**
-     * Currencies supported by SagePay.
-     * 'digits' are the number of digits after the decimal point.
-     * Some currencies only allow minor units of a certain size, but
-     * none of these yet.
-     *
-     * @var array
+     * Array of all currencies, initialised on instantiation.
      */
-    protected static $currencies = [
-        // Original three currencies.
-        'GBP' => ['digits' => 2, 'symbol' => '£', 'name' => 'Pound sterling'],
-        'EUR' => ['digits' => 2, 'symbol' => '€', 'name' => 'Euro'],
-        'USD' => ['digits' => 2, 'symbol' => '€', 'name' => 'US dollar'],
-        // Support is expanding for further currencies.
-        'CAD' => ['digits' => 2, 'symbol' => '$', 'name' => 'Canadian dollar'],
-        'AUD' => ['digits' => 2, 'symbol' => '$', 'name' => 'Australian dollar'],
-        'NZD' => ['digits' => 2, 'symbol' => '$', 'name' => 'New Zealand dollar'],
-        'ZAR' => ['digits' => 2, 'symbol' => 'R', 'name' => 'South African rand'],
-    ];
+    protected $all_currencies;
 
     /**
      * @param string $code The ISO 4217 three-character currency code
      */
     public function __construct($code)
     {
-        if (isset(static::$currencies[$code])) {
+        $this->all_currencies = new Currencies();
+
+        if ($this->all_currencies->get($code)) {
             $this->code = $code;
         } else {
             throw new UnexpectedValueException(sprintf('Unsupported currency code "%s"', $code));
@@ -58,11 +46,12 @@ class Currency
     }
 
     /**
+     * TODO: renamed this to minorUnits?
      * @return mixed The number of digits in the decimal subunit
      */
     public function getDigits()
     {
-        return static::$currencies[$this->code]['digits'];
+        return ($this->all_currencies->get($this->code, 'minorUnit'));
     }
 
     /**
@@ -74,22 +63,15 @@ class Currency
      */
     public function getName()
     {
-        return static::$currencies[$this->code]['name'];
+        return ($this->all_currencies->get($this->code, 'currency'));
     }
 
     /**
      * @return string The currency symbol, made of one or more UTF-8 characters
+     * @deprec No longer supported
      */
     public function getSymbol()
     {
-        return static::$currencies[$this->code]['symbol'];
-    }
-
-    /**
-     * @return array Details of all the supported currencies
-     */
-    public static function supportedCurrencies()
-    {
-        return static::$currencies;
+        return null;
     }
 }
