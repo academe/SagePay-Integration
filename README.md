@@ -431,8 +431,8 @@ Both will work fine, but it's just about what works best for your framework and 
 
 Handling the 3D Secure result involves two steps:
 
-1. Passing the result to Sage Pay to get the final transaction state (WARNING: see note below).
-2. If successful, fetching the final transaction from Sage Pay.
+1. Passing the result to Sage Pay to get the 3D Secure state (CAUTION: see note below).
+2. Fetching the final transaction result from Sage Pay.
 
 ```php
     $request = new Request\CreateSecure3D(
@@ -453,24 +453,21 @@ Handling the 3D Secure result involves two steps:
 
     // This will be the result. We are looking for `Authenticated` or similar.
     //
-    // NOTE: the result of the 3D Secure verification here is NOT safe to use.
+    // NOTE: the result of the 3D Secure verification here is NOT safe to act on.
     // I have found that on live, it is possible for the card to totally fail
     // authentication, while the 3D Secure result returns `Authenticated` here.
+    // This is a decision the bank mnakes. They may skip the 3D Secure and mark
+    // it as "Authenticated" at their own risk. Just log this information.
     // Instead, you MUST fetch the remote transaction from the gateway to find
     // the real state of both the 3D Secure check and the card authentication
     // checks.
-    // Whether this is a bug in the gateway, or some misunderstanding of how the
-    // process works, is unclear, but as at late 2016, this is how it works on
-    // live. The test system behaves differently, and I have not yet managed to
-    // emulate this behaviour, i.e. with an invalid card the test gateway will not
-    // return a 3D Secure redirect, but the live gateway does.
 
     echo $secure3d_response->getStatus();
 ```
 
 ### Final Transaction After 3D Secure
 
-Assuming 3D Secure passed, then get the transaction. However - *do not get it too soon*.
+Whether 3D Secure passed or not, get the transaction. However - *do not get it too soon*.
 The test instance of Sage Pay has a slight delay between getting the 3D Secure result and
 being able to fetch the transaction.
 It is safer just to sleep for one second at this time, which is an arbitrary period but
@@ -482,6 +479,7 @@ reported as still being an issue.
 
 ```php
     // Give the gateway some time to get its syncs in order.
+
     sleep(1);
 
     // Fetch the transaction with full details.
