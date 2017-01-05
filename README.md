@@ -315,6 +315,28 @@ $response = $client->send($transaction_result->message());
 $fetched_transaction = Factory\ResponseFactory::fromHttpResponse($response);
 ```
 
+### Repeat Payments
+
+A previous transaction can be used as a base for a repeat payment.
+You can amend the shipping details and the amount (with no limit)
+but not the payee details or address.
+
+```php
+$repeat_payment = new Request\CreateRepeatPayment(
+    $endpoint,
+    $auth,
+    $previous_transaction_id, // The previous payment to take card details from.
+    'MyVendorTxCode-' . rand(10000000, 99999999), // This will be your local unique transaction ID.
+    $amount, // Not limited by the original amount.
+    'My Purchase Description',
+    null, // Optional shipping address
+    null // Optional shipping recipient
+);
+```
+
+All other options remain the same as for the original transaction
+(though it does appear that giftAid can now be set in the API).
+
 ### Using 3D Secure
 
 Now, if you want to use 3D Secure (and you really should) then we have a callback to deal with.
