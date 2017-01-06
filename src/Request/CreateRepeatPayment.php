@@ -51,6 +51,7 @@ class CreateRepeatPayment extends AbstractRequest
      * @param string $description
      * @param AddressInterface|null $shippingAddress
      * @param PersonInterface|null $shippingRecipient
+     * @param array $options Optional transaction options
      */
     public function __construct(
         Endpoint $endpoint,
@@ -60,7 +61,8 @@ class CreateRepeatPayment extends AbstractRequest
         AmountInterface $amount,
         $description,
         Model\AddressInterface $shippingAddress = null,
-        Model\PersonInterface $shippingRecipient = null
+        Model\PersonInterface $shippingRecipient = null,
+        array $options = []
     ) {
         $this->setEndpoint($endpoint);
         $this->setAuth($auth);
@@ -72,6 +74,9 @@ class CreateRepeatPayment extends AbstractRequest
 
         $this->shippingAddress = $shippingAddress->withFieldPrefix($this->shippingAddressFieldPrefix);
         $this->shippingRecipient = $shippingRecipient->withFieldPrefix($this->shippingNameFieldPrefix);
+
+        // Additional options.
+        $this->setOptions($options);
     }
 
     /**
@@ -153,6 +158,26 @@ class CreateRepeatPayment extends AbstractRequest
     }
 
     /**
+     * @param $giftAid
+     * @return $this
+     */
+    protected function setGiftAid($giftAid)
+    {
+        $this->giftAid = ! empty($giftAid);
+        return $this;
+    }
+
+    /**
+     * @param $giftAid
+     * @return Transaction
+     */
+    public function withGiftAid($giftAid)
+    {
+        $copy = clone $this;
+        return $copy->setGiftAid($giftAid);
+    }
+
+    /**
      * Get the message body data for serializing.
      * @return array
      */
@@ -182,6 +207,10 @@ class CreateRepeatPayment extends AbstractRequest
         // If there are shipping details, then merge it in:
         if ( ! empty($shippingAddress)) {
             $result['shippingDetails'] = $shippingDetails;
+        }
+
+        if (! empty($this->giftAid)) {
+            $result['giftAid'] = $this->giftAid;
         }
 
         return $result;
