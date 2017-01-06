@@ -328,7 +328,7 @@ $repeat_payment = new Request\CreateRepeatPayment(
     $previous_transaction_id, // The previous payment to take card details from.
     'MyVendorTxCode-' . rand(10000000, 99999999), // This will be your local unique transaction ID.
     $amount, // Not limited by the original amount.
-    'My Purchase Description',
+    'My Repeat Purchase Description',
     null, // Optional shipping address
     null // Optional shipping recipient
 );

@@ -11,7 +11,7 @@ namespace Academe\SagePay\Psr7\Money;
 use Academe\SagePay\Psr7\Iso4217\Currencies;
 use UnexpectedValueException;
 
-class Currency
+class Currency implements CurrencyInterface
 {
     /**
      * @var string ISO 4217 currency code
@@ -19,7 +19,8 @@ class Currency
     protected $code;
 
     /**
-     * Array of all currencies, initialised on instantiation.
+     * Object holding all currencies, initialised on instantiation.
+     * @var Academe\SagePay\Psr7\Iso4217\Currencies
      */
     protected $all_currencies;
 
@@ -38,6 +39,14 @@ class Currency
     }
 
     /**
+     * Return a new instance of a specified currency.
+     * e.g. Currency::GBP()
+     */
+    static public function __callStatic($method, $args) {
+        return new static($method);
+    }
+
+    /**
      * @return string The ISO 4217 three-character currency code
      */
     public function getCode()
@@ -46,12 +55,20 @@ class Currency
     }
 
     /**
-     * TODO: renamed this to minorUnits?
+     * @return integer The number of digits in the decimal subunit (aka minor units)
+     */
+    public function getMinorUnits()
+    {
+        return ($this->all_currencies->get($this->code, 'minorUnit'));
+    }
+
+    /**
      * @return mixed The number of digits in the decimal subunit
+     * @deprecated Use getMinorUnits()
      */
     public function getDigits()
     {
-        return ($this->all_currencies->get($this->code, 'minorUnit'));
+        return $this->getMinorUnits();
     }
 
     /**
@@ -59,7 +76,7 @@ class Currency
      * getName and getSymbol are handy for display and logging, but not essential,
      * so they are not a part of the interface.
      *
-     * @return string The name of the currency
+     * @return string The en-GB name of the currency
      */
     public function getName()
     {
@@ -68,7 +85,7 @@ class Currency
 
     /**
      * @return string The currency symbol, made of one or more UTF-8 characters
-     * @deprec No longer supported
+     * @deprecated No longer supported
      */
     public function getSymbol()
     {
