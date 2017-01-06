@@ -22,7 +22,7 @@ class Amount implements AmountInterface
      * @param Academe\SagePay\Psr7\Money\Currency|Currency $currency
      * @param int $amount Minor unit total amount, with no decimal part
      */
-    public function __construct(Currency $currency, $amount = 0)
+    public function __construct(CurrencyInterface $currency, $amount = 0)
     {
         $this->currency = $currency;
         $this->setMinorUnit($amount);
