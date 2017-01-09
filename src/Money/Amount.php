@@ -7,8 +7,8 @@ namespace Academe\SagePay\Psr7\Money;
  * This object does not use any third-party packages to represent the amount.
  */
 
-use Exception;
 use UnexpectedValueException;
+use Exception;
 
 class Amount implements AmountInterface
 {
