@@ -8,8 +8,9 @@ namespace Academe\SagePay\Psr7\Money;
  * TODO: create a CurrencyInterface for this.
  */
 
-use Academe\SagePay\Psr7\Iso4217\Currencies;
+//use Academe\SagePay\Psr7\Iso4217\Currencies;
 use UnexpectedValueException;
+use Alcohol\ISO4217;
 
 class Currency implements CurrencyInterface
 {
@@ -25,13 +26,13 @@ class Currency implements CurrencyInterface
     protected $all_currencies;
 
     /**
-     * @param string $code The ISO 4217 three-character currency code
+     * @param string $code The ISO 4217 alpha-3 currency code
      */
     public function __construct($code)
     {
-        $this->all_currencies = new Currencies();
+        $this->all_currencies = new ISO4217();;
 
-        if ($this->all_currencies->get($code)) {
+        if ($this->all_currencies->getByAlpha3($code)) {
             $this->code = $code;
         } else {
             throw new UnexpectedValueException(sprintf('Unsupported currency code "%s"', $code));
@@ -59,7 +60,7 @@ class Currency implements CurrencyInterface
      */
     public function getMinorUnits()
     {
-        return ($this->all_currencies->get($this->code, 'minorUnit'));
+        return ($this->all_currencies->get($this->code, 'exp'));
     }
 
     /**
@@ -80,15 +81,6 @@ class Currency implements CurrencyInterface
      */
     public function getName()
     {
-        return ($this->all_currencies->get($this->code, 'currency'));
-    }
-
-    /**
-     * @return string The currency symbol, made of one or more UTF-8 characters
-     * @deprecated No longer supported
-     */
-    public function getSymbol()
-    {
-        return null;
+        return ($this->all_currencies->get($this->code, 'name'));
     }
 }

@@ -21,7 +21,8 @@
     "require": {
         "php": ">=5.5.0",
         "shrikeh/teapot": "^1.0",
-        "psr/http-message": "~1.0"
+        "psr/http-message": "~1.0",
+        "alcohol/iso4217": "^3.1"
     },
     "suggest": {
         "mathiasverraes/money": "^1.3",
