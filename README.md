@@ -2,10 +2,10 @@
 
 [![Build Status](https://travis-ci.org/academe/SagePay-Integration.svg?branch=PSR-7)](https://travis-ci.org/academe/SagePay-Integration)
 
-This package provides the data models and business logic for the [Sage Pay Integration](https://test.sagepay.com/documentation/) payment gateway
+This package provides the data models for the [Sage Pay Integration](https://test.sagepay.com/documentation/) payment gateway
 (sometimes called the `Pi` or `REST` API).
-It does not provide the transport mechanism (at thisstage), so you can use what you like for that,
-for example Guzzle, curl or a PSR-7 library.
+It does not provide the transport mechanism, so you can use what you like for that,
+for example Guzzle, curl or another PSR-7 library.
 
 You can use this library as a PSR-7 message generator/consumer, or go a level down and handle all the
 data through arrays - both are supported.
