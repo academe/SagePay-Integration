@@ -15,7 +15,7 @@ class ErrorCollection extends AbstractResponse implements \IteratorAggregate
     /**
      * @var array
      */
-    protected $items = array();
+    protected $items = [];
 
     /**
      * @param $data

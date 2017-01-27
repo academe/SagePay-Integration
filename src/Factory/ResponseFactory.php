@@ -131,6 +131,11 @@ class ResponseFactory
             return Response\Release::fromData($data, $httpCode);
         }
 
+        // A list of instructions.
+        if (Helper::dataGet($data, 'instructions') && is_array(Helper::dataGet($data, 'instructions'))) {
+            return Response\InstructionCollection::fromData($data, $httpCode);
+        }
+
         // A 204 with an empty body is a quiet accpetance that what was send is successful.
         // e.g. returned when a CVV is linked to a card.
         if ($httpCode == 204 && empty($data)) {
