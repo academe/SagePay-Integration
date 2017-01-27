@@ -87,6 +87,14 @@ class ResponseFactory
             return Response\Refund::fromData($data, $httpCode);
         }
 
+        // A deferred payment.
+        if (
+            Helper::dataGet($data, 'transactionId')
+            && Helper::dataGet($data, 'transactionType') == AbstractRequest::TRANSACTION_TYPE_DEFERRED
+        ) {
+            return Response\Deferred::fromData($data, $httpCode);
+        }
+
         // 3D Secure response.
         // This is the simplest of all the messages - just a status and nothing else.
         // Make sure there is no transactionType field.
@@ -109,8 +117,18 @@ class ResponseFactory
         }
 
         // A void instruction.
-        if (Helper::dataGet($data, 'instructionType') == 'void') {
+        if (Helper::dataGet($data, 'instructionType') == AbstractRequest::INSTRUCTION_TYPE_VOID) {
             return Response\Void::fromData($data, $httpCode);
+        }
+
+        // An abort instruction.
+        if (Helper::dataGet($data, 'instructionType') == AbstractRequest::INSTRUCTION_TYPE_ABORT) {
+            return Response\Abort::fromData($data, $httpCode);
+        }
+
+        // A release instruction.
+        if (Helper::dataGet($data, 'instructionType') == AbstractRequest::INSTRUCTION_TYPE_RELEASE) {
+            return Response\Release::fromData($data, $httpCode);
         }
 
         // A 204 with an empty body is a quiet accpetance that what was send is successful.

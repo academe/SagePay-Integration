@@ -17,7 +17,7 @@ class CreatePayment extends AbstractRequest
 {
     protected $resource_path = ['transactions'];
 
-    protected $transactionType;
+    protected $transactionType = AbstractRequest::TRANSACTION_TYPE_PAYMENT;
 
     // Minimum mandatory data (constructor).
     protected $paymentMethod;
@@ -97,9 +97,6 @@ class CreatePayment extends AbstractRequest
         Model\PersonInterface $shippingRecipient = null,
         array $options = []
     ) {
-        // Set the transaction type (for easy implementation of "authorise" later).
-        $this->transactionType = static::TRANSACTION_TYPE_PAYMENT;
-
         // Access details.
         $this->setEndpoint($endpoint);
         $this->setAuth($auth);

@@ -7,11 +7,6 @@ namespace Academe\SagePay\Psr7\Response;
  * See Secrure3DRedirect for when the result is 3D Secure redirect.
  */
 
-use Academe\SagePay\Psr7\Request\AbstractRequest;
-use Psr\Http\Message\ResponseInterface;
-use Academe\SagePay\Psr7\Helper;
-use UnexpectedValueException;
-
 class Payment extends AbstractTransaction
 {
     /**

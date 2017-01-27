@@ -1,4 +1,6 @@
-<?php namespace Academe\SagePay\Psr7\Response;
+<?php
+
+namespace Academe\SagePay\Psr7\Response;
 
 /**
  * Value object to hold the void instruction response.
@@ -8,8 +10,6 @@
 
 use Psr\Http\Message\ResponseInterface;
 use Academe\SagePay\Psr7\Helper;
-//use Exception;
-use DateTime;
 
 class Void extends AbstractResponse
 {
