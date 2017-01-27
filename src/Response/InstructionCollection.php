@@ -31,6 +31,10 @@ class InstructionCollection extends AbstractResponse implements \IteratorAggrega
         $instructions = Helper::dataGet($data, 'instructions', null);
 
         if (is_array($instructions)) {
+            // The instructions will hopefully be an array of instruction objects.
+            // Use the ResponseFactory to decide what each one is, and create the
+            // appropriate object.
+
             foreach($instructions as $instruction) {
                 $this->add(ResponseFactory::fromData($instruction, $httpCode));
             }
