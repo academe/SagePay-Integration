@@ -8,9 +8,6 @@ namespace Academe\SagePay\Psr7\Response;
  * instruction types are rolled out.
  */
 
-use Psr\Http\Message\ResponseInterface;
-use Academe\SagePay\Psr7\Helper;
-
 class Void extends AbstractInstruction
 {
 }
