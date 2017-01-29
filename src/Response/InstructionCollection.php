@@ -54,11 +54,10 @@ class InstructionCollection extends AbstractResponse implements \IteratorAggrega
     /**
      * Add a new instruction to the collection.
      * This collection is not a value object. Perhaps it should be: withError()?
-     * TODO: create an abstract for the instruction responses.
      *
      * @param Void $item An Error instance to add
      */
-    public function add(Void $item)
+    public function add(AbstractInstruction $item)
     {
         $this->items[] = $item;
     }

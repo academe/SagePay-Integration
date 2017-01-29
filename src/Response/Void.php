@@ -11,45 +11,6 @@ namespace Academe\SagePay\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Academe\SagePay\Psr7\Helper;
 
-class Void extends AbstractResponse
+class Void extends AbstractInstruction
 {
-    protected $instructionType;
-    protected $date;
-
-    /**
-     * @param array|object $data The parsed data returned by Sage Pay.
-     * @return $this
-     */
-    protected function setData($data)
-    {
-        if ($date = Helper::dataGet($data, 'date')) {
-            $this->date = Helper::parseDateTime($date);
-        }
-
-        $this->instructionType = Helper::dataGet($data, 'instructionType');
-
-        return $this;
-    }
-
-    public function getInstructionType()
-    {
-        return $this->instructionType;
-    }
-
-    public function getDate()
-    {
-        return $this->date;
-    }
-
-    /**
-     * @return array
-     */
-    public function jsonSerialize()
-    {
-        return [
-            'instructionType' => $this->getInstructionType(),
-            'date' => $this->getDate() ? $this->getDate()->format(Helper::SAGEPAY_DATE_FORMAT) : null,
-            'httpCode' => $this->getHttpCode(),
-        ];
-    }
 }
