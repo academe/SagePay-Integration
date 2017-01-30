@@ -7,16 +7,15 @@ namespace Academe\SagePay\Psr7\Response;
  */
 
 use Academe\SagePay\Psr7\Factory\ResponseFactory;
-use Psr\Http\Message\ResponseInterface;
+//use Psr\Http\Message\ResponseInterface;
 use Academe\SagePay\Psr7\Helper;
 
-class InstructionCollection extends AbstractResponse implements \IteratorAggregate
+class InstructionCollection extends AbstractCollection
 {
     /**
-     * The list of instructions.
-     * @var array
+     * The class type that can be added to this collection.
      */
-    protected $items = [];
+    protected $permittedClass = AbstractInstruction::class;
 
     /**
      * 
@@ -49,40 +48,5 @@ class InstructionCollection extends AbstractResponse implements \IteratorAggrega
         return [
             'instructions' => $this->items,
         ];
-    }
-
-    /**
-     * Add a new instruction to the collection.
-     * This collection is not a value object. Perhaps it should be: withError()?
-     *
-     * @param Void $item An Error instance to add
-     */
-    public function add(AbstractInstruction $item)
-    {
-        $this->items[] = $item;
-    }
-
-    /**
-     * @return ArrayIterator
-     */
-    public function getIterator()
-    {
-        return new ArrayIterator($this->items);
-    }
-
-    /**
-     * @return int Count of instructions in the collection
-     */
-    public function count()
-    {
-        return count($this->items);
-    }
-
-    /**
-     * @return array all instructions in the collection.
-     */
-    public function all()
-    {
-        return $this->items;
     }
 }

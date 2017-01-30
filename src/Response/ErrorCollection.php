@@ -8,14 +8,13 @@
 
 use Psr\Http\Message\ResponseInterface;
 use Academe\SagePay\Psr7\Helper;
-use ArrayIterator;
 
-class ErrorCollection extends AbstractResponse implements \IteratorAggregate
+class ErrorCollection extends AbstractCollection
 {
     /**
-     * @var array
+     * The class type that can be added to this collection.
      */
-    protected $items = [];
+    protected $permittedClass = Model\Error::class;
 
     /**
      * @param $data
@@ -53,25 +52,6 @@ class ErrorCollection extends AbstractResponse implements \IteratorAggregate
     public static function fromHttpResponse(ResponseInterface $response)
     {
         return new static($response);
-    }
-
-    /**
-     * Add a new error to the collection.
-     * This collection is not a value object. Perhaps it should be: withError()?
-     *
-     * @param Error $item An Error instance to add
-     */
-    public function add(Model\Error $item)
-    {
-        $this->items[] = $item;
-    }
-
-    /**
-     * @return ArrayIterator
-     */
-    public function getIterator()
-    {
-        return new ArrayIterator($this->items);
     }
 
     /**
@@ -113,14 +93,6 @@ class ErrorCollection extends AbstractResponse implements \IteratorAggregate
     }
 
     /**
-     * @return int Count of errors in the collection
-     */
-    public function count()
-    {
-        return count($this->items);
-    }
-
-    /**
      * @return bool True if there are any errors in the collection, otherwise False
      */
     public function hasErrors()
@@ -129,28 +101,12 @@ class ErrorCollection extends AbstractResponse implements \IteratorAggregate
     }
 
     /**
-     * @return Error The first error in the collection.
-     */
-    public function first()
-    {
-        return reset($this->items);
-    }
-
-    /**
-     * @return array All errors in the collection.
-     */
-    public function all()
-    {
-        return $this->items;
-    }
-
-    /**
      * @inheritdoc
      */
     public static function isResponse($data)
     {
         return is_array(Helper::dataGet($data, 'errors'))
-            || Helper::dataGet($data, 'status') == 'Error' // FIXME: This will potentially catch a valid 3DSecure message.
+            || Helper::dataGet($data, 'status') == 'Error'
             || Helper::dataGet($data, 'status') == 'Invalid'
             || Helper::dataGet($data, 'card-identifier-error-code', '') != '';
     }
