@@ -6,9 +6,10 @@ namespace Academe\SagePay\Psr7\Response;
  * Shared transaction response abstract.
  */
 
-use Academe\SagePay\Psr7\Helper;
-use Academe\SagePay\Psr7\Money\Amount;
+use Academe\SagePay\Psr7\Money\CurrencyInterface;
 use Academe\SagePay\Psr7\Money\Currency;
+use Academe\SagePay\Psr7\Money\Amount;
+use Academe\SagePay\Psr7\Helper;
 
 abstract class AbstractTransaction extends AbstractResponse
 {
@@ -42,9 +43,7 @@ abstract class AbstractTransaction extends AbstractResponse
 
     protected $currency;
 
-    protected $totalAmount;
-    protected $saleAmount;
-    protected $surchargeAmount;
+    protected $amount;
 
     /**
      * @param $data
@@ -65,8 +64,19 @@ abstract class AbstractTransaction extends AbstractResponse
         // Common fields.
         $this->setPaymentMethod($data);
         $this->setStatuses($data);
-        $this->set3dSecure($data);
-        $this->setAmount($data);
+
+        // The "3D Secure object" does not include the '3DSecure' container element.
+        if ($secure3D = Helper::dataGet($data, '3DSecure')) {
+            $this->set3dSecure($secure3D);
+        }
+
+        // Set currency on its own first.
+
+        $this->setCurrency($data);
+
+        // Then set the amount, using the currency.
+
+        $this->setAmount($data, $this->getCurrency());
 
         return $this;
     }
@@ -101,6 +111,16 @@ abstract class AbstractTransaction extends AbstractResponse
         $this->statusDetail = Helper::dataGet($data, 'statusDetail', null);
     }
 
+    /**
+     * Set the currency of the response from the data.
+     */
+    protected function setCurrency($data)
+    {
+        if (($currency = Helper::dataGet($data, 'currency')) != null) {
+            $this->currency = new Currency($currency);
+        }
+    }
+
     protected function setPaymentMethod($data)
     {
         $paymentMethod = Helper::dataGet($data, 'paymentMethod');
@@ -115,38 +135,18 @@ abstract class AbstractTransaction extends AbstractResponse
         }
     }
 
+    /**
+     * 
+     */
     protected function set3dSecure($data)
     {
-        $secure3D = Helper::dataGet($data, '3DSecure');
-
-        if ($secure3D) {
-            // Create a 3DSecure object from the array data.
-            $this->secure3D = Secure3D::fromData($secure3D);
-        }
+        // Create a 3DSecure object from the array data.
+        $this->secure3D = Secure3D::fromData($data);
     }
 
-    protected function setAmount($data)
+    protected function setAmount($data, CurrencyInterface $currency = null)
     {
-        // Optional "amount" and "currency", available only when fetching an
-        // existing payment from Sage Pay.
-
-        if (($currency = Helper::dataGet($data, 'currency')) != null) {
-            $this->currency = new Currency($currency);
-
-            // Only get the amounts if we have a currency to assign to them.
-
-            if (($totalAmount = Helper::dataGet($data, 'amount.totalAmount')) !== null) {
-                $this->totalAmount = new Amount($this->currency, $totalAmount);
-            }
-
-            if (($saleAmount = Helper::dataGet($data, 'amount.saleAmount')) !== null) {
-                $this->saleAmount = new Amount($this->currency, $saleAmount);
-            }
-
-            if (($surchargeAmount = Helper::dataGet($data, 'amount.surchargeAmount')) !== null) {
-                $this->surchargeAmount = new Amount($this->currency, $surchargeAmount);
-            }
-        }
+        $this->amount = Model\Amount::fromData($data, $currency);
     }
 
     /**
@@ -193,19 +193,40 @@ abstract class AbstractTransaction extends AbstractResponse
         return $this->currency;
     }
 
+    /**
+     * The Sage Pay docs treat the total/sale/surchage amounts as a single
+     * "amount" object. Bizarrely, the object of amounts does *not* include
+     * te currency, so it lacks some very important context there.
+     */
+    public function getAmount()
+    {
+        return $this->amount;
+    }
+
+    /**
+     * Convenience methods dive into the amount object.
+     * @return Academe\SagePay\Psr7\Money\AmountInterface|null
+     */
+
     public function getTotalAmount()
     {
-        return $this->totalAmount;
+        if ($amount = $this->getAmount()) {
+            return $amount->getTotal();
+        }
     }
 
     public function getSaleAmount()
     {
-        return $this->saleAmount;
+        if ($amount = $this->getAmount()) {
+            return $amount->getSale();
+        }
     }
 
     public function getSurchargeAmount()
     {
-        return $this->surchargeAmount;
+        if ($amount = $this->getAmount()) {
+            return $amount->getSurcharge();
+        }
     }
 
     /**
@@ -285,22 +306,9 @@ abstract class AbstractTransaction extends AbstractResponse
             $return['3DSecure'] = $secure3D;
         }
 
-        $amount = [];
-
-        if (($totalAmount = $this->getTotalAmount()) !== null) {
-            $amount['totalAmount'] = $totalAmount->getAmount();
-        }
-
-        if (($saleAmount = $this->getSaleAmount()) !== null) {
-            $amount['saleAmount'] = $saleAmount->getAmount();
-        }
-
-        if (($surchargeAmount = $this->getSurchargeAmount()) !== null) {
-            $amount['surchargeAmount'] = $surchargeAmount->getAmount();
-        }
-
-        if (! empty($amount)) {
-            $return['amount'] = $amount;
+        if ($amount = $this->getAmount()) {
+            // Merge in the "amount object" at the top level.
+            $return = array_merge($return, $amount->getData());
         }
 
         if ($currency = $this->getCurrency()) {
