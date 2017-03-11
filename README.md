@@ -220,6 +220,14 @@ $customer = new Model\Person(
 
 $amount = Money\Amount::GBP()->withMinorUnit(999);
 
+// Or better to use the moneyphp/money package:
+
+use Money\Money as MoneyPhp;
+
+$moneyphp_model = MoneyPhp::GBP(999);
+$amount = new Money\MoneyAmount($moneyphp_model);
+
+
 // We have a card to charge (we get the session key and captured the card identifier earlier).
 // See below for details of the various card request objects.
 
