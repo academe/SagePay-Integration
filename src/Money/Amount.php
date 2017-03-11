@@ -40,8 +40,8 @@ class Amount implements AmountInterface
     {
         if (is_int($amount) || is_float($amount) || (is_string($amount) && preg_match('/^[0-9]*\.[0-9]*$/', $amount))) {
             $amount = (float)$amount * pow(10, $this->currency->getDigits());
-
-            if (floor($amount) != $amount) {
+var_dump(floor($amount)); var_dump(round($amount, 6));
+            if (floor($amount) != round($amount, 6)) {
                 // Too many decimal digits for the currency.
                 throw new UnexpectedValueException(sprintf(
                     'Amount has too many decimal places. Calculated minor unit %f should be an integer.',
@@ -50,11 +50,11 @@ class Amount implements AmountInterface
             }
 
             $clone = clone $this;
-            $clone->amount = (int)$amount;
+            $clone->setMinorUnit((int)$amount);
             return $clone;
         } else {
             throw new UnexpectedValueException(sprintf(
-                'Amount is an unexpected data type.'
+                'Major Unit must be a number.'
             ));
         }
     }

@@ -60,7 +60,7 @@ class Currency implements CurrencyInterface
      */
     public function getMinorUnits()
     {
-        return ($this->all_currencies->get($this->code, 'exp'));
+        return ($this->all_currencies->getByAlpha3($this->code)['exp']);
     }
 
     /**
@@ -81,6 +81,6 @@ class Currency implements CurrencyInterface
      */
     public function getName()
     {
-        return ($this->all_currencies->get($this->code, 'name'));
+        return ($this->all_currencies->getByAlpha3($this->code)['name']);
     }
 }
