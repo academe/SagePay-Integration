@@ -1,0 +1,19 @@
+# Sage Pay REST API
+
+B [label="Browsing Session"],
+M [label="Merchant Site"],
+U [label="User Browser"],
+S [label="Sage Pay"];
+
+M=>S: "CreateSessionKey";
+join S=>M: "MerchantSessionKey";
+M->B: "Store\nMerchantSessionKey";
+
+M->U: "Present Payment Form";
+box U..U: "Payment Form"
+{
+    box U--U: "Credit Card Fields";
+    box U--U: "Address Fields";
+};
+
+# To be completed...
