@@ -15,6 +15,13 @@ use Academe\SagePay\Psr7\Helper;
 class SingleUseCard extends AbstractCard
 {
     /**
+     * Flag to indicaste whether the cards should be saved for reuse.
+     *
+     * @var bool|null
+     */
+    protected $save;
+
+    /**
      * Card constructor.
      *
      * @param Academe\SagePay\Psr7\Response\SessionKey|string $sessionKey

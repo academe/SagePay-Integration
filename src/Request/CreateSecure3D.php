@@ -24,7 +24,7 @@ class CreateSecure3D extends AbstractRequest
      * @param Endpoint $endpoint
      * @param Auth $auth
      * @param string|Secure3DAcsResponse $paRes The PA Result returned by the user's bank (or their agent)
-     * @param string $transactionId The ID that Sage Pay gave to the transaction in its intial reponse
+     * @param string $transactionId The ID that Sage Pay gave to the transaction in its intial response
      */
     public function __construct(Endpoint $endpoint, Auth $auth, $paRes, $transactionId)
     {

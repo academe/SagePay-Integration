@@ -12,7 +12,6 @@ use Academe\SagePay\Psr7\Response\SessionKey;
 
 abstract class AbstractCard implements PaymentMethodInterface
 {
-
     /**
      * @var Supplied when sending card identifier.
      */
