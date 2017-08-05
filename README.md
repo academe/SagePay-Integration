@@ -184,6 +184,21 @@ At this point the card details are *sane* and have been saved in the remote
 API. Nothing has been checked against the bank, so we have no idea yet if these
 details will be authenticated or not.
 
+What is a mystery to me is just why the card identifier is needed at all.
+The session key is only valid for one set of card details, so the session
+key should be all the Sage Pay needs to know to access those card details
+when the final purchase is requested. But no, this additional
+"card identifier" also needs to be sent to the gateway.
+
+The `merchantSessionKey` identifies a short-lived storage area in the gatway
+for passing the card details from client to gateway. The `cardIdentifier`
+then identifies a single card within the storage area. The storage can only
+store a single card though, so it's just another thing to have to manage.
+My guess is that this is an attempt to make the temporary card detail
+handling more consistent with the long-term card tokens (also called
+`cardIdentifier`). But to my mind, there is no card identifier *unless* the
+merchant site wants a long-lived token to use again.
+
 ### Submit a Transaction
 
 A transaction can be initiated using the card identifier.

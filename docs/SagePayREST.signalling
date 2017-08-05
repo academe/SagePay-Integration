@@ -7,15 +7,15 @@ M [label="Merchant Site"],
 U [label="User Browser"],
 S [label="Sage Pay"];
 
-M=>S: "CreateSessionKey";
-join S=>M: "MerchantSessionKey";
-M->B: "Store\nMerchantSessionKey";
+M=>S [label="CreateSessionKey"];
+join S=>M [label="MerchantSessionKey"];
+M->B [label="Store\nMerchantSessionKey"];
 
-M->U: "Present Payment Form";
-box U..U: "Payment Form"
+M->U [label="Present Payment Form"];
+box U..U [label="Payment Form"]
 {
-    box U--U: "Credit Card Fields";
-    box U--U: "Address Fields";
+    box U--U [label="Credit Card Fields"];
+    box U--U [label="Address Fields"];
 };
 
 # To be completed...

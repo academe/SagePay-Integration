@@ -1,4 +1,6 @@
-<?php namespace Academe\SagePay\Psr7\Response;
+<?php
+
+namespace Academe\SagePay\Psr7\Response;
 
 /**
  * The Refund transaction has the same fields as a Repeat transaction.

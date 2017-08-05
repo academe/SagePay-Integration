@@ -118,7 +118,7 @@ class ResponseFactory
 
         // A void instruction.
         if (Helper::dataGet($data, 'instructionType') == AbstractRequest::INSTRUCTION_TYPE_VOID) {
-            return Response\Void::fromData($data, $httpCode);
+            return Response\VoidInstruction::fromData($data, $httpCode);
         }
 
         // An abort instruction.
