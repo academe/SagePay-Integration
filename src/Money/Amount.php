@@ -40,7 +40,7 @@ class Amount implements AmountInterface
     {
         if (is_int($amount) || is_float($amount) || (is_string($amount) && preg_match('/^[0-9]*\.[0-9]*$/', $amount))) {
             $amount = (float)$amount * pow(10, $this->currency->getDigits());
-var_dump(floor($amount)); var_dump(round($amount, 6));
+
             if (floor($amount) != round($amount, 6)) {
                 // Too many decimal digits for the currency.
                 throw new UnexpectedValueException(sprintf(
