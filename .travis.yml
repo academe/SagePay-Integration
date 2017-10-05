@@ -8,9 +8,9 @@ php:
  
 before_script:
   - composer self-update
-  - composer install --no-interaction --dev
+  - composer install --no-interaction
 
-script: phpunit
+script: vendor/bin/phpcs --standard=PSR2 src && vendor/bin/phpunit --coverage-text
 
 notifications:
     on_success: never

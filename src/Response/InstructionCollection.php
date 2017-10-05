@@ -7,7 +7,6 @@ namespace Academe\SagePay\Psr7\Response;
  */
 
 use Academe\SagePay\Psr7\Factory\ResponseFactory;
-//use Psr\Http\Message\ResponseInterface;
 use Academe\SagePay\Psr7\Helper;
 
 class InstructionCollection extends AbstractCollection
