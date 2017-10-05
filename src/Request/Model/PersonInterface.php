@@ -1,9 +1,11 @@
-<?php namespace Academe\SagePay\Psr7\Request\Model;
+<?php
+
+namespace Academe\SagePay\Psr7\Request\Model;
 
 /**
  * Value object used to define details for a person.
  */
 
-interface PersonInterface extends  \JsonSerializable
+interface PersonInterface extends \JsonSerializable
 {
 }

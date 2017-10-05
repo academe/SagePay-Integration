@@ -108,8 +108,8 @@ abstract class AbstractRequest extends AbstractMessage implements JsonSerializab
         // Look for segments that need a substitution.
         $subtitution_parameters = preg_grep('/^\{.*\}$/', $path);
 
-        if ( ! empty($subtitution_parameters)) {
-            foreach($subtitution_parameters as $key => $sub) {
+        if (! empty($subtitution_parameters)) {
+            foreach ($subtitution_parameters as $key => $sub) {
                 // The name of the getter method.
                 $method_name = 'get' . ucfirst(substr($sub, 1, -1));
 
@@ -136,7 +136,7 @@ abstract class AbstractRequest extends AbstractMessage implements JsonSerializab
     public function getHeaders()
     {
         return $this->getBasicAuthHeaders();
-    } 
+    }
 
     /**
      * @returns string The HTTP method that the 
@@ -254,7 +254,7 @@ abstract class AbstractRequest extends AbstractMessage implements JsonSerializab
      */
     protected function setOptions(array $options = [])
     {
-        foreach($options as $name => $value) {
+        foreach ($options as $name => $value) {
             $method = 'set' . ucfirst($name);
 
             if (method_exists($this, $method)) {

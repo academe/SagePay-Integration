@@ -68,5 +68,4 @@ abstract class AbstractCollection extends AbstractResponse implements \IteratorA
     {
         return reset($this->items);
     }
-
 }

@@ -134,7 +134,7 @@ class CreatePayment extends AbstractRequest
         // Get the value from the class constants.
         $value = $this->constantValue('ENTRY_METHOD', $entryMethod);
 
-        if ( ! $value) {
+        if (! $value) {
             throw new UnexpectedValueException(sprintf(
                 'Unknown entryMethod "%s"; require one of %s',
                 (string)$entryMethod,
@@ -193,7 +193,7 @@ class CreatePayment extends AbstractRequest
         // Get the value from the class constants.
         $value = $this->constantValue('APPLY_AVS_CVC_CHECK', $applyAvsCvcCheck);
 
-        if ( ! $value) {
+        if (! $value) {
             throw new UnexpectedValueException(sprintf(
                 'Unknown applyAvsCvcCheck "%s"; require one of %s',
                 (string)$applyAvsCvcCheck,
@@ -232,7 +232,7 @@ class CreatePayment extends AbstractRequest
         // Get the value from the class constants.
         $value = $this->constantValue('APPLY_3D_SECURE', $apply3DSecure);
 
-        if ( ! $value) {
+        if (! $value) {
             throw new UnexpectedValueException(sprintf(
                 'Unknown apply3DSecure "%s"; require one of %s',
                 (string)$apply3DSecure,

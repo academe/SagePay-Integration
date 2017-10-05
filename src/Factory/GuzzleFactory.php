@@ -1,4 +1,7 @@
-<?php namespace Academe\SagePay\Psr7\Factory;
+<?php
+
+namespace Academe\SagePay\Psr7\Factory;
+
 /**
  * Guzzle Factory for creating PSR-7 objects.
  * Requires guzzlehttp/guzzle:~6.0
@@ -21,14 +24,14 @@ class GuzzleFactory implements RequestFactoryInterface
      * @param string $protocolVersion
      * @return Request
      */
-    public function JsonRequest($method, $uri, array $headers = [], $body = null, $protocolVersion = '1.1')
+    public function jsonRequest($method, $uri, array $headers = [], $body = null, $protocolVersion = '1.1')
     {
         // If we are sending a JSON body, then the recipient needs to know.
         $headers['Content-type'] = 'application/json';
 
         // If the body is already a stream or string of some sort, then it is
         // assumed to already be a JSON stream.
-        if ( ! is_string($body) && ! $body instanceof StreamInterface && gettype($body) != 'resource') {
+        if (! is_string($body) && ! $body instanceof StreamInterface && gettype($body) != 'resource') {
             $body = json_encode($body);
         }
 
@@ -48,7 +51,7 @@ class GuzzleFactory implements RequestFactoryInterface
      * @param string $uri
      * @return Uri
      */
-    public function Uri($uri)
+    public function uri($uri)
     {
         return new Uri($uri);
     }

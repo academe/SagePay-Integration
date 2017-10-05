@@ -45,7 +45,7 @@ abstract class Helper
                 continue;
             }
 
-            return static::_value($default);
+            return static::theValue($default);
         }
 
         return $target;
@@ -54,7 +54,7 @@ abstract class Helper
     /**
      * @param $value
      */
-    protected static function _value($value)
+    protected static function theValue($value)
     {
         if ($value instanceof Closure) {
             return $value();
@@ -87,7 +87,7 @@ abstract class Helper
             } else {
                 throw new UnexpectedValueException('Unexpected datatype for datetime');
             }
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             throw new UnexpectedValueException('Unexpected time format', $e->getCode(), $e);
         }
 
@@ -143,7 +143,7 @@ abstract class Helper
 
         $map = [];
 
-        foreach(json_decode($json) as $message) {
+        foreach (json_decode($json) as $message) {
             $map[$message->Code] = [
                 'code' => $message->Code,
                 'property' => $message->Property,

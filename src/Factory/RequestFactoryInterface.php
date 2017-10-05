@@ -28,7 +28,7 @@ interface RequestFactoryInterface
      * @param string $protocolVersion HTTP protocol version.
      * @return RequestInterface The PSR-7 request message
      */
-    public function JsonRequest(
+    public function jsonRequest(
         $method,
         $uri,
         array $headers = [],

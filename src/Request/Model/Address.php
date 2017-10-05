@@ -35,14 +35,14 @@ class Address implements AddressInterface
     public function __construct($address1, $address2, $city, $postalCode, $country, $state = null)
     {
         // These fields are always mandatory.
-        foreach(array('address1', 'city', 'country') as $field_name) {
+        foreach (array('address1', 'city', 'country') as $field_name) {
             if (empty($$field_name)) {
                 throw new UnexpectedValueException(sprintf('Field "%s" is mandatory but not set.', $field_name));
             }
         }
 
         // Validate Country is ISO 3166-1 code.
-        if ( ! Countries::isValid($country)) {
+        if (! Countries::isValid($country)) {
             throw new UnexpectedValueException(sprintf('Country code "%s" is not recognised.', (string)$country));
         }
 
@@ -53,9 +53,11 @@ class Address implements AddressInterface
             }
 
             // Validate State is ISO 3166-2 code.
-            if ( ! States::isValid($country, $state)) {
+            if (! States::isValid($country, $state)) {
                 throw new UnexpectedValueException(sprintf(
-                    'State code "%s" for country "%s" is not recognised.', (string)$state, (string)$country
+                    'State code "%s" for country "%s" is not recognised.',
+                    (string)$state,
+                    (string)$country
                 ));
             }
         }
@@ -108,7 +110,7 @@ class Address implements AddressInterface
      */
     protected function addFieldPrefix($field)
     {
-        if ( ! $this->fieldPrefix) {
+        if (! $this->fieldPrefix) {
             return $field;
         }
 
@@ -128,19 +130,19 @@ class Address implements AddressInterface
             $this->addFieldPrefix('address1') => $this->address1,
         ];
 
-        if ( ! empty($this->address2)) {
+        if (! empty($this->address2)) {
             $return[$this->addFieldPrefix('address2')] = $this->address2;
         }
 
         $return[$this->addFieldPrefix('city')] = $this->city;
 
-        if ( ! empty($this->postalCode)) {
+        if (! empty($this->postalCode)) {
             $return[$this->addFieldPrefix('postalCode')] = $this->postalCode;
         }
 
         $return[$this->addFieldPrefix('country')] = $this->country;
 
-        if ( ! empty($this->state)) {
+        if (! empty($this->state)) {
             $return[$this->addFieldPrefix('state')] = $this->state;
         }
 

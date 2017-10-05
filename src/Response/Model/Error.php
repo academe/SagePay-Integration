@@ -150,15 +150,23 @@ class Error implements JsonSerializable
         // See list of codes here:
         // https://github.com/academe/SagePay/blob/master/src/Academe/SagePay/Metadata/error-codes.tsv
 
-        $code = Helper::dataGet($data, 'code',
-            Helper::dataGet($data, 'statusCode', // FIXME: remove this
+        $code = Helper::dataGet(
+            $data,
+            'code',
+            Helper::dataGet(
+                $data,
+                'statusCode', // FIXME: remove this
                 Helper::dataGet($data, 'card-identifier-error-code', $httpCode)
             )
         );
 
         // card-identifier-error-message is when using the drop-in form.
-        $description = Helper::dataGet($data, 'description',
-            Helper::dataGet($data, 'statusDetail', // FIXME: remove this
+        $description = Helper::dataGet(
+            $data,
+            'description',
+            Helper::dataGet(
+                $data,
+                'statusDetail', // FIXME: remove this
                 Helper::dataGet($data, 'card-identifier-error-message', null)
             )
         );

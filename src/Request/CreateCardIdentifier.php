@@ -105,7 +105,7 @@ class CreateCardIdentifier extends AbstractRequest
     {
         $data = $this->jsonSerializePeek();
 
-        array_walk_recursive($data, function(&$item, $key) {
+        array_walk_recursive($data, function (&$item, $key) {
             if (is_string($item)) {
                 $item = str_repeat('*', strlen($item));
             }
@@ -150,5 +150,5 @@ class CreateCardIdentifier extends AbstractRequest
         return [
             'Authorization' => 'Bearer ' . $this->sessionKey,
         ];
-    } 
+    }
 }

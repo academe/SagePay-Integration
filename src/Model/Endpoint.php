@@ -83,7 +83,7 @@ class Endpoint
      */
     public function withUrl($mode, $url)
     {
-        if ( ! isset($this->urls_templates[$mode])) {
+        if (! isset($this->urls_templates[$mode])) {
             throw new UnexpectedValueException(sprintf('Unexpected mode value "%s"', $mode));
         }
 

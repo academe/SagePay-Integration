@@ -30,7 +30,7 @@ class ErrorCollection extends AbstractCollection
         $errors = Helper::dataGet($data, 'errors', null);
 
         if (is_array($errors)) {
-            foreach($errors as $error) {
+            foreach ($errors as $error) {
                 // The $error may be an Error object or an array.
                 $this->add(Model\Error::fromData($error, $this->getHttpCode()));
             }
@@ -67,7 +67,7 @@ class ErrorCollection extends AbstractCollection
     {
         $result = new static();
 
-        foreach($this as $error) {
+        foreach ($this as $error) {
             if ($property_name === $error->getProperty()) {
                 $result->add($error);
             }
@@ -83,8 +83,8 @@ class ErrorCollection extends AbstractCollection
     {
         $result = array();
 
-        foreach($this as $error) {
-            if ( ! in_array($error->getProperty(), $result)) {
+        foreach ($this as $error) {
+            if (! in_array($error->getProperty(), $result)) {
                 $result[] = $error->getProperty();
             }
         }

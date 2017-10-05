@@ -195,17 +195,17 @@ class CreateRepeatPayment extends AbstractRequest
 
         $shippingDetails = [];
 
-        if ( ! empty($this->shippingAddress)) {
+        if (! empty($this->shippingAddress)) {
             $shippingDetails = array_merge($shippingDetails, $this->shippingAddress->jsonSerialize());
         }
 
-        if ( ! empty($this->shippingRecipient)) {
+        if (! empty($this->shippingRecipient)) {
             // We only want the names from the recipient details.
             $shippingDetails = array_merge($shippingDetails, $this->shippingRecipient->getNamesBody());
         }
 
         // If there are shipping details, then merge it in:
-        if ( ! empty($shippingAddress)) {
+        if (! empty($shippingAddress)) {
             $result['shippingDetails'] = $shippingDetails;
         }
 

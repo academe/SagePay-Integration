@@ -33,7 +33,7 @@ class InstructionCollection extends AbstractCollection
             // Use the ResponseFactory to decide what each one is, and create the
             // appropriate object.
 
-            foreach($instructions as $instruction) {
+            foreach ($instructions as $instruction) {
                 $this->add(ResponseFactory::fromData($instruction, $httpCode));
             }
         }

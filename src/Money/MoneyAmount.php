@@ -28,7 +28,8 @@ class MoneyAmount implements AmountInterface
     /**
      * @return mixed
      */
-    public function getAmount() {
+    public function getAmount()
+    {
         return $this->money->getAmount();
     }
 

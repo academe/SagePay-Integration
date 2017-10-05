@@ -8,7 +8,6 @@ namespace Academe\SagePay\Psr7\Request\Model;
 
 use Academe\SagePay\Psr7\Response\CardIdentifier;
 use Academe\SagePay\Psr7\Response\SessionKey;
-//use Academe\SagePay\Psr7\Helper;
 
 abstract class AbstractCard implements PaymentMethodInterface
 {

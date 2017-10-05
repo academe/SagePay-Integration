@@ -19,7 +19,8 @@ class Secure3DAcs extends AbstractServerRequest
     /**
      * @param ServerRequestInterface  $message The 3DSecure resource callback from Sage Pay.
      */
-    public function __construct(ServerRequestInterface $message = null) {
+    public function __construct(ServerRequestInterface $message = null)
+    {
         if (isset($message)) {
             $this->setData($this->parseBody($message));
         }

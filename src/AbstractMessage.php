@@ -25,7 +25,7 @@ abstract class AbstractMessage
         if (isset($prefix)) {
             $result = [];
             $prefix = strtoupper($prefix);
-            foreach($constants as $key => $value) {
+            foreach ($constants as $key => $value) {
                 if (strpos($key, $prefix) === 0) {
                     $result[$key] = $value;
                 }

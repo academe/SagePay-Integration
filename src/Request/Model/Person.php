@@ -31,7 +31,7 @@ class Person implements PersonInterface
     public function __construct($firstName, $lastName, $email = null, $phone = null)
     {
         // These fields are always mandatory.
-        foreach(array('firstName', 'lastName') as $field_name) {
+        foreach (['firstName', 'lastName'] as $field_name) {
             if (empty($$field_name)) {
                 throw new UnexpectedValueException(sprintf('Empty field "%s" is mandatory.', $field_name));
             }
@@ -115,7 +115,7 @@ class Person implements PersonInterface
      */
     protected function addFieldPrefix($field)
     {
-        if ( ! $this->fieldPrefix) {
+        if (! $this->fieldPrefix) {
             return $field;
         }
 

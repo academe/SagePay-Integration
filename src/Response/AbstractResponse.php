@@ -149,7 +149,7 @@ abstract class AbstractResponse extends AbstractMessage implements Http, RFC4918
      * @param $data
      * @return $this
      */
-    protected abstract function setData($data);
+    abstract protected function setData($data);
 
     /**
      * Indicate whether the response is an error or not.

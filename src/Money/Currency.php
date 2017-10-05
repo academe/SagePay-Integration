@@ -30,7 +30,7 @@ class Currency implements CurrencyInterface
      */
     public function __construct($code)
     {
-        $this->all_currencies = new ISO4217();;
+        $this->all_currencies = new ISO4217();
 
         if ($this->all_currencies->getByAlpha3($code)) {
             $this->code = $code;
@@ -43,7 +43,8 @@ class Currency implements CurrencyInterface
      * Return a new instance of a specified currency.
      * e.g. Currency::GBP()
      */
-    static public function __callStatic($method, $args) {
+    public static function __callStatic($method, $args)
+    {
         return new static($method);
     }
 

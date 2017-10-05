@@ -89,5 +89,5 @@ class LinkSecurityCode extends AbstractRequest
         return [
             'Authorization' => 'Bearer ' . $this->sessionKey,
         ];
-    } 
+    }
 }
