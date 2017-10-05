@@ -136,7 +136,7 @@ abstract class AbstractTransaction extends AbstractResponse
     }
 
     /**
-     * 
+     *
      */
     protected function set3dSecure($data)
     {
@@ -249,7 +249,7 @@ abstract class AbstractTransaction extends AbstractResponse
 
     /**
      * Also known as the decline code, these are codes that are
-     * specific to the merchant bank. 
+     * specific to the merchant bank.
      * @return mixed
      */
     public function getBankResponseCode()

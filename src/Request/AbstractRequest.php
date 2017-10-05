@@ -139,7 +139,7 @@ abstract class AbstractRequest extends AbstractMessage implements JsonSerializab
     }
 
     /**
-     * @returns string The HTTP method that the 
+     * @returns string The HTTP method that the request will use.
      */
     public function getMethod()
     {

@@ -48,51 +48,41 @@ class ResponseFactory
         }
 
         // Session key.
-        if (
-            Helper::dataGet($data, 'merchantSessionKey')
-            && Helper::dataGet($data, 'expiry')
-        ) {
+        if (Helper::dataGet($data, 'merchantSessionKey') && Helper::dataGet($data, 'expiry')) {
             return Response\SessionKey::fromData($data, $httpCode);
         }
 
         // A card identifier.
-        if (
-            Helper::dataGet($data, 'cardIdentifier')
-            || Helper::dataGet($data, 'card-identifier')
-        ) {
+        if (Helper::dataGet($data, 'cardIdentifier') || Helper::dataGet($data, 'card-identifier')) {
             return Response\CardIdentifier::fromData($data, $httpCode);
         }
 
         // A payment.
-        if (
-            Helper::dataGet($data, 'transactionId')
-            && Helper::dataGet($data, 'transactionType') == AbstractRequest::TRANSACTION_TYPE_PAYMENT
-        ) {
-            return Response\Payment::fromData($data, $httpCode);
+        if (Helper::dataGet($data, 'transactionId')) {
+            if (Helper::dataGet($data, 'transactionType') == AbstractRequest::TRANSACTION_TYPE_PAYMENT) {
+                return Response\Payment::fromData($data, $httpCode);
+            }
         }
 
         // A repeat payment.
-        if (
-            Helper::dataGet($data, 'transactionId')
-            && Helper::dataGet($data, 'transactionType') == AbstractRequest::TRANSACTION_TYPE_REPEAT
-        ) {
-            return Response\Repeat::fromData($data, $httpCode);
+        if (Helper::dataGet($data, 'transactionId')) {
+            if (Helper::dataGet($data, 'transactionType') == AbstractRequest::TRANSACTION_TYPE_REPEAT) {
+                return Response\Repeat::fromData($data, $httpCode);
+            }
         }
 
         // A refund payment.
-        if (
-            Helper::dataGet($data, 'transactionId')
-            && Helper::dataGet($data, 'transactionType') == AbstractRequest::TRANSACTION_TYPE_REFUND
-        ) {
-            return Response\Refund::fromData($data, $httpCode);
+        if (Helper::dataGet($data, 'transactionId')) {
+            if (Helper::dataGet($data, 'transactionType') == AbstractRequest::TRANSACTION_TYPE_REFUND) {
+                return Response\Refund::fromData($data, $httpCode);
+            }
         }
 
         // A deferred payment.
-        if (
-            Helper::dataGet($data, 'transactionId')
-            && Helper::dataGet($data, 'transactionType') == AbstractRequest::TRANSACTION_TYPE_DEFERRED
-        ) {
-            return Response\Deferred::fromData($data, $httpCode);
+        if (Helper::dataGet($data, 'transactionId')) {
+            if (Helper::dataGet($data, 'transactionType') == AbstractRequest::TRANSACTION_TYPE_DEFERRED) {
+                return Response\Deferred::fromData($data, $httpCode);
+            }
         }
 
         // 3D Secure response.
@@ -109,11 +99,10 @@ class ResponseFactory
         // A 3D Secure redirect.
         // Like Secure3D, this one does not have a TransactionType, though shares many fields
         // with the abstract transaction response.
-        if (
-            Helper::dataGet($data, 'statusCode') == '2007'
-            && Helper::dataGet($data, 'status') == AbstractTransaction::STATUS_3DAUTH
-        ) {
-            return Response\Secure3DRedirect::fromData($data, $httpCode);
+        if (Helper::dataGet($data, 'statusCode') == '2007') {
+            if (Helper::dataGet($data, 'status') == AbstractTransaction::STATUS_3DAUTH) {
+                return Response\Secure3DRedirect::fromData($data, $httpCode);
+            }
         }
 
         // A void instruction.

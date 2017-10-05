@@ -17,7 +17,7 @@ class InstructionCollection extends AbstractCollection
     protected $permittedClass = AbstractInstruction::class;
 
     /**
-     * 
+     *
      */
     public function setData($data, $httpCode = null)
     {
