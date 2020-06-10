@@ -72,8 +72,12 @@ class CreateRepeatPayment extends AbstractRequest
         $this->vendorTxCode = $vendorTxCode;
         $this->amount = $amount;
 
-        $this->shippingAddress = $shippingAddress->withFieldPrefix($this->shippingAddressFieldPrefix);
-        $this->shippingRecipient = $shippingRecipient->withFieldPrefix($this->shippingNameFieldPrefix);
+        if (isset($shippingAddress)) {
+            $this->shippingAddress = $shippingAddress->withFieldPrefix($this->shippingAddressFieldPrefix);
+        }
+        if (isset($shippingRecipient)) {
+            $this->shippingRecipient = $shippingRecipient->withFieldPrefix($this->shippingNameFieldPrefix);
+        }
 
         // Additional options.
         $this->setOptions($options);
