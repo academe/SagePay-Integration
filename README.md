@@ -1,6 +1,26 @@
+<!-- TOC -->
+
+- [Sage Pay Integration PSR-7 Message REST API Library](#sage-pay-integration-psr-7-message-rest-api-library)
+    - [Package Development](#package-development)
+    - [Want to Help?](#want-to-help)
+    - [Overview; How to use](#overview-how-to-use)
+        - [Installation](#installation)
+        - [Create a Session Key](#create-a-session-key)
+        - [Get a Card Identifier](#get-a-card-identifier)
+        - [Submit a Transaction](#submit-a-transaction)
+        - [Fetch a Transaction Result Again](#fetch-a-transaction-result-again)
+        - [Repeat Payments](#repeat-payments)
+        - [Using 3D Secure](#using-3d-secure)
+        - [3D Secure Redirect](#3d-secure-redirect)
+        - [Final Transaction After 3D Secure](#final-transaction-after-3d-secure)
+    - [Payment Methods](#payment-methods)
+
+<!-- /TOC -->
+
 # Sage Pay Integration PSR-7 Message REST API Library
 
 [![Build Status](https://travis-ci.org/academe/SagePay-Integration.svg?branch=PSR-7)](https://travis-ci.org/academe/SagePay-Integration)
+[![Latest Stable Version](http://poser.pugx.org/academe/sagepaymsg/v)](https://packagist.org/packages/academe/sagepaymsg) [![Total Downloads](http://poser.pugx.org/academe/sagepaymsg/downloads)](https://packagist.org/packages/academe/sagepaymsg) [![Latest Unstable Version](http://poser.pugx.org/academe/sagepaymsg/v/unstable)](https://packagist.org/packages/academe/sagepaymsg) [![License](http://poser.pugx.org/academe/sagepaymsg/license)](https://packagist.org/packages/academe/sagepaymsg)
 
 This package provides the data models for the [Sage Pay Integration](https://test.sagepay.com/documentation/) payment gateway
 (sometimes called the `Pi` or `REST` API).
