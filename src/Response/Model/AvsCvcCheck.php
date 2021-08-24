@@ -11,11 +11,15 @@ use JsonSerializable;
 
 class AvsCvcCheck implements JsonSerializable
 {
+    // The overall status.
+
     const AVSCVCCHECK_STATUS_ALLMATCHED             = 'AllMatched';
     const AVSCVCCHECK_STATUS_SECURITYCODEMATCHONLY  = 'SecurityCodeMatchOnly';
     const AVSCVCCHECK_STATUS_ADDRESSMATCHONLY       = 'AddressMatchOnly';
     const AVSCVCCHECK_STATUS_NOMATCHES              = 'NoMatches';
     const AVSCVCCHECK_STATUS_NOTCHECKED             = 'NotChecked';
+
+    // These results apply to address, postalCode and securityCode.
 
     const AVSCVCCHECK_RESULT_MATCHED        = 'Matched';
     const AVSCVCCHECK_RESULT_NOTPROVIDED    = 'NotProvided';

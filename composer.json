@@ -19,10 +19,10 @@
         }
     ],
     "require": {
-        "php": ">=5.5.0",
-        "shrikeh/teapot": "^1.0",
+        "php": "^7.4|^8.0",
+        "shrikeh/teapot": "^1.0|^2.0",
         "psr/http-message": "~1.0",
-        "alcohol/iso4217": "^3.1"
+        "alcohol/iso4217": "^4.0"
     },
     "suggest": {
         "moneyphp/money": "^3.0",

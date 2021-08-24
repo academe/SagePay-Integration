@@ -81,6 +81,7 @@ abstract class AbstractTransaction extends AbstractResponse
         $this->setAmount($data, $this->getCurrency());
 
         // Create the "AVS CVC Check Object" if present in the response.
+        
         if ($avsCvcCheck = Helper::dataGet($data, 'avsCvcCheck')) {
             $this->setAvsCvcCheck($avsCvcCheck);
         }
