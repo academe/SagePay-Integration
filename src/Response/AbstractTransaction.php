@@ -45,6 +45,8 @@ abstract class AbstractTransaction extends AbstractResponse
 
     protected $amount;
 
+    protected $avsCvcCheck;
+
     /**
      * @param $data
      * @return $this
@@ -77,6 +79,11 @@ abstract class AbstractTransaction extends AbstractResponse
         // Then set the amount, using the currency.
 
         $this->setAmount($data, $this->getCurrency());
+
+        // Create the "AVS CVC Check Object" if present in the response.
+        if ($avsCvcCheck = Helper::dataGet($data, 'avsCvcCheck')) {
+            $this->setAvsCvcCheck($avsCvcCheck);
+        }
 
         return $this;
     }
@@ -147,6 +154,11 @@ abstract class AbstractTransaction extends AbstractResponse
     protected function setAmount($data, CurrencyInterface $currency = null)
     {
         $this->amount = Model\Amount::fromData($data, $currency);
+    }
+
+    protected function setAvsCvcCheck($data)
+    {
+        $this->avsCvcCheck = Model\AvsCvcCheck::fromData($data);
     }
 
     /**
@@ -267,6 +279,15 @@ abstract class AbstractTransaction extends AbstractResponse
     }
 
     /**
+     * The AVS CVC Check results.
+     * @return Model\AvsCvcCheck|null
+     */
+    public function getAvsCvcCheck()
+    {
+        return $this->avsCvcCheck;
+    }
+
+    /**
      * Convenient serialisation for logging and debugging.
      * Each response message would extend this where appropriate.
      *
@@ -313,6 +334,11 @@ abstract class AbstractTransaction extends AbstractResponse
 
         if ($currency = $this->getCurrency()) {
             $return['currency'] = $currency->getCode();
+        }
+
+        if ($avsCvcCheck = $this->getAvsCvcCheck()) {
+            // Merge in the "AVS CVC Check object" at the top level.
+            $return = array_merge($return, $avsCvcCheck->getData());
         }
 
         return $return;
