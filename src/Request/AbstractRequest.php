@@ -1,18 +1,18 @@
 <?php
 
-namespace Academe\SagePay\Psr7\Request;
+namespace Academe\Opayo\Pi\Request;
 
 /**
  * Shared message abstract.
  * Contains base methods that request messages will use.
  */
 
-use Academe\SagePay\Psr7\AbstractMessage;
-use Academe\SagePay\Psr7\Model\Endpoint;
-use Academe\SagePay\Psr7\Model\Auth;
-use Academe\SagePay\Psr7\Factory\FactoryInterface;
-use Academe\SagePay\Psr7\Factory\DiactorosFactory;
-use Academe\SagePay\Psr7\Factory\GuzzleFactory;
+use Academe\Opayo\Pi\AbstractMessage;
+use Academe\Opayo\Pi\Model\Endpoint;
+use Academe\Opayo\Pi\Model\Auth;
+use Academe\Opayo\Pi\Factory\FactoryInterface;
+use Academe\Opayo\Pi\Factory\DiactorosFactory;
+use Academe\Opayo\Pi\Factory\GuzzleFactory;
 use UnexpectedValueException;
 use JsonSerializable;
 use Exception;

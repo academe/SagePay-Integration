@@ -89,12 +89,12 @@ The `CreateSessionKey` message has had PSR-7 support added, and can be used like
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException; // Or your favourite PSR-18 client
-use Academe\SagePay\Psr7\Model\Auth;
-use Academe\SagePay\Psr7\Model\Endpoint;
-use Academe\SagePay\Psr7\Request\CreateSessionKey;
-use Academe\SagePay\Psr7\Factory;
-use Academe\SagePay\Psr7\Request\CreateCardIdentifier;
-use Academe\SagePay\Psr7\Factory\ResponseFactory;
+use Academe\Opayo\Pi\Model\Auth;
+use Academe\Opayo\Pi\Model\Endpoint;
+use Academe\Opayo\Pi\Request\CreateSessionKey;
+use Academe\Opayo\Pi\Factory;
+use Academe\Opayo\Pi\Request\CreateCardIdentifier;
+use Academe\Opayo\Pi\Factory\ResponseFactory;
 
 // Set up authentication details object.
 
@@ -154,7 +154,7 @@ development, the card details can be sent from your test script, emulating
 the front end.
 
 ```php
-use Academe\SagePay\Psr7\Request\CreateCardIdentifier;
+use Academe\Opayo\Pi\Request\CreateCardIdentifier;
 
 // Create a card indentifier on the API.
 // Note the MMYY order is most often used for GB gateways like Sage Pay. Many European
@@ -217,14 +217,14 @@ then identifies a single card within the storage area.
 A transaction can be initiated using the card identifier.
 
 ```php
-use Academe\SagePay\Psr7\Money;
-use Academe\SagePay\Psr7\PaymentMethod;
-use Academe\SagePay\Psr7\Request\CreatePayment;
-use Academe\SagePay\Psr7\Request\Model\SingleUseCard;
-use Academe\SagePay\Psr7\Money\Amount;
-use Academe\SagePay\Psr7\Request\Model\Person;
-use Academe\SagePay\Psr7\Request\Model\Address;
-use Academe\SagePay\Psr7\Money\MoneyAmount;
+use Academe\Opayo\Pi\Money;
+use Academe\Opayo\Pi\PaymentMethod;
+use Academe\Opayo\Pi\Request\CreatePayment;
+use Academe\Opayo\Pi\Request\Model\SingleUseCard;
+use Academe\Opayo\Pi\Money\Amount;
+use Academe\Opayo\Pi\Request\Model\Person;
+use Academe\Opayo\Pi\Request\Model\Address;
+use Academe\Opayo\Pi\Money\MoneyAmount;
 use Money\Money as MoneyPhp;
 
 // We need a billing address.
@@ -363,7 +363,7 @@ You can amend the shipping details and the amount (with no limit)
 but not the payee details or address.
 
 ```php
-use Academe\SagePay\Psr7\Request\CreateRepeatPayment;
+use Academe\Opayo\Pi\Request\CreateRepeatPayment;
 
 $repeat_payment = new CreateRepeatPayment(
     $endpoint,
@@ -464,7 +464,7 @@ Now you need to handle the return from the bank. Using Diactoros (and now Guzzle
 message as a PSR-7 ServerRequest like this:
 
 ```php
-use Academe\SagePay\Psr7\ServerRequest\Secure3DAcs;
+use Academe\Opayo\Pi\ServerRequest\Secure3DAcs;
 
 $serverRequest = \GuzzleHttp\Psr7\ServerRequest::fromGlobals();
 // or if using a framework that supplies a PSR-7 server request, just use that.
@@ -483,7 +483,7 @@ if (Secure3DAcs::isRequest($serverRequest->getBody()))
 or
 
 ```php
-use Academe\SagePay\Psr7\ServerRequest\Secure3DAcs;
+use Academe\Opayo\Pi\ServerRequest\Secure3DAcs;
 
 if (Secure3DAcs::isRequest($_POST)) {
     $secure3dServerRequest = Secure3DAcs::fromData($_POST);
@@ -499,7 +499,7 @@ Handling the 3D Secure result involves two steps:
 2. Fetching the final transaction result from Sage Pay.
 
 ```php
-    use Academe\SagePay\Psr7\Request\CreateSecure3D;
+    use Academe\Opayo\Pi\Request\CreateSecure3D;
 
     $request = new CreateSecure3D(
         $endpoint,
@@ -596,7 +596,7 @@ or while testing).
 A CVV can be linked to a reusable card with the `LinkSecurityCode` message:
 
 ```php
-use Academe\SagePay\Psr7\Request\LinkSecurityCode;
+use Academe\Opayo\Pi\Request\LinkSecurityCode;
 
 $securityCode = new LinkSecurityCode(
     $endpoint,

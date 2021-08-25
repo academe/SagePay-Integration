@@ -1,12 +1,12 @@
 <?php
 
-namespace Academe\SagePay\Psr7\Response\Model;
+namespace Academe\Opayo\Pi\Response\Model;
 
 /**
  * Abstract Card details.
  */
 
-use Academe\SagePay\Psr7\Helper;
+use Academe\Opayo\Pi\Helper;
 use JsonSerializable;
 
 class Card implements JsonSerializable

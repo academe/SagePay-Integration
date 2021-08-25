@@ -1,6 +1,6 @@
 <?php
 
-namespace Academe\SagePay\Psr7\Request;
+namespace Academe\Opayo\Pi\Request;
 
 /**
  * Request message for sending card details to Sage Pay to get a
@@ -13,10 +13,10 @@ namespace Academe\SagePay\Psr7\Request;
  * similat to how Sage Pay Direct would.
  */
 
-use Academe\SagePay\Psr7\Model\Auth;
-use Academe\SagePay\Psr7\Model\Endpoint;
-use Academe\SagePay\Psr7\Response\SessionKey;
-use Academe\SagePay\Psr7\Security\SensitiveValue;
+use Academe\Opayo\Pi\Model\Auth;
+use Academe\Opayo\Pi\Model\Endpoint;
+use Academe\Opayo\Pi\Response\SessionKey;
+use Academe\Opayo\Pi\Security\SensitiveValue;
 
 class CreateCardIdentifier extends AbstractRequest
 {

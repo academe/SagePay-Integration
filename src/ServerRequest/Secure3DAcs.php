@@ -1,4 +1,4 @@
-<?php namespace Academe\SagePay\Psr7\ServerRequest;
+<?php namespace Academe\Opayo\Pi\ServerRequest;
 
 /**
  * The ACS POST response that the issuing bank’s Access Control System (ACS)
@@ -7,8 +7,8 @@
  * PaRes result that is then sent to Sage Pay to complete the transaction.
  */
 
-use Academe\SagePay\Psr7\Helper;
-use Academe\SagePay\Psr7\ServerRequest\AbstractServerRequest;
+use Academe\Opayo\Pi\Helper;
+use Academe\Opayo\Pi\ServerRequest\AbstractServerRequest;
 use Psr\Http\Message\ServerRequestInterface;
 
 class Secure3DAcs extends AbstractServerRequest

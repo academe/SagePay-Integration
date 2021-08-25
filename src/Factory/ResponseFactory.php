@@ -1,6 +1,6 @@
 <?php
 
-namespace Academe\SagePay\Psr7\Factory;
+namespace Academe\Opayo\Pi\Factory;
 
 /**
  * Factory to return the appropriate Response object given
@@ -10,11 +10,11 @@ namespace Academe\SagePay\Psr7\Factory;
  * application would otherwise have to deal with.
  */
 
-use Academe\SagePay\Psr7\Response\AbstractTransaction;
-use Academe\SagePay\Psr7\Request\AbstractRequest;
+use Academe\Opayo\Pi\Response\AbstractTransaction;
+use Academe\Opayo\Pi\Request\AbstractRequest;
 use Psr\Http\Message\ResponseInterface;
-use Academe\SagePay\Psr7\Response;
-use Academe\SagePay\Psr7\Helper;
+use Academe\Opayo\Pi\Response;
+use Academe\Opayo\Pi\Helper;
 use Teapot\StatusCode\Http;
 
 class ResponseFactory

@@ -1,15 +1,15 @@
 <?php
 
-namespace Academe\SagePay\Psr7\Response;
+namespace Academe\Opayo\Pi\Response;
 
 /**
  * Response to a Payment (and probably Authorise) requent when a
  * 3D Secure redirect is needed.
  */
 
-use Academe\SagePay\Psr7\Helper;
+use Academe\Opayo\Pi\Helper;
 use Psr\Http\Message\ResponseInterface;
-use Academe\SagePay\Psr7\Request\AbstractRequest;
+use Academe\Opayo\Pi\Request\AbstractRequest;
 
 class Secure3DRedirect extends AbstractTransaction
 {

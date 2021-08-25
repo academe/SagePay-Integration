@@ -1,15 +1,15 @@
 <?php namespace
 
-Academe\SagePay\Psr7\Response;
+Academe\Opayo\Pi\Response;
 
 /**
  * Shared message abstract.
  */
 
-use Academe\SagePay\Psr7\Response\ErrorCollection;
-use Academe\SagePay\Psr7\AbstractMessage;
+use Academe\Opayo\Pi\Response\ErrorCollection;
+use Academe\Opayo\Pi\AbstractMessage;
 use Psr\Http\Message\ResponseInterface;
-use Academe\SagePay\Psr7\Helper;
+use Academe\Opayo\Pi\Helper;
 use JsonSerializable;
 
 // Teapot here provides HTTP response code constants.
