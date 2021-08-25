@@ -22,8 +22,8 @@
 
 # Sage Pay Integration PSR-7 Message REST API Library
 
-This package provides the data models for the [Sage Pay Integration](https://test.sagepay.com/documentation/) payment gateway
-(sometimes called the `Pi` or `REST` API).
+This package provides the data models for the [Sage Pay Integration](https://developer-eu.elavon.com/docs/opayo)
+payment gateway, also known as the `Sage Pay Pi` or `REST` API.
 It does not provide the transport mechanism, so you can use what you like for that,
 for example Guzzle, curl or another PSR-7 library.
 
