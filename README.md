@@ -122,7 +122,7 @@ $client = new Client();
 // on which is installed. You can explictly create the PSR-7 factory instead and pass that in
 // as a third parameter when creating Request\CreateSessionKey.
 
-$keyResponse = $client->sendRequest($keyRequest->message());
+$keyResponse = $client->sendRequest($keyRequest->createHttpRequest());
 
 // Capture the result in our local response model.
 // Use the ResponseFactory to automatically choose the correct message class.
@@ -169,7 +169,7 @@ $cardIdentifierRequest = new CreateCardIdentifier(
 // Send the PSR-7 message.
 // The same error handling as shown earlier can be used.
 
-$cardIdentifierResponse = $client->sendRequest($cardIdentifierRequest->message());
+$cardIdentifierResponse = $client->sendRequest($cardIdentifierRequest->createHttpRequest());
 
 // Grab the result as a local model.
 // If all is well, we will have a Resposne\CardIdentifier that will be valid for use
@@ -293,7 +293,7 @@ $paymentRequest = new CreatePayment(
 
 // Send it to Sage Pay.
 
-$paymentResponse = $client->sendRequest($paymentRequest->message());
+$paymentResponse = $client->sendRequest($paymentRequest->createHttpRequest());
 
 // Assuming we got no exceptions, extract the response details.
 
@@ -348,7 +348,7 @@ $transaction_result = new Request\FetchTransaction(
 
 // Send it to Sage Pay.
 
-$response = $client->sendRequest($transaction_result->message());
+$response = $client->sendRequest($transaction_result->createHttpRequest());
 
 // Assuming no exceptions, this gives you the payment or repeat payment record.
 // But do check for errors in the usual way (i.e. you could get an error collection here).
@@ -514,7 +514,7 @@ Handling the 3D Secure result involves two steps:
 
     // Send to Sage Pay and get the final 3D Secure result.
 
-    $response = $client->send($request->message());
+    $response = $client->send($request->createHttpRequest());
     $secure3dResponse = ResponseFactory::fromHttpResponse($response);
 
     // This will be the result. We are looking for `Authenticated` or similar.
@@ -560,7 +560,7 @@ reported as still being an issue.
 
     // Send the request for the transaction to Sage Pay.
 
-    $response = $client->sendRequest($transactionResult->message());
+    $response = $client->sendRequest($transactionResult->createHttpRequest());
 
     // We should now have the payment, repeat payment, or an error collection.
 
@@ -610,7 +610,7 @@ $securityCode = new LinkSecurityCode(
 // The result will be a `Response\NoContent` if all is well.
 
 $securityCodeResponse = ResponseFactory::fromHttpResponse(
-    $client->sendRequest($securityCode->message())
+    $client->sendRequest($securityCode->createHttpRequest())
 );
 
 // Should check for errors here:

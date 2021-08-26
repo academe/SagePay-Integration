@@ -13,9 +13,12 @@ use Academe\Opayo\Pi\Model\Auth;
 use Academe\Opayo\Pi\Factory\FactoryInterface;
 use Academe\Opayo\Pi\Factory\DiactorosFactory;
 use Academe\Opayo\Pi\Factory\GuzzleFactory;
+use Academe\Opayo\Pi\Factory\RequestFactoryInterface;
 use UnexpectedValueException;
 use JsonSerializable;
 use Exception;
+// use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\RequestInterface;
 
 abstract class AbstractRequest extends AbstractMessage implements JsonSerializable
 {
@@ -36,7 +39,7 @@ abstract class AbstractRequest extends AbstractMessage implements JsonSerializab
     protected $resource_path = [];
 
     /**
-     * @var string Most messages are sent as POST requests, so this is the default
+     * @var string Most messages are sent with the POST method, so this is the default
      */
     protected $method = 'POST';
 
@@ -122,7 +125,7 @@ abstract class AbstractRequest extends AbstractMessage implements JsonSerializab
     }
 
     /**
-     * @returns string The full URL of this resource
+     * @returns string The fully qualified URL of this resource
      */
     public function getUrl()
     {
@@ -163,6 +166,9 @@ abstract class AbstractRequest extends AbstractMessage implements JsonSerializab
     }
 
     /**
+     * TODO: can we use the PSR-17 Psr\Http\Message\RequestFactoryInterface
+     * instead of our custom factory?
+     * 
      * @param RequestFactoryInterface $factory
      * @return $this
      */
@@ -185,11 +191,12 @@ abstract class AbstractRequest extends AbstractMessage implements JsonSerializab
     /**
      * Get the PSR-7 factory.
      * Create a factory if none supplied and relevant libraries are installed.
+     * 
      * @param bool $exception
-     * @return DiactorosFactory|GuzzleFactory
+     * @return RequestFactoryInterface for example DiactorosFactory or GuzzleFactory
      * @throws Exception
      */
-    public function getFactory($exception = false)
+    public function getFactory($exception = false): RequestFactoryInterface
     {
         if (!isset($this->factory) && GuzzleFactory::isSupported()) {
             // If the GuzzleFactory is supported (relevant Guzzle package is
@@ -218,13 +225,17 @@ abstract class AbstractRequest extends AbstractMessage implements JsonSerializab
 
     /**
      * Return as a PSR-7 request message.
+     * TODO: Use a PSR-17 factory to create the basic request, then add the
+     * headers and body to that.
+     * 
      * @return \Psr\Http\Message\RequestInterface
      * @throws Exception
      */
-    public function createHttpRequest()
+    public function createHttpRequest(): RequestInterface
     {
         // If the data is protected from accidental serialisation, then
         // pull it out through the protected method.
+
         if (method_exists($this, 'jsonSerializePeek')) {
             $body = json_encode($this->jsonSerializePeek());
         } else {
@@ -240,15 +251,8 @@ abstract class AbstractRequest extends AbstractMessage implements JsonSerializab
     }
 
     /**
-     * @deprecated Use more appropriately named createHttpRequest()
-     */
-    public function message()
-    {
-        return $this->createHttpRequest();
-    }
-
-    /**
      * Set various flags - anything with a setFoo() method.
+     * 
      * @param array $options
      * @return $this
      */
@@ -270,6 +274,7 @@ abstract class AbstractRequest extends AbstractMessage implements JsonSerializab
 
     /**
      * Set various flags - anything with a setFoo() method.
+     * 
      * @param array $options
      * @return AbstractRequest
      */
