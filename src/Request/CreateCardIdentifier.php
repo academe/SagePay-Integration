@@ -143,12 +143,13 @@ class CreateCardIdentifier extends AbstractRequest
      * This request does not use the HTTP Basic Auth, but the temporary session
      * key token instead. This is because it will accessible to end users, and
      * the secure integration key and password cannot be exposed here.
+     * 
      * @return array
      */
-    public function getHeaders()
+    public function getAuthHeaders()
     {
         return [
-            'Authorization' => 'Bearer ' . $this->sessionKey,
+            'Authorization' => ['Bearer ' . $this->sessionKey],
         ];
     }
 }

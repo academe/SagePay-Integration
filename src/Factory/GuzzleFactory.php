@@ -9,10 +9,11 @@ namespace Academe\Opayo\Pi\Factory;
  * @deprecated use any PSR-17 factory instead
  */
 
-use Psr\Http\Message\StreamInterface;
-use Psr\Http\Message\UriInterface;
-use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Uri;
+use GuzzleHttp\Psr7\Utils;
+use GuzzleHttp\Psr7\Request;
+use Psr\Http\Message\UriInterface;
+use Psr\Http\Message\StreamInterface;
 
 class GuzzleFactory implements RequestFactoryInterface
 {
@@ -26,12 +27,14 @@ class GuzzleFactory implements RequestFactoryInterface
      * @param null $body
      * @param string $protocolVersion
      * @return Request
+     * 
+     * @deprecated no longer used since the request classes are now native PSR-7 requests
      */
     public function jsonRequest($method, $uri, array $headers = [], $body = null, $protocolVersion = '1.1')
     {
         // If we are sending a JSON body, then the recipient needs to know.
 
-        $headers['Content-Type'] = 'application/json';
+        $headers['Content-Type'] = ['application/json'];
 
         // If the body is already a stream or string of some sort, then it is
         // assumed to already be a JSON stream.
@@ -52,8 +55,8 @@ class GuzzleFactory implements RequestFactoryInterface
     }
 
     /**
-     * Create a PSR-7 UriInterface object.
-     * Experimental.
+     * Create a PSR-7 UriInterface object from a URL string.
+     *
      * @param string $uri
      * @return Uri
      */
@@ -63,9 +66,22 @@ class GuzzleFactory implements RequestFactoryInterface
     }
 
     /**
+     * Create a PSR-7 stream from a string.
+     *
+     * @param [type] $stringData
+     * @return void
+     */
+    public function stream($stringData): StreamInterface
+    {
+        return Utils::streamFor($stringData);
+    }
+
+    /**
      * Check whether Guzzle PSR-7 is installed so this factory can be used.
      * Note: Guzzle does not support everything (e.g. not ServerRequestInterface at this time).
+     * 
      * @return bool
+     * @todo this needs looking at again
      */
     public static function isSupported()
     {

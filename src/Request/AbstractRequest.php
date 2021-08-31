@@ -20,8 +20,10 @@ use Exception;
 // use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\RequestInterface;
 
-abstract class AbstractRequest extends AbstractMessage implements JsonSerializable
+abstract class AbstractRequest extends AbstractMessage implements JsonSerializable, RequestInterface
 {
+    use RequestPsr7Trait;
+
     // Transaction types.
     const TRANSACTION_TYPE_PAYMENT  = 'Payment';
     const TRANSACTION_TYPE_REPEAT   = 'Repeat';
@@ -133,35 +135,19 @@ abstract class AbstractRequest extends AbstractMessage implements JsonSerializab
     }
 
     /**
-     * Use this if your transport tool does not do "Basic Auth" out of the box.
-     * @returns array Headers for the request, usually the authentication headers.
-     */
-    public function getHeaders()
-    {
-        return $this->getBasicAuthHeaders();
-    }
-
-    /**
-     * @returns string The HTTP method that the request will use.
-     */
-    public function getMethod()
-    {
-        return $this->method;
-    }
-
-    /**
      * The HTTP Basic Auth header, as an array.
      * Use this if your transport tool does not do "Basic Auth" out of the box.
+     * 
      * @return array
      */
-    protected function getBasicAuthHeaders()
+    protected function getAuthHeaders()
     {
         return [
-            'Authorization' => 'Basic '
+            'Authorization' => ['Basic '
                 . base64_encode(
                     $this->getAuth()->getIntegrationKey()
                     . ':' . $this->getAuth()->getIntegrationPassword()
-                ),
+                )],
         ];
     }
 
@@ -233,21 +219,7 @@ abstract class AbstractRequest extends AbstractMessage implements JsonSerializab
      */
     public function createHttpRequest(): RequestInterface
     {
-        // If the data is protected from accidental serialisation, then
-        // pull it out through the protected method.
-
-        if (method_exists($this, 'jsonSerializePeek')) {
-            $body = json_encode($this->jsonSerializePeek());
-        } else {
-            $body = json_encode($this);
-        }
-
-        return $this->getFactory(true)->JsonRequest(
-            $this->getMethod(),
-            $this->getUrl(),
-            $this->getHeaders(),
-            $body
-        );
+        return $this; // The requests now are now native PSR-7 requests.
     }
 
     /**

@@ -96,37 +96,51 @@ class ResponseFactory
             return Response\Secure3D::fromData($data, $httpCode);
         }
 
-        // A 3D Secure redirect.
+        // A 3D Secure v1 redirect.
         // Like Secure3D, this one does not have a TransactionType, though shares many fields
         // with the abstract transaction response.
+
         if (Helper::dataGet($data, 'statusCode') == '2007') {
             if (Helper::dataGet($data, 'status') == AbstractTransaction::STATUS_3DAUTH) {
                 return Response\Secure3DRedirect::fromData($data, $httpCode);
             }
         }
 
+        // A 3D Secure v2 challenge (aka a redirect)
+
+        if (Helper::dataGet($data, 'statusCode') == '2021') {
+            if (Helper::dataGet($data, 'status') == AbstractTransaction::STATUS_3DAUTH && Helper::dataGet($data, 'cReq')) {
+                return Response\Secure3Dv2Redirect::fromData($data, $httpCode);
+            }
+        }
+
         // A void instruction.
+
         if (Helper::dataGet($data, 'instructionType') == AbstractRequest::INSTRUCTION_TYPE_VOID) {
             return Response\VoidInstruction::fromData($data, $httpCode);
         }
 
         // An abort instruction.
+
         if (Helper::dataGet($data, 'instructionType') == AbstractRequest::INSTRUCTION_TYPE_ABORT) {
             return Response\Abort::fromData($data, $httpCode);
         }
 
         // A release instruction.
+
         if (Helper::dataGet($data, 'instructionType') == AbstractRequest::INSTRUCTION_TYPE_RELEASE) {
             return Response\Release::fromData($data, $httpCode);
         }
 
         // A list of instructions.
+
         if (Helper::dataGet($data, 'instructions') && is_array(Helper::dataGet($data, 'instructions'))) {
             return Response\InstructionCollection::fromData($data, $httpCode);
         }
 
         // A 204 with an empty body is a quiet accpetance that what was send is successful.
         // e.g. returned when a CVV is linked to a card.
+
         if ($httpCode == 204 && empty($data)) {
             return Response\NoContent::fromData($data, $httpCode);
         }
