@@ -115,7 +115,7 @@ class StrongCustomerAuthentication implements JsonSerializable
         string $browserUserAgent,
         string $challengeWindowSize,
         string $transType,
-        array $additionalOptions = [],
+        array $additionalOptions = []
     )
     {
         $this->notificationUrl = $notificationUrl;

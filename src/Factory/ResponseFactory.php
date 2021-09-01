@@ -14,6 +14,7 @@ use Academe\Opayo\Pi\Response\AbstractTransaction;
 use Academe\Opayo\Pi\Request\AbstractRequest;
 use Psr\Http\Message\ResponseInterface;
 use Academe\Opayo\Pi\Response;
+use Academe\Opayo\Pi\ServerRequest;
 use Academe\Opayo\Pi\Helper;
 use Teapot\StatusCode\Http;
 
@@ -136,6 +137,18 @@ class ResponseFactory
 
         if (Helper::dataGet($data, 'instructions') && is_array(Helper::dataGet($data, 'instructions'))) {
             return Response\InstructionCollection::fromData($data, $httpCode);
+        }
+
+        // A 3DS v2 callback result, aka notification (this is a server request).
+
+        if (Helper::dataGet($data, 'cres')) {
+            return ServerRequest\Secure3Dv2Notification::fromData($data, $httpCode);
+        }
+
+        // A 3DS v1 callbacl result (this is a server request).
+
+        if (Helper::dataGet($data, 'PaRes')) {
+            return ServerRequest\Secure3DAcs::fromData($data, $httpCode);
         }
 
         // A 204 with an empty body is a quiet accpetance that what was send is successful.

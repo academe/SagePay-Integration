@@ -19,7 +19,7 @@ class Card implements JsonSerializable
     /**
      * @var Flag indicates this is a reusable card identifier; it has been used before.
      */
-    protected $reusable;
+    protected $reusable = false;
 
     /**
      * @var Captured (safe) details for the card.
