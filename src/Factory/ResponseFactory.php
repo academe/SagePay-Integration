@@ -42,6 +42,7 @@ class ResponseFactory
     public static function fromData($data, $httpCode = null)
     {
         // An error or error collection.
+
         if ($httpCode >= Http::BAD_REQUEST || Helper::dataGet($data, 'errors')) {
             // 4xx and 5xx errors.
             // Return an error collection.
@@ -49,16 +50,19 @@ class ResponseFactory
         }
 
         // Session key.
+
         if (Helper::dataGet($data, 'merchantSessionKey') && Helper::dataGet($data, 'expiry')) {
             return Response\SessionKey::fromData($data, $httpCode);
         }
 
         // A card identifier.
+
         if (Helper::dataGet($data, 'cardIdentifier') || Helper::dataGet($data, 'card-identifier')) {
             return Response\CardIdentifier::fromData($data, $httpCode);
         }
 
         // A payment.
+
         if (Helper::dataGet($data, 'transactionId')) {
             if (Helper::dataGet($data, 'transactionType') == AbstractRequest::TRANSACTION_TYPE_PAYMENT) {
                 return Response\Payment::fromData($data, $httpCode);
@@ -66,6 +70,7 @@ class ResponseFactory
         }
 
         // A repeat payment.
+
         if (Helper::dataGet($data, 'transactionId')) {
             if (Helper::dataGet($data, 'transactionType') == AbstractRequest::TRANSACTION_TYPE_REPEAT) {
                 return Response\Repeat::fromData($data, $httpCode);
@@ -73,6 +78,7 @@ class ResponseFactory
         }
 
         // A refund payment.
+
         if (Helper::dataGet($data, 'transactionId')) {
             if (Helper::dataGet($data, 'transactionType') == AbstractRequest::TRANSACTION_TYPE_REFUND) {
                 return Response\Refund::fromData($data, $httpCode);
@@ -80,9 +86,23 @@ class ResponseFactory
         }
 
         // A deferred payment.
+
         if (Helper::dataGet($data, 'transactionId')) {
             if (Helper::dataGet($data, 'transactionType') == AbstractRequest::TRANSACTION_TYPE_DEFERRED) {
                 return Response\Deferred::fromData($data, $httpCode);
+            }
+        }
+
+        // A failed payment.
+        // This isn't documented, but it is a payment with no transactionType.
+        // It is returned, for example, when 3DS v2 fails user authentication.
+        // Just dump it into a Payment to access isSucess().
+
+        if (Helper::dataGet($data, 'transactionId')) {
+            if (Helper::dataGet($data, 'paymentMethod')
+                && Helper::dataGet($data, 'amount')
+                && Helper::dataGet($data, 'transactionType') === null) {
+                return Response\Payment::fromData($data, $httpCode);
             }
         }
 
@@ -139,13 +159,13 @@ class ResponseFactory
             return Response\InstructionCollection::fromData($data, $httpCode);
         }
 
-        // A 3DS v2 callback result, aka notification (this is a server request).
+        // A 3DS v2 callback successful result, aka notification (this is a server request).
 
         if (Helper::dataGet($data, 'cres')) {
             return ServerRequest\Secure3Dv2Notification::fromData($data, $httpCode);
         }
 
-        // A 3DS v1 callbacl result (this is a server request).
+        // A 3DS v1 callback successful result (this is a server request).
 
         if (Helper::dataGet($data, 'PaRes')) {
             return ServerRequest\Secure3DAcs::fromData($data, $httpCode);
