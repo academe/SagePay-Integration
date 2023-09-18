@@ -44,6 +44,7 @@ abstract class AbstractInstruction extends AbstractResponse
     /**
      * @return array
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return [

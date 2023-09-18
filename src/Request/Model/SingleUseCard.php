@@ -79,6 +79,7 @@ class SingleUseCard extends AbstractCard
      * Return the complete object data for serialized storage.
      * @return array
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         $message = [

@@ -30,6 +30,7 @@ class ReusableCvvCard extends SingleUseCard
      * Return the complete object data for serialized storage.
      * @return array
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         $message = [

@@ -122,6 +122,7 @@ class SessionKey extends AbstractResponse
      * Reduce the object to an array so it can be serialised.
      * @return array
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return [

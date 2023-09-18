@@ -61,6 +61,7 @@ class Secure3D extends AbstractResponse
      * Convenient serialisation for logging and debugging.
      * @return array
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         $return = [];

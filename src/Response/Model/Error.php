@@ -209,6 +209,7 @@ class Error implements JsonSerializable
      * Reduce the object to an array so it can be serialised.
      * @return array
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         $return = [

@@ -27,6 +27,7 @@ class CreateSessionKey extends AbstractRequest
     /**
      * @return array
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return [
