@@ -42,6 +42,7 @@ class InstructionCollection extends AbstractCollection
     /**
      * @return array
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return [

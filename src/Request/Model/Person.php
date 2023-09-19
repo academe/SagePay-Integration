@@ -79,6 +79,7 @@ class Person implements PersonInterface
     /**
      * @return array The Person returned as an array for the API, requiring conversion to JSON
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         // First/last name is always required.

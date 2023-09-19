@@ -112,6 +112,7 @@ class Amount implements JsonSerializable
      * Serialisation for storage/logging/debug.
      * @return array
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return $this->getData();

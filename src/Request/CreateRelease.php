@@ -34,6 +34,7 @@ class CreateRelease extends AbstractInstruction
      * Get the message body data for serializing.
      * @return array
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         $body = parent::jsonSerialize();
