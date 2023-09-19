@@ -124,6 +124,7 @@ class Address implements AddressInterface
      *
      * @return array Data for passing to the API, requiring JSON conversion first.
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         $return = [

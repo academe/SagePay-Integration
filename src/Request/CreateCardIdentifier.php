@@ -101,6 +101,7 @@ class CreateCardIdentifier extends AbstractRequest
      * Replace all card detail characters with asterisks.
      * @return array
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         $data = $this->jsonSerializePeek();

@@ -40,6 +40,7 @@ class FetchTransaction extends AbstractRequest
      * Get the message body data for serializing.
      * There is no body data for this message.
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
     }

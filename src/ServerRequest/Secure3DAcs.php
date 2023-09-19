@@ -41,6 +41,7 @@ class Secure3DAcs extends AbstractServerRequest
      * Only needed for debugging or logging.
      * @return array
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return [

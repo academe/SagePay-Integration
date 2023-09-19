@@ -44,6 +44,7 @@ class CreateSecure3D extends AbstractRequest
      * Get the message body data for serializing.
      * @return array
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         return [

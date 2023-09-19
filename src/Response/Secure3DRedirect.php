@@ -84,6 +84,7 @@ class Secure3DRedirect extends AbstractTransaction
      * Convenient serialisation for logging and debugging.
      * @return array
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
         $return = parent::jsonSerialize();

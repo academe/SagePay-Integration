@@ -50,6 +50,7 @@ class FetchSessionKey extends AbstractRequest
     /**
      * This message has no body.
      */
+    #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
     }
