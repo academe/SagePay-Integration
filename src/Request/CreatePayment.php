@@ -12,6 +12,8 @@ use Academe\SagePay\Psr7\Model\Endpoint;
 use Academe\SagePay\Psr7\Model\Auth;
 use Academe\SagePay\Psr7\PaymentMethod\PaymentMethodInterface;
 use Academe\SagePay\Psr7\Money\AmountInterface;
+use Academe\SagePay\Psr7\Request\Model\AddressInterface;
+use Academe\SagePay\Psr7\Request\Model\PersonInterface;
 
 class CreatePayment extends AbstractRequest
 {
@@ -263,10 +265,9 @@ class CreatePayment extends AbstractRequest
     }
 
     /**
-     * @param ShippingAddress $shippingAddress
-     * @return Transaction
+     * @return self clone
      */
-    public function withShippingAddress(ShippingAddress $shippingAddress)
+    public function withShippingAddress(AddressInterface $shippingAddress)
     {
         $copy = clone $this;
         $copy->shippingAddress = $shippingAddress;
@@ -274,10 +275,9 @@ class CreatePayment extends AbstractRequest
     }
 
     /**
-     * @param ShippingRecipient $shippingRecipient
-     * @return Transaction
+     * @return self clone
      */
-    public function withShippingRecipient(ShippingRecipient $shippingRecipient)
+    public function withShippingRecipient(PersonInterface $shippingRecipient)
     {
         $copy = clone $this;
         $copy->shippingRecipient = $shippingRecipient;

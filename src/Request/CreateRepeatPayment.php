@@ -12,8 +12,9 @@ use UnexpectedValueException;
 use Academe\SagePay\Psr7\Model\Endpoint;
 use Academe\SagePay\Psr7\Model\Auth;
 use Academe\SagePay\Psr7\Money\AmountInterface;
-use Academe\SagePay\Psr7\Model\AddressInterface;
 use Academe\SagePay\Psr7\Model\PersonInterface;
+use Academe\SagePay\Psr7\Request\Model\AddressInterface;
+use Academe\SagePay\Psr7\Request\Model\PersonInterface as ModelPersonInterface;
 
 class CreateRepeatPayment extends AbstractRequest
 {
@@ -29,6 +30,7 @@ class CreateRepeatPayment extends AbstractRequest
     // Optional or overridable data.
     protected $shippingAddress;
     protected $shippingRecipient;
+    protected $giftAid;
 
     /**
      * @var string The prefix is added to the name fields when sending to Sage Pay
@@ -87,7 +89,7 @@ class CreateRepeatPayment extends AbstractRequest
      * @param ShippingAddress $shippingAddress
      * @return Transaction
      */
-    public function withShippingAddress(ShippingAddress $shippingAddress)
+    public function withShippingAddress(AddressInterface $shippingAddress)
     {
         $copy = clone $this;
         $copy->shippingAddress = $shippingAddress;
@@ -98,7 +100,7 @@ class CreateRepeatPayment extends AbstractRequest
      * @param ShippingRecipient $shippingRecipient
      * @return Repeat
      */
-    public function withShippingRecipient(ShippingRecipient $shippingRecipient)
+    public function withShippingRecipient(ModelPersonInterface $shippingRecipient)
     {
         $copy = clone $this;
         $copy->shippingRecipient = $shippingRecipient;

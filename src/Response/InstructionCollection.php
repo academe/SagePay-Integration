@@ -16,9 +16,6 @@ class InstructionCollection extends AbstractCollection
      */
     protected $permittedClass = AbstractInstruction::class;
 
-    /**
-     *
-     */
     public function setData($data, $httpCode = null)
     {
         if ($httpCode) {
@@ -37,6 +34,8 @@ class InstructionCollection extends AbstractCollection
                 $this->add(ResponseFactory::fromData($instruction, $httpCode));
             }
         }
+
+        return $this;
     }
 
     /**

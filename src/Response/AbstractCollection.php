@@ -2,11 +2,14 @@
 
 namespace Academe\SagePay\Psr7\Response;
 
+use ArrayIterator;
+use IteratorAggregate;
+
 /**
  * A a collection of instructions.
  */
 
-abstract class AbstractCollection extends AbstractResponse implements \IteratorAggregate
+abstract class AbstractCollection extends AbstractResponse implements IteratorAggregate
 {
     /**
      * The list of items.
@@ -22,6 +25,7 @@ abstract class AbstractCollection extends AbstractResponse implements \IteratorA
     /**
      * @return ArrayIterator
      */
+    #[\ReturnTypeWillChange]
     public function getIterator()
     {
         return new ArrayIterator($this->items);

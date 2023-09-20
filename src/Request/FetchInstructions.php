@@ -18,5 +18,6 @@ class FetchInstructions extends AbstractInstruction
     #[\ReturnTypeWillChange]
     public function jsonSerialize()
     {
+        return [];
     }
 }

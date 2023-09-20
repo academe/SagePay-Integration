@@ -24,6 +24,8 @@ abstract class AbstractResponse extends AbstractMessage implements Http, RFC4918
      */
     protected $httpCode;
 
+    protected $status;
+
     /**
      * Can initialise with a PSR7 message, an array, a value object or a JSON string.
      *

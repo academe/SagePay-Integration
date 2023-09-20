@@ -5,13 +5,14 @@
  * Contains base methods that all messages will use.
  */
 
+use Closure;
+use DateTime;
 use Exception;
+use DateTimeZone;
+
 use UnexpectedValueException;
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\ServerRequestInterface;
-
-use DateTime;
-use DateTimeZone;
 
 abstract class Helper
 {

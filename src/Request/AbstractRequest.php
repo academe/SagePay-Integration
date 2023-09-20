@@ -13,6 +13,7 @@ use Academe\SagePay\Psr7\Model\Auth;
 use Academe\SagePay\Psr7\Factory\FactoryInterface;
 use Academe\SagePay\Psr7\Factory\DiactorosFactory;
 use Academe\SagePay\Psr7\Factory\GuzzleFactory;
+use Academe\SagePay\Psr7\Factory\RequestFactoryInterface;
 use UnexpectedValueException;
 use JsonSerializable;
 use Exception;
@@ -179,7 +180,7 @@ abstract class AbstractRequest extends AbstractMessage implements JsonSerializab
     protected function withFactory(RequestFactoryInterface $factory)
     {
         $clone = clone $this;
-        return $clone->setAuth($factory);
+        return $clone->setFactory($factory);
     }
 
     /**
