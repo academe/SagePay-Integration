@@ -36,7 +36,7 @@ data through arrays - both are supported.
 ## Package Development
 
 The Sage Pay Integration payment gateway is a RESTful API run by by [Sage Pay](https://sagepay.com/).
-You can [apply for an account here](https://applications.sagepay.com/apply/3F7A4119-8671-464F-A091-9E59EB47B80C) (my partner link).
+You can [apply for an account here](https://referrals.elavon.co.uk/?partner_id=0014H00004E0iYw) (my partner link).
 
 This `master` branch contains a lot of reorganisation and renaming of classes compared to the previous `PSR7` branch.
 The new class names should hopefully link more closely to the RESTful nature of the API.
