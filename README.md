@@ -25,6 +25,9 @@
 
 <!-- /TOC -->
 
+> [!NOTE]
+> This package is deprecated. Please now use [academe/opayo-pi](https://github.com/academe/opayo-pi)
+
 # Opayo Pi PSR-7 Message REST API Library
 
 This package provides the data models for the [Opayo Pi](https://developer-eu.elavon.com/docs/opayo)
