@@ -40,7 +40,7 @@ This library is fairly old, so a bit kludgy in places, but should improve over t
 ## Package Development
 
 The Sage Pay Integration payment gateway is a RESTful API run by by [Sage Pay](https://sagepay.com/).
-You can [apply for an account here](https://www.opayo.co.uk/apply?partner_id=3F7A4119-8671-464F-A091-9E59EB47B80C)
+You can [apply for an account here](https://referrals.elavon.co.uk/?partner_id=0014H00004E0iYw)
 (my partner link).
 
 From v3.0.0 this package is being rebranded for Opayo, gets a new composer name, and a new base namespace.
